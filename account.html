@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>حسابي</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="stars"></div>
+
+    <header>
+        <nav>
+            <ul class="menu">
+                <li><a href="index.html">الرئيسية</a></li>
+                <li><a href="account.html" class="active">حسابي</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- صفحة الحساب -->
+    <section class="account-page">
+
+        <!-- الخطوة 1: إدخال الإيميل -->
+        <div class="login-box" id="accStepEmail">
+            <h2>تسجيل الدخول</h2>
+
+            <div class="field">
+                <input type="email" id="accEmail" placeholder="البريد الإلكتروني">
+            </div>
+
+            <button class="login-submit" id="accSendCode">إرسال رمز التحقق</button>
+        </div>
+
+        <!-- الخطوة 2: إدخال الرمز -->
+        <div class="login-box" id="accStepCode" style="display:none;">
+            <h2>أدخل رمز التحقق</h2>
+
+            <div class="field">
+                <input type="text" id="accVerifyCode" placeholder="رمز التحقق">
+            </div>
+
+            <button class="login-submit" id="accVerifyBtn">تأكيد</button>
+        </div>
+
+        <!-- الخطوة 3: إنشاء حساب جديد -->
+        <div class="login-box" id="accStepSignup" style="display:none;">
+            <h2>إنشاء حساب جديد</h2>
+
+            <div class="field">
+                <input type="text" id="accFirst" placeholder="الاسم الأول">
+            </div>
+
+            <div class="field">
+                <input type="text" id="accLast" placeholder="الاسم الأخير">
+            </div>
+
+            <div class="field">
+                <input type="tel" id="accPhone" placeholder="رقم الجوال">
+            </div>
+
+            <button class="login-submit" id="accCreateAccount">إنشاء الحساب</button>
+        </div>
+
+    </section>
+
+    <!-- EmailJS -->
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script>
+        emailjs.init("Xxmf1RVjn0UE85ob9");  // Public Key
+    </script>
+
+    <!-- سكربت الموقع -->
+    <script src="script.js"></script>
+</body>
+</html>

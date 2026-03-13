@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>الملف الشخصي</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div class="stars"></div>
+
+<header>
+    <nav>
+        <ul class="menu">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="profile.html" class="active">الملف الشخصي</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section class="account-page">
+
+    <div class="login-box" id="profileBox">
+        <h2>الملف الشخصي</h2>
+
+        <div id="profileContent">
+            <!-- سيتم تعبئته عبر JavaScript -->
+        </div>
+
+        <button class="login-submit" id="logoutBtn" style="margin-top:20px;">
+            تسجيل الخروج
+        </button>
+    </div>
+
+</section>
+
+<script>
+    // جلب بيانات المستخدم
+    const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
+
+    // لو ما فيه مستخدم → رجوع لصفحة تسجيل الدخول
+    if (!user) {
+        window.location.href = "account.html";
+    }
+
+    // تعبئة البيانات
+    const box = document.getElementById("profileContent");
+    box.innerHTML = `
+        <p><strong>الاسم الأول:</strong> ${user.first}</p>
+        <p><strong>الاسم الأخير:</strong> ${user.last}</p>
+        <p><strong>البريد الإلكتروني:</strong> ${user.email}</p>
+        <p><strong>رقم الجوال:</strong> ${user.phone}</p>
+    `;
+
+    // زر تسجيل الخروج
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+        localStorage.removeItem("loggedUser");
+        alert("تم تسجيل الخروج بنجاح");
+        window.location.href = "index.html";
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تفاصيل المنتج</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        /* إخفاء كل عناصر الهيدر في صفحة المنتج */
+        .product-page-header nav,
+        .product-page-header .menu {
+            display: none !important;
+        }
+
+        /* تنسيق زر الرجوع */
+        .back-btn {
+            font-size: 26px;
+            cursor: pointer;
+            color: white;
+            padding: 10px 15px;
+            display: inline-block;
+        }
+
+        header.product-page-header {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            height: 60px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="stars"></div>
+
+<!-- هيدر خاص بصفحة المنتج فقط -->
+<header class="product-page-header">
+    <span class="back-btn" onclick="history.back()">⟵</span>
+</header>
+
+<section class="product-page">
+
+    <!-- صورة المنتج -->
+    <div class="product-image-box">
+        <img id="productImage" src="">
+    </div>
+
+    <!-- معلومات المنتج -->
+    <div class="product-info-box">
+        <h2 id="productTitle"></h2>
+        <p id="productDesc"></p>
+
+        <div class="product-price" id="productPrice"></div>
+
+        <button id="addToCartBtn" class="add-to-cart">إضافة للسلة</button>
+    </div>
+
+</section>
+
+<script src="script.js"></script>
+<script src="product.js"></script>
+
+</body>
+</html>

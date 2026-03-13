@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>طلباتي - CA1 STORE</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="checkout-page">
+
+<div class="stars"></div>
+
+<header>
+    <nav>
+        <ul class="menu">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="orders.html" class="active">طلباتي</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section class="account-page">
+
+    <div class="checkout-full" style="padding:35px;">
+
+        <h2 style="text-align:center; margin-bottom:25px;">طلباتي</h2>
+
+        <div id="ordersList">
+            <!-- الطلبات تظهر هنا -->
+        </div>
+
+        <button class="login-submit" style="margin-top:25px;" onclick="window.location.href='index.html'">
+            العودة للرئيسية
+        </button>
+
+    </div>
+
+</section>
+
+<script>
+    const orders = JSON.parse(localStorage.getItem("orders") || "[]");
+    const box = document.getElementById("ordersList");
+
+    if (orders.length === 0) {
+        box.innerHTML = `
+            <p style="text-align:center; opacity:0.8; font-size:16px;">
+                لا توجد طلبات حتى الآن.
+            </p>
+        `;
+    } else {
+        orders.forEach((order, index) => {
+            const div = document.createElement("div");
+            div.style.marginBottom = "25px";
+            div.style.padding = "18px";
+            div.style.borderRadius = "14px";
+            div.style.background = "rgba(255,255,255,0.06)";
+            div.style.border = "1px solid rgba(255,255,255,0.15)";
+            div.style.backdropFilter = "blur(8px)";
+            div.style.boxShadow = "0 0 12px rgba(0,140,255,0.15)";
+
+            div.innerHTML = `
+                <h3 style="margin-top:0; margin-bottom:10px; font-size:18px;">
+                    <span style="color:#00c3ff;">طلب #${index + 1}</span>
+                </h3>
+
+                <p><strong>رقم الطلب:</strong> ${order.id}</p>
+                <p><strong>التاريخ:</strong> ${order.date}</p>
+                <p><strong>الإجمالي:</strong> ${order.total} ر.س</p>
+
+                <p style="margin-top:12px;"><strong>المنتجات:</strong></p>
+
+                <ul style="margin:0; padding-right:20px;">
+                    ${order.items.map(i => `
+                        <li style="margin-bottom:6px;">
+                            ${i.title}  
+                            <span style="color:#00c3ff;">× ${i.qty}</span>
+                        </li>
+                    `).join("")}
+                </ul>
+            `;
+
+            box.appendChild(div);
+        });
+    }
+</script>
+
+</body>
+</html>

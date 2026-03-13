@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>تم الدفع بنجاح - CA1 STORE</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="checkout-page">
+
+<div class="stars"></div>
+
+<section class="account-page">
+    <div class="checkout-full" style="text-align:center; padding:40px;">
+
+        <!-- أيقونة نجاح -->
+        <div style="
+            width:90px;
+            height:90px;
+            margin:0 auto 20px;
+            border-radius:50%;
+            background:linear-gradient(135deg,#00c853,#009624);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            box-shadow:0 0 20px rgba(0,255,120,0.4);
+        ">
+            <svg width="55" height="55" viewBox="0 0 24 24">
+                <path fill="white" d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+            </svg>
+        </div>
+
+        <h2 style="font-size:26px; margin-bottom:10px;">تم الدفع بنجاح 🎉</h2>
+
+        <p style="opacity:0.85; font-size:16px; margin-bottom:25px;">
+            شكرًا لك! تم استلام طلبك بنجاح، وتم حفظه في حسابك.  
+            يمكنك عرض تفاصيل الطلب في صفحة "طلباتي".
+        </p>
+
+        <!-- زر عرض الطلبات -->
+        <button class="login-submit" onclick="window.location.href='orders.html'">
+            عرض طلباتي
+        </button>
+
+        <!-- زر العودة -->
+        <button class="login-submit" style="margin-top:10px;" onclick="window.location.href='index.html'">
+            العودة للرئيسية
+        </button>
+
+    </div>
+</section>
+
+<script>
+    /* ============================================================
+       حفظ الطلب بعد الدفع
+    ============================================================ */
+
+    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+    if (cart.length > 0) {
+        const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+
+        const order = {
+            id: "CA1-" + Date.now(),
+            date: new Date().toLocaleString(),
+            items: cart,
+            total: total.toFixed(2)
+        };
+
+        const orders = JSON.parse(localStorage.getItem("orders") || "[]");
+        orders.push(order);
+        localStorage.setItem("orders", JSON.stringify(orders));
+    }
+
+    // تنظيف السلة
+    localStorage.removeItem("cart");
+</script>
+
+</body>
+</html>

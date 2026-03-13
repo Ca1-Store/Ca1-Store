@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>سلة المشتريات - CA1 STORE</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="checkout-page">
+
+<div class="stars"></div>
+
+<header>
+    <nav>
+        <ul class="menu">
+            <div class="back-btn" onclick="window.location.href='index.html'">
+                <svg width="26" height="26" viewBox="0 0 24 24">
+                    <path fill="white" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                </svg>
+            </div>
+        </ul>
+    </nav>
+</header>
+
+<section class="products-page" style="margin-top:140px;">
+
+    <div class="checkout-full">
+
+        <h2>سلة المشتريات</h2>
+        <p>هنا تظهر المنتجات التي أضفتها للسلة.</p>
+
+        <div id="cartItems" style="margin-top:20px;"></div>
+
+        <h3 style="margin-top:20px;">الإجمالي: <span id="cartTotal">0 ر.س</span></h3>
+
+        <hr style="margin:25px 0; opacity:0.3;">
+
+        <h2>إتمام الشراء</h2>
+
+        <!-- زر تأكيد الطلب -->
+        <button class="login-submit" id="confirmOrderBtn">تأكيد الطلب</button>
+
+    </div>
+
+</section>
+
+<!-- نافذة تسجيل الدخول -->
+<div class="login-popup" id="loginPopup">
+    <div class="login-box" id="loginStepBox">
+
+        <div class="close-login" id="closeLogin">&times;</div>
+
+        <div id="stepEmail">
+            <div class="login-header">
+                <div class="login-avatar-icon">
+                    <svg width="55" height="55" viewBox="0 0 24 24">
+                        <path fill="white" d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5..."/>
+                    </svg>
+                </div>
+                <h2>تسجيل الدخول</h2>
+            </div>
+
+            <div class="field">
+                <input type="email" id="loginEmail" placeholder="البريد الإلكتروني">
+            </div>
+
+            <button class="login-submit" id="sendCodeBtn">إرسال رمز التحقق</button>
+        </div>
+
+        <div id="stepCode" style="display:none;">
+            <h2>رمز التحقق</h2>
+            <div class="field">
+                <input type="text" id="verifyCode" placeholder="أدخل رمز التحقق">
+            </div>
+            <button class="login-submit" id="verifyCodeBtn">تأكيد</button>
+        </div>
+
+        <div id="stepSignup" style="display:none;">
+            <h2>إنشاء حساب</h2>
+
+            <div class="field"><input type="text" id="firstName" placeholder="الاسم الأول"></div>
+            <div class="field"><input type="text" id="lastName" placeholder="الاسم الأخير"></div>
+            <div class="field"><input type="text" id="phone" placeholder="رقم الجوال"></div>
+
+            <button class="login-submit" id="createAccountBtn">إنشاء الحساب</button>
+        </div>
+
+    </div>
+</div>
+
+<div id="niceAlert" class="nice-alert">تمت إضافة المنتج للسلة</div>
+
+<script src="script.js"></script>
+
+<script>
+/* ============================
+   عرض محتوى السلة
+============================ */
+
+function renderCheckoutCart() {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const cartItems = document.getElementById("cartItems");
+    const cartTotal = document.getElementById("cartTotal");
+
+    cartItems.innerHTML = "";
+    let total = 0;
+
+    if (cart.length === 0) {
+        cartItems.innerHTML = "<p>السلة فارغة.</p>";
+        cartTotal.textContent = "0 ر.س";
+        return;
+    }
+
+    cart.forEach(item => {
+        total += item.price * item.qty;
+
+        const div = document.createElement("div");
+        div.className = "cart-item";
+        div.innerHTML = `
+            <img src="${item.image}">
+            <div class="cart-item-info">
+                <div class="cart-item-title">${item.title}</div>
+                <div class="cart-item-price">${item.price} ر.س × ${item.qty}</div>
+
+                <div class="cart-item-actions">
+                    <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+                    <span class="qty-value">${item.qty}</span>
+                    <button class="qty-btn" onclick="changeQty(${item.id}, -1)">-</button>
+
+                    <span class="remove-item" onclick="removeItem(${item.id})">حذف</span>
+                </div>
+            </div>
+        `;
+        cartItems.appendChild(div);
+    });
+
+    cartTotal.textContent = total.toFixed(2) + " ر.س";
+}
+
+function changeQty(id, amount) {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const item = cart.find(p => p.id === id);
+
+    if (!item) return;
+
+    item.qty += amount;
+
+    if (item.qty <= 0) {
+        cart = cart.filter(p => p.id !== id);
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    renderCheckoutCart();
+}
+
+function removeItem(id) {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart = cart.filter(p => p.id !== id);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    renderCheckoutCart();
+}
+
+renderCheckoutCart();
+</script>
+
+<!-- ============================
+     كود الدفع + فحص تسجيل الدخول
+============================ -->
+<script>
+const confirmBtn = document.getElementById("confirmOrderBtn");
+
+confirmBtn.addEventListener("click", async () => {
+    const loggedUser = JSON.parse(localStorage.getItem("loggedUser") || "null");
+
+    if (!loggedUser) {
+        localStorage.setItem("redirectAfterLogin", "checkout");
+        window.location.href = "account.html";
+        return;
+    }
+
+    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+    if (!cart.length) {
+        alert("السلة فارغة");
+        return;
+    }
+
+    // 🔥 التعديل الوحيد هنا:
+    window.location.href = "payment.html";
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>الدفع - CA1 STORE</title>
+
+    <!-- ملف CSS الرئيسي -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+
+<body class="checkout-page">
+
+<div class="stars"></div>
+
+<header>
+    <nav>
+        <ul class="menu">
+            <div class="back-btn" onclick="window.location.href='checkout.html'">
+                <svg width="26" height="26" viewBox="0 0 24 24">
+                    <path fill="white" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                </svg>
+            </div>
+        </ul>
+    </nav>
+</header>
+
+<section class="products-page" style="margin-top:140px;">
+
+    <div class="checkout-full">
+
+        <h2 style="text-align:center;">الدفع</h2>
+        <p style="text-align:center; opacity:0.8;">أدخل بيانات البطاقة لإتمام عملية الشراء</p>
+
+        <hr style="margin:25px 0; opacity:0.3;">
+
+        <!-- صندوق الدفع -->
+        <form id="payment-form">
+
+            <label style="font-size:16px; font-weight:600;">معلومات البطاقة</label>
+
+            <!-- عنصر البطاقة -->
+            <div id="card-element" class="card-box"></div>
+
+            <!-- زر الدفع -->
+            <button id="submit-button" class="pay-btn">ادفع الآن</button>
+
+            <!-- رسالة الدفع -->
+            <div id="payment-message" style="margin-top:15px; text-align:center;"></div>
+
+        </form>
+
+    </div>
+
+</section>
+
+<!-- تنبيه -->
+<div id="niceAlert" class="nice-alert"></div>
+
+<!-- ملف الدفع -->
+<script src="payment.js"></script>
+
+</body>
+</html>
