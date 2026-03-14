@@ -7,7 +7,6 @@ const productImage = document.getElementById("productImage");
 const productTitle = document.getElementById("productTitle");
 const productDesc = document.getElementById("productDesc");
 const productPrice = document.getElementById("productPrice");
-const addToCartBtn = document.getElementById("addToCartBtn");
 
 // التأكد أن بيانات المنتجات موجودة
 if (typeof productsData === "undefined") {
@@ -20,13 +19,12 @@ const product = productsData.find(p => p.id === productId);
 // لو المنتج غير موجود
 if (!product) {
     productTitle.textContent = "المنتج غير موجود";
-    addToCartBtn.style.display = "none";
 } else {
 
     // عرض بيانات المنتج
     productImage.src = product.image;
     productTitle.textContent = product.title;
-    productDesc.textContent = product.desc;
+    productDesc.textContent = product.desc || "";
 
     // السعر الجديد للمنتج رقم 1
     let finalPrice = product.price;
@@ -42,32 +40,28 @@ if (!product) {
             product.price === "قريبًا" ? "قريبًا" : product.price + " ر.س";
     }
 
-    // لو المنتج قريبًا → أخفي زر السلة
+    /* ============================
+       زر شراء الآن (PayPal)
+    ============================ */
+
+    const paypal1 = document.getElementById("paypal1");
+    const paypal3 = document.getElementById("paypal3");
+    const notAvailable = document.getElementById("notAvailable");
+
+    // إخفاء الجميع أولاً
+    paypal1.classList.add("hidden");
+    paypal3.classList.add("hidden");
+    notAvailable.classList.add("hidden");
+
     if (product.status === "soon") {
-        addToCartBtn.style.display = "none";
-    }
-
-    // زر إضافة للسلة
-    addToCartBtn.addEventListener("click", () => {
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-        const existing = cart.find(p => p.id === product.id);
-
-        if (existing) {
-            existing.qty++;
+        notAvailable.classList.remove("hidden");
+    } else {
+        if (product.id === 1) {
+            paypal1.classList.remove("hidden");
+        } else if (product.id === 3) {
+            paypal3.classList.remove("hidden");
         } else {
-            cart.push({
-                id: product.id,
-                title: product.title,
-                price: finalPrice,
-                image: product.image,
-                qty: 1
-            });
+            notAvailable.classList.remove("hidden");
         }
-
-        localStorage.setItem("cart", JSON.stringify(cart));
-
-        // رسالة التنبيه الجديدة
-        showNiceAlert("تمت إضافة المنتج للسلة");
-    });
+    }
 }

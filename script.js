@@ -10,7 +10,8 @@ const productsData = [
         price: 24.99,
         image: "a.png",
         category: "fivem",
-        status: "available"
+        status: "available",
+        paypal: "https://www.paypal.com/ncp/payment/28Q47CF3QFH5L"
     },
     {
         id: 2,
@@ -19,15 +20,17 @@ const productsData = [
         price: "قريبًا",
         image: "cms.avif",
         category: "fivem",
-        status: "soon"
+        status: "soon",
+        paypal: null
     },
     {
         id: 3,
         title: " اعادة تركيب",
-        price: "8.99",
+        price: "9.99",
         image: "RE.png",
         category: "fivem",
-        status: "soon"
+        status: "available",
+        paypal: "https://www.paypal.com/ncp/payment/7L3HS223L8RVC"
     },
     {
         id: 4,
@@ -36,7 +39,8 @@ const productsData = [
         price: "0.0",
         image: "cms.avif",
         category: "discord",
-        status: "soon"
+        status: "soon",
+        paypal: null
     },
     {
         id: 5,
@@ -45,7 +49,8 @@ const productsData = [
         price: "0.0",
         image: "cms.avif",
         category: "discord",
-        status: "soon"
+        status: "soon",
+        paypal: null
     },
     {
         id: 6,
@@ -54,7 +59,8 @@ const productsData = [
         price: "0.0",
         image: "cms.avif",
         category: "discord",
-        status: "soon"
+        status: "soon",
+        paypal: null
     }
 ];
 
@@ -97,12 +103,23 @@ function createProductCard(p) {
 
         ${
             p.status === "available"
-            ? `<button class="add-to-cart"
+            ? `
+                <button class="add-to-cart"
                     data-id="${p.id}"
                     data-title="${p.title}"
                     data-price="${p.price}"
-                    data-image="${p.image}">إضافة للسلة</button>`
-            : ""
+                    data-image="${p.image}">
+                    إضافة للسلة
+                </button>
+
+                <button class="buy-now-btn"
+                    onclick="event.stopPropagation(); buyNow(${p.id});">
+                    شراء الآن
+                </button>
+            `
+            : `
+                <button class="buy-now-btn disabled" disabled>شراء الآن</button>
+            `
         }
     `;
 
@@ -126,6 +143,17 @@ if (productsGrid) {
     }
 
     activateAddToCartButtons();
+}
+
+/* ============================
+   زر شراء الآن (PayPal)
+============================ */
+
+function buyNow(id) {
+    const product = productsData.find(p => p.id === id);
+    if (!product || !product.paypal) return;
+
+    window.location.href = product.paypal;
 }
 
 /* ============================
@@ -437,6 +465,7 @@ function fade(hideEl, showEl) {
         setTimeout(() => showEl.style.opacity = 1, 10);
     }, 300);
 }
+
 function showAlert(message, type = "success") {
     const alertBox = document.getElementById("niceAlert");
 
