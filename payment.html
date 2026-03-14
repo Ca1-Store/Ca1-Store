@@ -7,11 +7,9 @@
     <link rel="stylesheet" href="styles.css">
 
     <!-- PayPal SDK -->
-   <script src="https://www.paypal.com/sdk/js?client-id=AcvvAdqB7dL3NeWPejZBERx8BsqD-t0R_uljoZRxeTdFBE7Mrv_dODZEjiIWtalas_d2DAsZdDWyW94x&currency=USD"></script>
-
+    <script src="https://www.paypal.com/sdk/js?client-id=AcvvAdqB7dL3NeWPejZBERx8BsqD-t0R_uljoZRxeTdFBE7Mrv_dODZEjiIWtalas_d2DAsZdDWyW94x&currency=USD"></script>
 
     <style>
-        /* صندوق مستقل لبايبال */
         .paypal-box {
             width: 380px;
             margin: 0 auto;
@@ -24,6 +22,18 @@
         #loadingText {
             opacity: 0.8;
             margin-bottom: 15px;
+        }
+
+        #priceInfo {
+            color: white;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        #usdInfo {
+            color: #ccc;
+            margin-bottom: 20px;
+            font-size: 15px;
         }
     </style>
 </head>
@@ -50,6 +60,10 @@
 
         <h2>الدفع</h2>
 
+        <!-- عرض السعر بالريال والدولار -->
+        <p id="priceInfo"></p>
+        <p id="usdInfo"></p>
+
         <p id="loadingText">جاري تجهيز بوابة الدفع…</p>
 
         <div id="paypal-button-container"></div>
@@ -59,6 +73,27 @@
     </div>
 
 </section>
+
+<script>
+    // قراءة السلة
+    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+    if (!cart.length) {
+        alert("السلة فارغة — لا يمكن إتمام الدفع");
+        window.location.href = "checkout.html";
+    }
+
+    // حساب الإجمالي بالريال
+    const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+
+    // تحويل الريال إلى دولار
+    const usdRate = 0.27;
+    const usdTotal = (total * usdRate).toFixed(2);
+
+    // عرض السعر للزبون
+    document.getElementById("priceInfo").textContent = `${total.toFixed(2)} ر.س`;
+    document.getElementById("usdInfo").textContent = `(≈ ${usdTotal} USD)`;
+</script>
 
 <script src="payment.js"></script>
 

@@ -31,7 +31,11 @@
 
         <div id="cartItems" style="margin-top:20px;"></div>
 
-        <h3 style="margin-top:20px;">الإجمالي: <span id="cartTotal">0 ر.س</span></h3>
+        <!-- عرض السعر بالريال والدولار -->
+        <h3 style="margin-top:20px;">
+            الإجمالي: <span id="cartTotal">0 ر.س</span>
+        </h3>
+        <p id="usdTotalText" style="color:#ccc; margin-top:5px; font-size:15px;"></p>
 
         <hr style="margin:25px 0; opacity:0.3;">
 
@@ -57,6 +61,7 @@ function renderCheckoutCart() {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
     const cartItems = document.getElementById("cartItems");
     const cartTotal = document.getElementById("cartTotal");
+    const usdText = document.getElementById("usdTotalText");
 
     cartItems.innerHTML = "";
     let total = 0;
@@ -64,6 +69,7 @@ function renderCheckoutCart() {
     if (cart.length === 0) {
         cartItems.innerHTML = "<p>السلة فارغة.</p>";
         cartTotal.textContent = "0 ر.س";
+        usdText.textContent = "";
         return;
     }
 
@@ -90,7 +96,15 @@ function renderCheckoutCart() {
         cartItems.appendChild(div);
     });
 
+    // عرض الإجمالي بالريال
     cartTotal.textContent = total.toFixed(2) + " ر.س";
+
+    // تحويل الريال إلى دولار
+    const usdRate = 0.27;
+    const usdTotal = (total * usdRate).toFixed(2);
+
+    // عرض الدولار تحت الإجمالي
+    usdText.textContent = `(≈ ${usdTotal} USD)`;
 }
 
 function changeQty(id, amount) {
