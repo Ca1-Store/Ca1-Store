@@ -10,6 +10,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
 
+    // تحويل الريال السعودي إلى دولار
+    const usdRate = 0.27; // 1 SAR ≈ 0.27 USD
+    const usdTotal = total * usdRate;
+
     const loadingText = document.getElementById("loadingText");
 
     paypal.Buttons({
@@ -30,9 +34,8 @@ document.addEventListener("DOMContentLoaded", () => {
             return actions.order.create({
                 purchase_units: [{
                     amount: {
-                        value: total.toFixed(2),
-                       currency_code: "USD"
-
+                        value: usdTotal.toFixed(2),
+                        currency_code: "USD"
                     }
                 }]
             });
@@ -49,4 +52,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }).render('#paypal-button-container');
 });
-console.log("TOTAL =", total);
+
+console.log("TOTAL (SAR) =", total);
+console.log("TOTAL (USD) =", usdTotal);
