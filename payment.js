@@ -31,7 +31,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 purchase_units: [{
                     amount: {
                         value: total.toFixed(2),
-                        currency_code: "SAR"
+                       currency_code: "USD"
+
                     }
                 }]
             });
@@ -48,3 +49,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }).render('#paypal-button-container');
 });
+console.log("TOTAL =", total);
