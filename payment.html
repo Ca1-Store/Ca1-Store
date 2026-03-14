@@ -4,11 +4,27 @@
     <meta charset="UTF-8">
     <title>الدفع - CA1 STORE</title>
 
-    <!-- ملف CSS الرئيسي -->
     <link rel="stylesheet" href="styles.css">
 
-    <!-- Stripe.js -->
-    <script src="https://js.stripe.com/v3/"></script>
+    <!-- PayPal SDK -->
+    <script src="https://www.paypal.com/sdk/js?client-id=AXcgZl-4tg-AlcVw_WnKbzh18qPfC0XlAvlFGyM296WsojEHHbmNtfXfnTUhQUS_qdRTHQlX72eec2mL&currency=SAR"></script>
+
+    <style>
+        /* صندوق مستقل لبايبال */
+        .paypal-box {
+            width: 380px;
+            margin: 0 auto;
+            padding: 25px;
+            background: #111;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        #loadingText {
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 
 <body class="checkout-page">
@@ -29,37 +45,20 @@
 
 <section class="products-page" style="margin-top:140px;">
 
-    <div class="checkout-full">
+    <div class="paypal-box">
 
-        <h2 style="text-align:center;">الدفع</h2>
-        <p style="text-align:center; opacity:0.8;">أدخل بيانات البطاقة لإتمام عملية الشراء</p>
+        <h2>الدفع</h2>
 
-        <hr style="margin:25px 0; opacity:0.3;">
+        <p id="loadingText">جاري تجهيز بوابة الدفع…</p>
 
-        <!-- صندوق الدفع -->
-        <form id="payment-form">
+        <div id="paypal-button-container"></div>
 
-            <label style="font-size:16px; font-weight:600;">معلومات البطاقة</label>
-
-            <!-- عنصر البطاقة -->
-            <div id="card-element" class="card-box"></div>
-
-            <!-- زر الدفع -->
-            <button id="submit-button" class="pay-btn">ادفع الآن</button>
-
-            <!-- رسالة الدفع -->
-            <div id="payment-message" style="margin-top:15px; text-align:center;"></div>
-
-        </form>
+        <p style="margin-top:10px; opacity:0.5; font-size:13px;">Powered by PayPal</p>
 
     </div>
 
 </section>
 
-<!-- تنبيه -->
-<div id="niceAlert" class="nice-alert"></div>
-
-<!-- ملف الدفع -->
 <script src="payment.js"></script>
 
 </body>
