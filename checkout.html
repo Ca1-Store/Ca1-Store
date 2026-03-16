@@ -167,8 +167,18 @@ function removeItem(id) {
 
 renderCheckoutCart();
 
-/* زر تأكيد الطلب */
+/* ============================
+   زر تأكيد الطلب — حماية تسجيل الدخول
+============================ */
+
 document.getElementById("confirmOrderBtn").addEventListener("click", () => {
+
+    const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
+
+    if (!user || !user.email) {
+        window.location.href = "account.html";
+        return;
+    }
 
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
@@ -183,18 +193,19 @@ document.getElementById("confirmOrderBtn").addEventListener("click", () => {
 /* تسجيل الخروج */
 function logout() {
     localStorage.removeItem("loggedUser");
+    sessionStorage.clear();
     window.location.href = "account.html";
 }
 </script>
+
 <script>
 function goBackProperly() {
     const ref = document.referrer;
 
-    // إذا المستخدم جاء من صفحة الدفع أو السلة
     if (ref.includes("payment") || ref.includes("checkout")) {
-        window.location.href = "index.html"; // يرجع للصفحة الرئيسية
+        window.location.href = "index.html";
     } else {
-        history.back(); // يرجع للصفحة اللي كان فيها فعلاً
+        history.back();
     }
 }
 </script>

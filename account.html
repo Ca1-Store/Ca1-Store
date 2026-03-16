@@ -13,6 +13,7 @@
     <div class="back-btn-fixed" onclick="history.back()">
         ⟵ Back
     </div>
+
     <!-- خلفية الإغلاق -->
     <div class="overlay-exit" onclick="closeLogin()"></div>
 
@@ -53,8 +54,12 @@
     <script src="email.js"></script>
 
     <script>
+        /* حماية: منع دخول الصفحة إذا المستخدم مسجّل دخول */
         const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
         if (user) window.location.href = "profile.html";
+
+        /* حماية إضافية */
+        let emailSent = false;
 
         function showToast(msg) {
             const t = document.getElementById("verifyToast");
@@ -63,10 +68,62 @@
             setTimeout(() => t.classList.remove("show"), 2000);
         }
 
-        // دوال EmailJS من ملف email.js
-        function sendCode() { sendCodeEmailJS(); }
-        function resendCode() { resendCodeEmailJS(); }
-        function verifyLogin() { verifyLoginEmailJS(); }
+        /* حماية: منع إدخال بريد غير صالح */
+        function validateEmail() {
+            const email = document.getElementById("emailInput").value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        /* حماية: منع إدخال رمز غير رقمي */
+        function validateCode() {
+            const code = document.getElementById("codeInput").value.trim();
+            return /^\d+$/.test(code);
+        }
+
+        /* دوال EmailJS من ملف email.js */
+        function sendCode() {
+            if (!validateEmail()) {
+                showToast("الرجاء إدخال بريد إلكتروني صالح");
+                return;
+            }
+
+            emailSent = true;
+            sendCodeEmailJS();
+        }
+
+        function resendCode() {
+            if (!emailSent) {
+                showToast("الرجاء إدخال البريد أولاً");
+                return;
+            }
+
+            if (document.getElementById("resendBtn").disabled) {
+                showToast("انتظر حتى ينتهي العداد");
+                return;
+            }
+
+            resendCodeEmailJS();
+        }
+
+        function verifyLogin() {
+            if (!emailSent) {
+                showToast("الرجاء إدخال البريد أولاً");
+                return;
+            }
+
+            if (document.getElementById("codeStep").style.display === "none") {
+                showToast("لا يمكنك الوصول لهذه الخطوة الآن");
+                return;
+            }
+
+            if (!validateCode()) {
+                showToast("الرمز يجب أن يكون أرقام فقط");
+                return;
+            }
+
+            verifyLoginEmailJS();
+        }
 
         function closeLogin() {
             const box = document.getElementById("authBox");

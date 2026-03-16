@@ -85,24 +85,39 @@
     </div>
 </div>
 
-<script src="script.js"></script>
-
 <script>
+/* حماية قوية ضد التلاعب */
 const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
-if (!user) window.location.href = "account.html";
 
-/* فتح نافذة التأكيد */
+if (!user || !user.email) {
+    localStorage.removeItem("loggedUser");
+    window.location.href = "account.html";
+}
+
+/* تنظيف البيانات */
+function clean(text) {
+    return String(text)
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+}
+
+/* حماية حذف الحساب */
+let confirmAllowed = false;
+
 function openDeleteConfirm() {
+    confirmAllowed = true;
     document.getElementById("deleteConfirm").style.display = "flex";
 }
 
-/* إغلاق نافذة التأكيد */
 function closeDeleteConfirm() {
+    confirmAllowed = false;
     document.getElementById("deleteConfirm").style.display = "none";
 }
 
 /* حذف الحساب نهائيًا */
 function deleteAccount() {
+    if (!confirmAllowed) return;
+
     const email = user.email;
 
     let users = JSON.parse(localStorage.getItem("users") || "[]");
@@ -110,26 +125,27 @@ function deleteAccount() {
     localStorage.setItem("users", JSON.stringify(users));
 
     localStorage.removeItem("loggedUser");
+    sessionStorage.clear();
 
     closeDeleteConfirm();
 
-    // إظهار التوست الجديد
     const toast = document.getElementById("deleteToast");
     toast.classList.add("show");
 
-    // إخفاؤه بعد 2 ثانية
     setTimeout(() => {
         toast.classList.remove("show");
         window.location.href = "index.html";
     }, 2000);
 }
 
-/* تسجيل الخروج */
+/* تسجيل خروج آمن */
 function logout() {
     localStorage.removeItem("loggedUser");
+    sessionStorage.clear();
     window.location.href = "account.html";
 }
 </script>
+
 <div id="deleteToast" class="toast-success">تم حذف الحساب نهائيًا</div>
 
 </body>
