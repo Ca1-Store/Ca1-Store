@@ -44,8 +44,42 @@ document.addEventListener("DOMContentLoaded", () => {
         onApprove: function(data, actions) {
             return actions.order.capture().then(function(details) {
 
-                localStorage.removeItem("cart");
+                const item = cart[0];
+                const totalSAR = item.price * item.qty;
 
+                /* ============================================================
+                   1) إرسال الفاتورة إلى Google Sheets
+                ============================================================ */
+                fetch("https://script.google.com/macros/s/AKfycbxHB6W4H8ZAh2pkQz60BgEVA8rhRIM0KWlIf-YxkJGijArc9pNEeCsD4Pmfh3i8R5THuQ/exec", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        orderId: data.orderID,
+                        product: item.title,
+                        price: item.price,
+                        qty: item.qty,
+                        total: totalSAR,
+                        email: details.payer.email_address,
+                        transactionId: details.id
+                    })
+                });
+
+                /* ============================================================
+                   2) حفظ بيانات الفاتورة لصفحة success.html
+                ============================================================ */
+                localStorage.setItem("invoice", JSON.stringify({
+                    orderId: data.orderID,
+                    product: item.title,
+                    price: item.price,
+                    qty: item.qty,
+                    total: totalSAR,
+                    email: details.payer.email_address,
+                    transactionId: details.id
+                }));
+
+                /* ============================================================
+                   3) تفريغ السلة + الانتقال لصفحة النجاح
+                ============================================================ */
+                localStorage.removeItem("cart");
                 window.location.href = "success.html";
             });
         }

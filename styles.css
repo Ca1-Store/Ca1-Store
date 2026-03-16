@@ -9,11 +9,7 @@
 body{
     margin:0;
     font-family:"IBM Plex Sans Arabic", sans-serif;
-    background-color:#000;
-    background-image:url("logo.png");
-    background-repeat:no-repeat;
-    background-position:center;
-    background-size:550px;
+    background-color:#181717;
     min-height:100vh;
     color:#fff;
     line-height:1.6;
@@ -25,25 +21,7 @@ body::before{
     position:fixed;
     inset:0;
     background:rgba(0,0,0,0.78);
-    z-index:-2;
-}
-
-.stars{
-    position:fixed;
-    inset:0;
-    background:url("stars.png");
-    background-size:cover;
-    opacity:0.35;
-    animation:moveStars 25s linear infinite;
-    z-index:-1;
-}
-
-@keyframes moveStars{
-    from{ transform:translateY(0); }
- 
-   to{ transform:translateY(-1000px); }
-
-   
+    z-index:-3; /* تم إنزاله تحت التأثيرات */
 }
 
 @keyframes shine{
@@ -67,46 +45,22 @@ header{
     padding:14px 40px;
     display:flex;
     align-items:center;
-    justify-content:center;
+    justify-content: space-between;
+    height: 80px;
+    padding: 0 40px;
     gap:40px;
-    background:rgba(0,0,0,0.55);
+    background:rgba(167, 166, 166, 0.034);
     backdrop-filter:blur(12px);
-    box-shadow:0 0 25px rgba(255,255,255,0.15);
+    box-shadow:0 0 85px rgba(250, 231, 255, 0.74);
     z-index:50;
 }
-
-.discord-icon{
-    position:absolute;
-    left:24px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    width:40px;
-    height:40px;
-    border-radius:999px;
-    background:rgba(88,101,242,0.18);
-    border:1px solid rgba(88,101,242,0.5);
-    cursor:pointer;
-    transition:0.25s ease;
-}
-
-.discord-icon svg{
-    fill:#5865F2;
-}
-
-.discord-icon:hover{
-    background:#5865F2;
-    box-shadow:0 0 18px #5865F2;
-    transform:translateY(-1px) scale(1.05);
-}
-
-.discord-icon:hover svg{
-    fill:#fff;
-}
-
-.cart-icon{
-    position:absolute;
-    right:24px;
+.cart-icon {
+    position: fixed !important;
+    bottom: 20px !important;
+    left: 20px !important;
+    right: auto !important;
+    top: auto !important;
+    z-index: 9999;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -147,7 +101,6 @@ header{
     align-items:center;
     justify-content:center;
 }
-
 /* ============================
    NAVIGATION
 ============================ */
@@ -506,101 +459,77 @@ nav{
     z-index:5;
 }
 
-/* ============================
-   زر أضف للسلة — أبيض شفاف مع وميض
-============================ */
+.add-to-cart,
+.buy-now-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 999px;
+    border: none;
 
-.add-to-cart{
-    width:100%;
-    padding:10px;
-    border-radius:10px;
-    border:1px solid rgba(255,255,255,0.4);
-    background:rgba(255,255,255,0.12);
-    color:#fff;
-    font-size:15px;
-    font-weight:700;
-    cursor:pointer;
-    transition:0.25s ease;
-    backdrop-filter:blur(6px);
-    position:relative;
-    overflow:hidden;
+    /* خط واضح جدًا */
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+
+    cursor: pointer;
+
+    /* لون زر ناعم وواضح */
+    background: #d0d0d0;
+    color: #111; /* خط داكن وواضح */
+
+    font-family: "IBM Plex Sans Arabic", sans-serif;
+
+    /* وميض خفيف */
+    box-shadow: 0 0 6px rgba(255,255,255,0.22);
+
+    position: relative;
+    overflow: hidden;
+    transition: 0.25s ease;
+
+    margin-top: 12px;
 }
 
-.add-to-cart::before{
-    content:"";
-    position:absolute;
-    top:0;
-    left:-100%;
-    width:100%;
-    height:100%;
-    background:linear-gradient(
+/* الوميض المتحرك */
+.add-to-cart::before,
+.buy-now-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -130%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
         120deg,
         transparent,
-        rgba(255,255,255,0.6),
+        rgba(255,255,255,0.4),
         transparent
     );
+    transition: 0.5s ease;
 }
 
-.add-to-cart:hover::before{
-    animation:shine 1s;
+/* عند تمرير الماوس */
+.add-to-cart:hover::before,
+.buy-now-btn:hover::before {
+    left: 130%;
 }
 
-.add-to-cart:hover{
-    background:rgba(255,255,255,0.25);
-    box-shadow:0 0 15px rgba(255,255,255,0.6);
-    transform:translateY(-2px) scale(1.03);
+.add-to-cart:hover,
+.buy-now-btn:hover {
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 0 12px rgba(255,255,255,0.35);
 }
-/* ============================
-   زر شراء الآن — أبيض شفاف مع وميض
-============================ */
-
-.buy-now-btn{
-    width:100%;
-    padding:10px;
-    border-radius:10px;
-    border:1px solid rgba(255,255,255,0.4);
-    background:rgba(255,255,255,0.12);
-    color:#fff;
-    font-size:15px;
-    font-weight:700;
-    cursor:pointer;
-    transition:0.25s ease;
-    margin-top:8px;
-    backdrop-filter:blur(6px);
-    position:relative;
-    overflow:hidden;
+.buy-now-btn.disabled,
+.add-to-cart.disabled {
+    background: #777 !important;
+    color: #ccc !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+    opacity: 0.55;
 }
 
-.buy-now-btn::before{
-    content:"";
-    position:absolute;
-    top:0;
-    left:-100%;
-    width:100%;
-    height:100%;
-    background:linear-gradient(
-        120deg,
-        transparent,
-        rgba(255,255,255,0.6),
-        transparent
-    );
-}
-
-.buy-now-btn:hover::before{
-    animation:shine 1s;
-}
-
-.buy-now-btn:hover{
-    background:rgba(255,255,255,0.25);
-    box-shadow:0 0 15px rgba(255,255,255,0.7);
-    transform:translateY(-2px) scale(1.03);
-}.product-page{
-    width:90%;
-    max-width:1200px;
-    margin:140px auto 40px;
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:40px;
+.buy-now-btn.disabled::before,
+.add-to-cart.disabled::before {
+    display: none !important;
 }
 
 .product-image-box img{
@@ -1010,11 +939,15 @@ body.checkout-page .checkout-full {
 }
 
 .search-icon {
-    left: 130px;
+    left: 70px;
 }
 
 .profile-icon {
-    left: 80px;
+    left: 25px;
+}
+.search-icon,
+.profile-icon {
+    pointer-events: auto;
 }
 
 /* زر الهوم */
@@ -1127,4 +1060,2033 @@ body.checkout-page .checkout-full {
 .pay-btn:hover {
     transform: translateY(-2px) scale(1.03);
     box-shadow: 0 0 18px rgba(255,255,255,0.8);
+}
+header {
+    transition: 0.35s ease;
+}
+
+header.scrolled {
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 25px rgba(0,255,255,0.25);
+}
+.dropdown-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* =========================
+   زر القائمة الجانبية
+========================= */
+.side-menu-btn {
+    position: absolute;
+    top: 50%;
+    right: 20px; /* أقصى اليمين */
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.18);
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    cursor: pointer;
+    z-index: 9999;
+    color: #fff;
+    transition: 0.25s;
+}
+
+.side-menu-btn:hover {
+    background: #fff;
+    color: #000;
+}
+
+/* =========================
+   القائمة المنسدلة بالوسط
+========================= */
+.menu-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.menu {
+    list-style: none;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.drop-btn {
+    cursor: pointer;
+    padding: 10px 20px;
+    display: inline-block;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.08);
+    transition: 0.25s;
+}
+
+.drop-btn:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+/* القائمة المنسدلة نفسها */
+.dropdown-content {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.9);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 10px;
+    min-width: 200px;
+    padding: 6px 0;
+    display: none;
+    z-index: 9999;
+}
+
+.dropdown-content li {
+    list-style: none;
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 12px 16px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.25s;
+}
+
+.dropdown-content a:hover {
+    background: rgba(255,255,255,0.12);
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* =========================
+   القائمة الجانبية
+========================= */
+.side-menu {
+    position: fixed;
+    top: 0;
+    right: -260px;
+    width: 260px;
+    height: 100%;
+    background: rgba(0,0,0,0.75);
+    border-left: 1px solid rgba(255,255,255,0.18);
+    backdrop-filter: blur(12px);
+    padding: 60px 20px;
+    transition: 0.35s ease;
+    z-index: 9998;
+}
+
+.side-menu.open {
+    right: 0;
+}
+
+.side-menu a {
+    display: block;
+    color: #fff;
+    padding: 14px 0;
+    font-size: 17px;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* =========================
+   البحث والملف الشخصي
+========================= */
+.search-icon, .profile-icon {
+    position: absolute;
+    top: 28%;
+   transform: none;
+    cursor: pointer;
+}
+
+.search-icon {
+    left: 70px;
+}
+
+.profile-icon {
+    left: 25px;
+}
+
+/* =========================
+   السلة
+========================= */
+.cart-icon {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 9999;
+}
+
+.cart-count {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: red;
+    width: 18px;
+    height: 18px;
+    font-size: 12px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* =========================
+   باقي التصميم
+========================= */
+.container {
+    position: relative;
+    text-align: center;
+    margin-top: 100px;
+}
+
+.container img {
+    width: 100%;
+    max-width: 800px;
+}
+
+.overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+}
+.hero {
+    width: 100%;
+    height: 550px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 195px;
+    position: relative;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.06), transparent 70%);
+}
+.hero-content {
+    text-align: center;
+    animation: glowPulse 4s ease-in-out infinite;
+}
+
+.hero-logo {
+    width: 180px;
+    height: auto;
+    filter: drop-shadow(0 0 25px rgba(255, 203, 238, 0.548));
+    margin-bottom: 32px;
+    transition: 0.4s ease;
+}
+
+.hero-title {
+    font-size: 45px;
+    font-weight: 800;
+    margin: 0;
+    color: #fff;
+    text-shadow: 0 0 18px rgba(255,255,255,0.45);
+}
+
+.hero-sub {
+    font-size: 19px;
+    opacity: 1.85;
+    margin-top: 8px;
+}
+
+@keyframes glowPulse {
+    0% {
+        filter: drop-shadow(0 0 10px rgba(255,255,255,0.25));
+    }
+    50% {
+        filter: drop-shadow(0 0 35px rgba(255,255,255,0.55));
+    }
+    100% {
+        filter: drop-shadow(0 0 10px rgba(255,255,255,0.25));
+    }
+}
+/* ============================
+   تحسين تناسق صفحة المنتج
+============================ */
+
+/* تحويل الصفحة إلى عمودين */
+body.product-page .product-container {
+    width: 150%;
+    max-width: 1490px;
+    margin: 160px auto 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    padding: 20px;
+}
+
+/* صندوق الصورة */
+body.product-page .product-image-box {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    padding: 0px;
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* حجم الصورة المثالي */
+body.product-page .product-image-box img {
+    width: 110%;
+    max-width: 700px;
+    height: auto;
+    border-radius: 14px;
+    box-shadow: 0 0 18px rgba(0,0,0,0.35);
+}
+
+/* صندوق المعلومات */
+body.product-page .product-info-box {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    padding: 50px;
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+}
+
+/* العنوان */
+body.product-page .product-info-box h2 {
+    font-size: 29px;
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+
+/* الوصف */
+body.product-page .product-info-box p {
+    opacity: 0.85;
+    line-height: 1.8;
+    margin-bottom: 18px;
+}
+
+/* السعر */
+body.product-page .price-box {
+    margin: 20px 0;
+    font-size: 24px;
+    font-weight: 800;
+    color: #00eaff;
+}
+
+/* السعر القديم */
+body.product-page .old-price {
+    text-decoration: line-through;
+    opacity: 0.6;
+    font-size: 16px;
+    margin-left: 8px;
+}
+
+/* زر شراء الآن */
+body.product-page .buy-now-btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 999px;
+    border: none;
+    background: #ffffff;
+    color: #000;
+    font-size: 17px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.25s ease;
+    margin-top: 12px;
+}
+
+body.product-page .buy-now-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 18px rgba(255,255,255,0.6);
+}
+.hero-title,
+.hero-sub {
+    opacity: 0;
+    animation: fadeUp .9s ease forwards;
+}
+
+.hero-sub {
+    animation-delay: .12s;
+}
+
+@keyframes fadeUp {
+    from {
+        transform: translateY(18px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+.features {
+    width: 90%;
+    max-width: 1100px;
+    margin: 90px auto 60px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 22px;
+}
+
+.feature-box {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 22px;
+    border-radius: 16px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    transition: 0.25s ease;
+}
+
+.feature-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 18px rgba(0,255,255,0.25);
+}
+
+.feature-box .icon {
+    font-size: 38px;
+    margin-bottom: 12px;
+}
+
+.feature-box h3 {
+    font-size: 18px;
+    margin-bottom: 6px;
+    font-weight: 700;
+}
+
+.feature-box p {
+    opacity: 0.85;
+    font-size: 14px;
+}
+.divider {
+    width: 80%;
+    height: 2px;
+    margin: 50px auto;
+    background: linear-gradient(90deg, transparent, #ffd4ff81, transparent);
+    opacity: 0.4;
+}
+.why-us {
+    text-align: center;
+    margin: 60px auto;
+    width: 80%;
+    opacity: 0.9;
+}
+
+.why-us h2 {
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.why-us p {
+    font-size: 16px;
+    opacity: 0.8;
+}
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at top, rgba(255, 185, 246, 0.301), transparent 70%),
+                radial-gradient(circle at bottom, rgba(0, 0, 0, 0.199), transparent 70%);
+    z-index: -1;
+}
+header {
+    box-shadow: 0 0 25px rgba(255, 211, 249, 0.438);
+}
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at 30% 70%, rgba(168, 168, 168, 0.288), transparent 60%),
+                radial-gradient(circle at 70% 30%, rgba(255, 215, 255, 0.247), transparent 60%);
+    animation: fogMove 12s ease-in-out infinite alternate;
+    z-index: -3;
+}
+
+@keyframes fogMove {
+    from { transform: translateY(0px); }
+    to   { transform: translateY(25px); }
+}
+.hero-arrow {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    opacity: 0.7;
+    transition: 0.25s ease;
+}
+
+.hero-arrow::after {
+    content: "←";
+    display: block;
+    font-size: 28px;
+    margin-top: 4px;
+    opacity: 0.7;
+    transition: 0.25s ease;
+}
+
+.hero-arrow:hover {
+    opacity: 1;
+}
+
+.hero-arrow:hover::after {
+    transform: translateX(-6px);
+}
+.how-it-works {
+    margin-top: 70px;
+    text-align: center;
+    color: #fff;
+    padding: 0 20px;
+}
+
+.how-it-works h2 {
+    font-size: 30px;
+    font-weight: 900;
+    margin-bottom: 35px;
+    letter-spacing: 1px;
+    background: linear-gradient(to right, #ffffff, #dcdcdc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* شبكة 2x2 ثابتة */
+.steps {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* بطاقة أصغر */
+.step {
+    position: relative;
+    padding: 28px 20px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(14px);
+    transition: 0.35s ease;
+    overflow: hidden;
+    box-shadow: inset 0 0 18px rgba(255,255,255,0.03),
+                0 5px 18px rgba(0,0,0,0.3);
+}
+
+/* إضاءة داخلية */
+.step::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 160%;
+    height: 160%;
+    background: radial-gradient(circle, rgba(255,255,255,0.05), transparent 70%);
+    opacity: 0;
+    transition: 0.45s ease;
+}
+
+.step:hover::before {
+    opacity: 1;
+}
+
+/* خط لامع */
+.step::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.12), transparent);
+    transition: 0.55s ease;
+}
+
+.step:hover::after {
+    left: 130%;
+}
+
+/* حركة البطاقة */
+.step:hover {
+    transform: translateY(-8px);
+    border-color: rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.06);
+}
+
+/* أيقونة */
+.step .icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 15px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    backdrop-filter: blur(12px);
+    transition: 0.3s ease;
+}
+
+.step:hover .icon {
+    background: rgba(255,255,255,0.18);
+    transform: scale(1.1);
+}
+
+/* عنوان */
+.step h3 {
+    font-size: 17px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+/* نص */
+.step p {
+    font-size: 13px;
+    opacity: 0.85;
+    line-height: 1.6;
+}
+
+/* استجابة للجوال */
+@media (max-width: 600px) {
+    .steps {
+        grid-template-columns: 1fr;
+    }
+}
+.join-discord {
+    margin-top: 90px;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.discord-box {
+    max-width: 650px;
+    margin: 0 auto;
+    padding: 45px 35px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 22px;
+    backdrop-filter: blur(18px);
+    box-shadow: 0 10px 35px rgba(0,0,0,0.35);
+    transition: 0.35s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* إضاءة داخلية */
+.discord-box::before {
+    content: "";
+    position: absolute;
+    top: -60%;
+    left: -60%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.06), transparent 70%);
+    opacity: 0;
+    transition: 0.6s ease;
+}
+
+.discord-box:hover::before {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.discord-box:hover {
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(255,255,255,0.25);
+    transform: translateY(-6px);
+}
+
+/* أيقونة الديسكورد */
+.discord-icon img {
+    width: 70px;
+    opacity: 0.9;
+    margin-bottom: 18px;
+    filter: drop-shadow(0 0 10px rgba(88,101,242,0.4));
+}
+
+/* العنوان */
+.discord-box h2 {
+    font-size: 32px;
+    font-weight: 900;
+    margin-bottom: 12px;
+    background: linear-gradient(to right, #ffffff, #dcdcdc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* الوصف */
+.discord-box p {
+    font-size: 15px;
+    opacity: 0.85;
+    line-height: 1.7;
+    margin-bottom: 35px;
+}
+
+/* الإحصائيات */
+.discord-stats {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 35px;
+}
+
+.stat .num {
+    font-size: 38px;
+    font-weight: 900;
+    color: #5865F2;
+    display: block;
+    text-shadow: 0 0 12px rgba(88,101,242,0.4);
+}
+
+.stat .label {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+/* زر الديسكورد */
+.discord-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 32px;
+    background: rgba(88,101,242,0.25);
+    border: 1px solid rgba(88,101,242,0.45);
+    border-radius: 14px;
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 17px;
+    backdrop-filter: blur(12px);
+    transition: 0.35s ease;
+    box-shadow: 0 0 18px rgba(88,101,242,0.25);
+}
+
+.discord-btn:hover {
+    background: rgba(88,101,242,0.55);
+    transform: translateY(-5px);
+    box-shadow: 0 0 25px rgba(88,101,242,0.45);
+}
+
+.discord-btn svg {
+    transition: 0.35s ease;
+}
+
+.discord-btn:hover svg {
+    transform: translateX(-5px);
+}
+/* تحسين خفيف لصندوق تسجيل الدخول */
+.account-page .login-box {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.18);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 22px rgba(255,255,255,0.12);
+    border-radius: 18px;
+    padding: 28px;
+}
+
+/* تحسين خفيف للحقول */
+.account-page .field input {
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.22);
+    backdrop-filter: blur(8px);
+    transition: 0.25s ease;
+}
+
+.account-page .field input:focus {
+    background: rgba(255,255,255,0.18);
+    box-shadow: 0 0 14px rgba(255,255,255,0.35);
+}
+
+/* زر تسجيل الدخول */
+.account-page .login-submit {
+    background: #fff;
+    color: #000;
+    font-weight: 800;
+    border-radius: 12px;
+    transition: 0.25s ease;
+}
+
+.account-page .login-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 18px rgba(255,255,255,0.7);
+}
+/* صندوق البروفايل */
+.profile-box {
+    background: rgba(255, 0, 0, 0.06);
+    border: 1px solid rgba(255,255,255,0.18);
+    backdrop-filter: blur(12px);
+    padding: 28px;
+    border-radius: 18px;
+    box-shadow: 0 0 22px rgba(255,255,255,0.12);
+}
+
+/* الحقول */
+.profile-box input {
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.22);
+    backdrop-filter: blur(8px);
+    transition: 0.25s ease;
+}
+
+.profile-box input:focus {
+    background: rgba(255,255,255,0.18);
+    box-shadow: 0 0 14px rgba(255,255,255,0.35);
+}
+
+/* زر حفظ التعديلات */
+.profile-box .save-btn {
+    background: #fff;
+    color: #000;
+    font-weight: 800;
+    border-radius: 12px;
+    transition: 0.25s ease;
+}
+
+.profile-box .save-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 18px rgba(255,255,255,0.7);
+}
+.verify-alert {
+    position: fixed;
+    top: 20px;
+    right: 50%;
+    transform: translateX(50%);
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(12px);
+    padding: 14px 22px;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    border: 1px solid rgba(255,255,255,0.25);
+    box-shadow: 0 0 18px rgba(255,255,255,0.25);
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.4s ease;
+    z-index: 9999;
+}
+
+.verify-alert.show {
+    opacity: 1;
+    top: 35px;
+}
+.resend-btn {
+    margin-top: 12px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    backdrop-filter: blur(10px);
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 10px;
+    width: 100%;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.resend-btn:hover {
+    background: rgba(255,255,255,0.22);
+    box-shadow: 0 0 12px rgba(255,255,255,0.35);
+}
+.profile-page {
+    background: #0d0d0d;
+    min-height: 100vh;
+    padding-top: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.profile-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.profile-box {
+    width: 360px;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(14px);
+    border-radius: 18px;
+    padding: 25px;
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 0 25px rgba(255,255,255,0.08);
+    text-align: center;
+}
+
+.profile-box h2 {
+    color: #fff;
+    margin-bottom: 25px;
+    font-size: 22px;
+}
+
+.profile-box .field {
+    text-align: right;
+    margin-bottom: 18px;
+}
+
+.profile-box label {
+    color: #ddd;
+    font-size: 14px;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.profile-box input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    font-size: 15px;
+    outline: none;
+}
+
+.save-btn {
+    width: 100%;
+    padding: 12px;
+    background: #4caf50;
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.save-btn:hover {
+    background: #43a047;
+}
+
+.logout-btn {
+    width: 100%;
+    padding: 12px;
+    background: #e53935;
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 16px;
+    margin-top: 12px;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.logout-btn:hover {
+    background: #d32f2f;
+}
+/* خلفية الصفحة */
+.dark-login {
+    background: #0E0E0E;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* الحاوية */
+.login-container {
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+}
+
+/* الشعار */
+.login-logo {
+    margin-bottom: 25px;
+}
+
+.logo-circle {
+    width: 70px;
+    height: 70px;
+    background: #ffffff;
+    color: #000;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 auto 10px;
+}
+
+.login-logo h1 {
+    color: #fff;
+    font-size: 22px;
+    margin: 0;
+}
+
+/* الصندوق */
+.login-card {
+    background: #161616;
+    border: 1px solid #2A2A2A;
+    border-radius: 16px;
+    padding: 25px;
+}
+
+.login-title {
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+/* الإشعار */
+.verify-alert {
+    position: fixed;
+    top: 20px;
+    right: 50%;
+    transform: translateX(50%);
+    background: #ffffff15;
+    backdrop-filter: blur(10px);
+    padding: 12px 20px;
+    border-radius: 10px;
+    color: #fff;
+    border: 1px solid #ffffff25;
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.verify-alert.show {
+    opacity: 1;
+    top: 35px;
+}
+
+/* الحقول */
+.input-field {
+    width: 100%;
+    padding: 14px;
+    background: #1C1C1C;
+    border: 1px solid #2A2A2A;
+    border-radius: 10px;
+    color: #fff;
+    margin-bottom: 16px;
+    font-size: 15px;
+}
+
+/* الأزرار */
+.btn-primary {
+    width: 100%;
+    padding: 14px;
+    background: #fff;
+    color: #000;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.btn-secondary {
+    width: 100%;
+    padding: 14px;
+    background: #2A2A2A;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+/* خلفية سوداء شفافة */
+.login-overlay {
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.55);
+    backdrop-filter:blur(2px);
+    opacity:0;
+    pointer-events:none;
+    transition:0.35s ease;
+    z-index:20;
+}
+
+/* الصندوق */
+.login-popup {
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -45%);
+    width:100%;
+    max-width:360px;
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.15);
+    backdrop-filter:blur(14px);
+    padding:35px 28px;
+    border-radius:18px;
+    text-align:center;
+    opacity:0;
+    pointer-events:none;
+    transition:0.35s ease;
+    z-index:30;
+}
+
+/* عند الفتح */
+.login-overlay.show {
+    opacity:1;
+    pointer-events:auto;
+}
+
+.login-popup.show {
+    opacity:1;
+    transform:translate(-50%, -50%);
+    pointer-events:auto;
+}
+
+/* أيقونة البروفايل */
+.auth-icon {
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.25);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:auto;
+    margin-bottom:18px;
+}
+
+.auth-icon svg {
+    width:38px;
+    height:38px;
+    fill:#fff;
+    opacity:0.9;
+}
+/* ================================
+   القائمة الجانبية (Profile Menu)
+================================ */
+
+.profile-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: none;
+    z-index: 900;
+}
+
+.profile-side-menu {
+    position: fixed;
+    top: 0;
+    left: -260px;
+    width: 260px;
+    height: 100%;
+    background: #111;
+    border-right: 1px solid rgba(255,255,255,0.12);
+    padding: 25px 18px;
+    transition: 0.3s ease;
+    z-index: 999;
+}
+
+.profile-side-menu.open {
+    left: 0;
+}
+
+.menu-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #fff;
+}
+
+.menu-item {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 10px;
+    color: #fff;
+    text-align: right;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.menu-item:hover {
+    background: rgba(255,255,255,0.18);
+}
+
+.menu-item.logout {
+    background: #b30000;
+    border-color: #d00000;
+}
+
+.menu-item.logout:hover {
+    background: #e60000;
+}
+
+/* ================================
+   تسجيل الدخول (Login Modal)
+================================ */
+
+.login-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: none;
+    z-index: 900;
+}
+
+.login-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 360px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    backdrop-filter: blur(14px);
+    padding: 35px 28px;
+    border-radius: 18px;
+    text-align: center;
+    z-index: 999;
+    display: none;
+}
+
+.auth-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    margin-bottom: 18px;
+}
+
+.auth-title {
+    font-size: 22px;
+    margin-bottom: 25px;
+    opacity: 0.9;
+}
+
+.auth-input {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.25);
+    background: #111;
+    color: #fff;
+    margin-bottom: 14px;
+    font-size: 15px;
+    outline: none;
+    transition: .25s;
+}
+
+.auth-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: #fff;
+    color: #000;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .25s;
+    margin-top: 10px;
+}
+
+.auth-btn:hover {
+    opacity: 0.85;
+}
+
+/* ================================
+   Toast إشعار
+================================ */
+
+.verify-toast {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: rgba(20,20,20,0.75);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.12);
+    padding: 6px 12px;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 12px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: .25s ease;
+    z-index: 99999;
+    pointer-events: none;
+}
+
+.verify-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+/* ================================
+   قائمة الملف الشخصي المنسدلة
+================================ */
+
+.profile-dropdown {
+    position: absolute;
+    top: 70px;
+    left: 25px;
+    width: 240px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 14px;
+    backdrop-filter: blur(14px);
+    padding: 10px 0;
+    display: none;
+    flex-direction: column;
+    z-index: 9999;
+    box-shadow: 0 0 18px rgba(0,0,0,0.35);
+    animation: fadeSlide .25s ease;
+}
+
+.profile-dropdown.show {
+    display: flex;
+}
+
+.profile-dropdown button {
+    width: 100%;
+    padding: 12px 18px;
+    background: transparent;
+    border: none;
+    text-align: right;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.profile-dropdown button:hover {
+    background: rgba(255,255,255,0.15);
+}
+
+/* حركة القائمة */
+@keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.settings-box {
+    max-width: 450px;
+    margin: 150px auto;
+    padding: 35px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.10);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 0 30px rgba(0,0,0,0.35);
+    text-align: center;
+}
+
+/* العنوان */
+.settings-box h2 {
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+/* الوصف */
+.settings-desc {
+    font-size: 15px;
+    color: #ccc;
+    margin-bottom: 25px;
+    line-height: 1.7;
+}
+
+/* زر تعطيل الحساب الجديد */
+.disable-btn {
+    width: 100%;
+    padding: 16px;
+    background: #ff4747;
+    border: none;
+    border-radius: 14px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.25s ease;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 18px rgba(255, 0, 0, 0.25);
+}
+
+.disable-btn:hover {
+    background: #ff2e2e;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 22px rgba(255, 0, 0, 0.35);
+}
+
+.disable-btn:active {
+    transform: scale(0.97);
+}
+
+/* نافذة التأكيد */
+.confirm-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 330px;
+    background: rgba(20,20,20,0.85);
+    border-radius: 16px;
+    padding: 25px;
+    border: 1px solid rgba(255,255,255,0.15);
+    backdrop-filter: blur(12px);
+    display: none;
+    z-index: 999;
+    box-shadow: 0 0 25px rgba(255,0,0,0.25);
+}
+
+.confirm-popup p {
+    color: #fff;
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+
+.confirm-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.confirm-yes {
+    flex: 1;
+    padding: 12px;
+    background: #b30000;
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.confirm-no {
+    flex: 1;
+    padding: 12px;
+    background: #333;
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* خلفية التأكيد */
+.confirm-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: none;
+    z-index: 900;
+}
+.back-btn-cart {
+    position: fixed;
+    top: 90px;
+    right: 20px;
+    background: rgba(255,255,255,0.08);
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 999;
+    transition: 0.25s ease;
+}
+
+.back-btn-cart:hover {
+    background: rgba(255,255,255,0.15);
+    transform: translateY(-2px);
+}
+.side-menu-btn.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.8);
+}
+.side-menu {
+    position: fixed;
+    top: 0;
+    right: -260px;
+    width: 260px;
+    height: 100%;
+    background: rgba(20,20,20,0.85);
+    backdrop-filter: blur(12px);
+    border-left: 1px solid rgba(255,255,255,0.12);
+    padding: 30px 20px;
+    transition: 0.35s ease;
+    z-index: 999;
+}
+
+.side-menu.open {
+    right: 0;
+}
+
+.side-menu a {
+    display: block;
+    padding: 14px 0;
+    font-size: 17px;
+    color: #fff;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    transition: 0.25s ease;
+}
+
+.side-menu a:hover {
+    color: #00c3ff;
+    padding-right: 8px;
+}
+.profile-container {
+    max-width: 500px;
+    margin: 150px auto;
+    text-align: center;
+    color: #fff;
+}
+
+.profile-title {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 25px;
+}
+
+.profile-box {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    padding: 30px;
+    border-radius: 18px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 25px rgba(0,0,0,0.25);
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.profile-fields p {
+    font-size: 16px;
+    margin: 10px 0;
+    opacity: 0.9;
+}
+
+.profile-btn {
+    width: 100%;
+    padding: 14px;
+    margin-top: 12px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.profile-btn:hover {
+    background: rgba(255,255,255,0.15);
+}
+
+.logout-btn {
+    width: 100%;
+    padding: 14px;
+    margin-top: 12px;
+    background: #b30000;
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.logout-btn:hover {
+    background: #e60000;
+}
+/* صفحة الملف الشخصي */
+.profile-container{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding-top:120px;
+}
+
+.profile-title{
+    font-size:26px;
+    font-weight:800;
+    margin-bottom:18px;
+}
+
+.profile-box{
+    width:100%;
+    max-width:480px;
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.18);
+    border-radius:18px;
+    padding:24px 22px;
+    backdrop-filter:blur(12px);
+    box-shadow:0 0 22px rgba(0,0,0,0.35);
+}
+
+.section-title{
+    font-size:18px;
+    font-weight:700;
+    margin-bottom:14px;
+}
+
+.profile-fields p{
+    margin:6px 0;
+    font-size:14px;
+    opacity:0.9;
+}
+
+.profile-btn,
+.logout-btn{
+    width:100%;
+    padding:12px;
+    border-radius:12px;
+    border:none;
+    font-size:15px;
+    font-weight:700;
+    cursor:pointer;
+    margin-top:10px;
+    transition:0.25s ease;
+}
+
+.profile-btn{
+    background:#ffffff;
+    color:#000;
+}
+
+.profile-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 0 16px rgba(255,255,255,0.7);
+}
+
+.logout-btn{
+    background:#b00020;
+    color:#fff;
+}
+
+.logout-btn:hover{
+    background:#ff1744;
+    box-shadow:0 0 16px rgba(255,0,0,0.6);
+}
+
+/* =========================
+   Profile Dropdown — FINAL
+========================= */
+
+.profile-dropdown {
+    position: absolute;
+    top: 85px; /* تحت الهيدر */
+    left: 25px; /* تحت أيقونة الحساب */
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 14px;
+    min-width: 230px;
+    padding: 10px 0;
+    display: none;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 0 25px rgba(0,255,255,0.25);
+    z-index: 9999;
+    animation: fadeProfile .25s ease;
+}
+
+.profile-dropdown.open {
+    display: block;
+}
+
+/* شكل الخيارات */
+.profile-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    color: #fff;
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+    transition: 0.25s ease;
+    font-family: "IBM Plex Sans Arabic", sans-serif;
+}
+
+/* الأيقونات */
+.profile-dropdown a i {
+    font-size: 19px;
+    width: 24px;
+    text-align: center;
+    opacity: 0.9;
+    transition: 0.25s ease;
+}
+
+/* تأثير الهوفر */
+.profile-dropdown a:hover {
+    background: rgba(255,255,255,0.12);
+    padding-left: 28px;
+    color: #00eaff;
+}
+
+.profile-dropdown a:hover i {
+    color: #00eaff;
+    opacity: 1;
+}
+
+/* حركة الدخول */
+@keyframes fadeProfile {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* صفحة الملف الشخصي */
+.profile-page {
+    width: 100%;
+    max-width: 900px;
+    margin: 160px auto 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.profile-box {
+    width: 100%;
+    max-width: 480px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 18px;
+    padding: 28px 24px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 22px rgba(0,0,0,0.35);
+}
+
+.profile-title {
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 18px;
+    text-align: center;
+}
+
+.profile-fields p {
+    margin: 8px 0;
+    font-size: 15px;
+    opacity: 0.9;
+}
+
+.profile-btn,
+.logout-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: 0.25s ease;
+}
+
+.profile-btn {
+    background: #ffffff;
+    color: #000;
+}
+
+.profile-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 16px rgba(255,255,255,0.7);
+}
+
+.logout-btn {
+    background: #b00020;
+    color: #fff;
+}
+
+.logout-btn:hover {
+    background: #ff1744;
+    box-shadow: 0 0 16px rgba(255,0,0,0.6);
+}
+/* صفحة تعديل البيانات */
+.edit-page {
+    width: 100%;
+    max-width: 900px;
+    margin: 160px auto 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.edit-box {
+    width: 100%;
+    max-width: 430px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 18px;
+    padding: 28px 24px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 22px rgba(0,0,0,0.35);
+}
+
+.edit-title {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.edit-input {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    font-size: 15px;
+    margin-bottom: 11px;
+    outline: none;
+    transition: .25s;
+}
+
+.edit-input:focus {
+    background: rgba(255,255,255,0.22);
+    box-shadow: 0 0 18px rgba(255,255,255,0.4);
+}
+
+.edit-save-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    background: #ffffff;
+    color: #000;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .25s;
+}
+
+.edit-save-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 18px rgba(255,255,255,0.8);
+}
+.back-btn-fixed {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.18);
+    padding: 10px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 14px;
+    z-index: 9999;
+    transition: 0.25s;
+}
+
+.back-btn-fixed:hover {
+    background: rgba(255,255,255,0.2);
+}
+.profile-field {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 14px 16px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.profile-field-icon {
+    width: 22px;
+    height: 22px;
+    opacity: 0.8;
+}
+
+.profile-field-label {
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+.profile-field-value {
+    font-size: 15px;
+    font-weight: 700;
+    margin-right: auto;
+}
+.profile-page {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+/* =========================
+   صفحة حسابي — تصميم احترافي
+========================= */
+
+.account-container {
+    width: 420px;
+    margin: 140px auto;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.18);
+    padding: 30px;
+    border-radius: 18px;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 0 25px rgba(0,255,255,0.18);
+    text-align: center;
+}
+
+.account-container h2 {
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 25px;
+    color: #fff;
+    text-shadow: 0 0 12px rgba(255,255,255,0.35);
+}
+
+/* الحقول */
+.account-field {
+    width: 100%;
+    padding: 12px 16px;
+    margin-bottom: 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    font-size: 15px;
+    outline: none;
+    backdrop-filter: blur(8px);
+    transition: 0.25s ease;
+}
+
+.account-field:focus {
+    background: rgba(255,255,255,0.22);
+    box-shadow: 0 0 18px rgba(0,255,255,0.45);
+}
+
+.profile-btn {
+    width: 100%;
+    padding: 14px;
+    margin-top: 12px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    background: rgba(255,255,255,0.07);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: none;
+    transition: 0.25s ease;
+    box-shadow: 
+        3px 3px 8px rgba(0,0,0,0.25),
+        -3px -3px 8px rgba(255,255,255,0.05);
+}
+
+/* زر تعديل البيانات */
+.edit-btn:hover {
+    background: rgba(255,255,255,0.12);
+    transform: translateY(-2px);
+}
+
+/* زر تسجيل الخروج */
+.logout-btn:hover {
+    background: rgba(255,80,80,0.15);
+    transform: translateY(-2px);
+}
+
+/* الأيقونات */
+.btn-icon {
+    width: 18px;
+    height: 18px;
+    opacity: 0.85;
+}
+.confirm-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.65);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.confirm-box {
+    background: #1c1c1c;
+    padding: 25px;
+    width: 90%;
+    max-width: 350px;
+    border-radius: 12px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+
+.confirm-box h3 {
+    margin-bottom: 10px;
+    font-size: 22px;
+}
+
+.confirm-box p {
+    font-size: 15px;
+    opacity: 0.8;
+    margin-bottom: 20px;
+}
+
+.confirm-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-cancel {
+    flex: 1;
+    padding: 10px;
+    background: #444;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+}
+
+.btn-delete {
+    flex: 1;
+    padding: 10px;
+    background: #d9534f;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+}
+.toast-success {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: #28a745;
+    color: white;
+    padding: 14px 20px;
+    border-radius: 8px;
+    font-size: 15px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: 0.4s ease;
+    z-index: 99999;
+}
+
+.toast-success.show {
+    opacity: 1;
+    transform: translateY(0);
 }
