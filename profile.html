@@ -11,7 +11,7 @@
 
 <header>
 
-    <!-- زر رجوع (معدّل) -->
+    <!-- زر رجوع -->
     <div class="back-btn-cart" onclick="window.location.href='index.html'">
         ⟵ Back
     </div>
@@ -84,23 +84,37 @@
 </section>
 
 <script>
-    const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
-    if (!user) window.location.href = "account.html";
 
+    /* حماية قوية ضد التلاعب */
+    const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
+
+    if (!user || !user.email) {
+        localStorage.removeItem("loggedUser");
+        window.location.href = "account.html";
+    }
+
+    /* تنظيف البيانات لمنع XSS */
+    function clean(text) {
+        return String(text)
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+    }
+
+    /* عرض البيانات بشكل آمن */
     document.getElementById("profileInfo").innerHTML = `
         <div class="profile-field">
             <div class="profile-field-label">البريد الإلكتروني</div>
-            <div class="profile-field-value">${user.email}</div>
+            <div class="profile-field-value">${clean(user.email)}</div>
         </div>
 
         <div class="profile-field">
             <div class="profile-field-label">الاسم الأول</div>
-            <div class="profile-field-value">${user.firstName || "—"}</div>
+            <div class="profile-field-value">${clean(user.firstName || "—")}</div>
         </div>
 
         <div class="profile-field">
             <div class="profile-field-label">الاسم الأخير</div>
-            <div class="profile-field-value">${user.lastName || "—"}</div>
+            <div class="profile-field-value">${clean(user.lastName || "—")}</div>
         </div>
     `;
 
@@ -108,10 +122,13 @@
         window.location.href = "edit.html";
     }
 
+    /* تسجيل خروج آمن */
     function logout() {
         localStorage.removeItem("loggedUser");
+        sessionStorage.clear();
         window.location.href = "index.html";
     }
+
 </script>
 
 </body>

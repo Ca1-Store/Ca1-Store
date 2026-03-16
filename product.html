@@ -106,6 +106,22 @@
 <script src="product.js"></script>
 
 <script>
+/* حماية: منع شراء الآن بدون تسجيل دخول */
+function protectedBuyNow(paypalLink) {
+    const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
+
+    if (!user || !user.email) {
+        if (typeof openLoginPopup === "function") {
+            openLoginPopup();
+        } else {
+            window.location.href = "account.html";
+        }
+        return;
+    }
+
+    window.location.href = paypalLink;
+}
+
 /* بعد تحميل بيانات المنتج */
 setTimeout(() => {
 
@@ -123,13 +139,30 @@ setTimeout(() => {
     }
 
     buyNowBtn.classList.remove("hidden");
-    buyNowBtn.onclick = () => window.location.href = product.paypal;
+    buyNowBtn.onclick = () => protectedBuyNow(product.paypal);
 
 }, 200);
+
+/* حماية زر السلة */
+document.getElementById("cartBtn").addEventListener("click", () => {
+    const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
+
+    if (!user || !user.email) {
+        if (typeof openLoginPopup === "function") {
+            openLoginPopup();
+        } else {
+            window.location.href = "account.html";
+        }
+        return;
+    }
+
+    window.location.href = "checkout.html";
+});
 
 /* تسجيل الخروج */
 function logout() {
     localStorage.removeItem("loggedUser");
+    sessionStorage.clear();
     window.location.href = "account.html";
 }
 </script>

@@ -761,14 +761,26 @@ header.search-open .search-icon svg {
     fill: #000;
 }
 
+/* نافذة تسجيل الدخول — الحركة السلسة */
 .login-popup {
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.65);
-    display: none;
+    display: flex; /* مهم جداً */
     align-items: center;
     justify-content: center;
     z-index: 9999;
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-25px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.login-popup.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
 
 .login-box {
@@ -2237,7 +2249,6 @@ body::after {
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.45);
-    display: none;
     z-index: 900;
 }
 
@@ -2255,7 +2266,6 @@ body::after {
     border-radius: 18px;
     text-align: center;
     z-index: 999;
-    display: none;
 }
 
 .auth-icon {
@@ -3088,5 +3098,54 @@ body::after {
 
 .toast-success.show {
     opacity: 1;
+    transform: translateY(0);
+}
+/* حركة سلسة لظهور نافذة تسجيل الدخول */
+.login-overlay,
+.login-popup {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s;
+}
+
+/* عند الفتح */
+.login-overlay.show,
+.login-popup.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* حركة popup */
+.login-popup {
+    transform: translateY(-20px);
+}
+
+.login-popup.show {
+    transform: translateY(0);
+}
+/* خلفية النافذة */
+.login-overlay {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease;
+}
+
+/* النافذة نفسها */
+.login-popup {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-25px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+/* عند الفتح */
+.login-overlay.show,
+.login-popup.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* حركة الانزلاق */
+.login-popup.show {
     transform: translateY(0);
 }

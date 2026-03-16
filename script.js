@@ -146,10 +146,17 @@ if (productsGrid) {
 }
 
 /* ============================
-   شراء الآن
+   شراء الآن — حماية تسجيل الدخول
 ============================ */
 
 function buyNow(id) {
+    const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
+
+    if (!user || !user.email) {
+        window.location.href = "account.html";
+        return;
+    }
+
     const product = productsData.find(p => p.id === id);
     if (!product || !product.paypal) return;
 
@@ -211,13 +218,20 @@ function showNiceAlert(message) {
 }
 
 /* ============================
-   السلة
+   السلة — حماية تسجيل الدخول
 ============================ */
 
 const cartIcon = document.querySelector(".cart-icon");
 
 if (cartIcon) {
     cartIcon.addEventListener("click", () => {
+        const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
+
+        if (!user || !user.email) {
+            window.location.href = "account.html";
+            return;
+        }
+
         window.location.href = "checkout.html";
     });
 }
@@ -355,5 +369,6 @@ function openSettings() {
 
 function logout() {
     localStorage.removeItem("loggedUser");
+    sessionStorage.clear();
     window.location.href = "account.html";
 }

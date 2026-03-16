@@ -6,7 +6,6 @@
 <link rel="stylesheet" href="styles.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
 </head>
 
 <body>
@@ -37,6 +36,32 @@
         </button>
     </div>
 </div>
+
+<!-- الحركة السلسة (CSS) -->
+<style>
+.login-overlay {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease;
+}
+
+.login-popup {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-25px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.login-overlay.show,
+.login-popup.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.login-popup.show {
+    transform: translateY(0);
+}
+</style>
 
 <section class="hero">
 <a href="#productsSection" class="hero-arrow">
@@ -250,6 +275,37 @@
 <script src="script.js"></script>
 
 <script>
+/* تنظيف البيانات */
+function clean(text) {
+    return String(text)
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+}
+
+/* جلب المستخدم */
+const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
+
+/* إخفاء القائمة إذا المستخدم غير مسجّل */
+if (!user || !user.email) {
+    document.getElementById("profileDropdown").style.display = "none";
+}
+
+/* حماية روابط الحساب */
+if (!user) {
+    document.querySelectorAll("#profileDropdown a").forEach(a => {
+        a.addEventListener("click", (e) => {
+            e.preventDefault();
+            window.location.href = "account.html";
+        });
+    });
+}
+
+/* منع ظهور نافذة تسجيل الدخول للمستخدم المسجّل */
+if (user) {
+    document.getElementById("loginPopup").classList.remove("show");
+    document.getElementById("loginOverlay").classList.remove("show");
+}
+
 /* القائمة الجانبية */
 const sideMenu = document.getElementById("sideMenu");
 const sideMenuBtn = document.getElementById("sideMenuBtn");
@@ -271,6 +327,10 @@ const profileIcon = document.getElementById("profileIcon");
 const profileDropdown = document.getElementById("profileDropdown");
 
 profileIcon.addEventListener("click", () => {
+    if (!user) {
+        window.location.href = "account.html";
+        return;
+    }
     profileDropdown.classList.toggle("open");
 });
 
@@ -280,10 +340,22 @@ document.addEventListener("click", (e) => {
     }
 });
 
-/* تسجيل الخروج */
+/* تسجيل خروج آمن */
 function logout() {
     localStorage.removeItem("loggedUser");
+    sessionStorage.clear();
     window.location.href = "account.html";
+}
+
+/* دوال فتح وإغلاق النافذة */
+function openLoginPopup() {
+    document.getElementById("loginOverlay").classList.add("show");
+    document.getElementById("loginPopup").classList.add("show");
+}
+
+function closeLoginPopup() {
+    document.getElementById("loginOverlay").classList.remove("show");
+    document.getElementById("loginPopup").classList.remove("show");
 }
 </script>
 
