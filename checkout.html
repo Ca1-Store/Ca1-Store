@@ -8,19 +8,59 @@
 
 <body class="checkout-page">
 
-<div class="stars"></div>
-
 <header>
-    <nav>
+
+    <!-- زر القائمة الجانبية -->
+    <div class="side-menu-btn" id="sideMenuBtn">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="#fff">
+            <path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/>
+        </svg>
+    </div>
+
+    <!-- القائمة الوسطية -->
+    <nav class="menu-container">
         <ul class="menu">
-            <div class="back-btn" onclick="window.location.href='index.html'">
-                <svg width="26" height="26" viewBox="0 0 24 24">
-                    <path fill="white" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-                </svg>
-            </div>
+            <li class="dropdown">
+                <a class="drop-btn">القائمة</a>
+                <ul class="dropdown-content">
+                    <li><a href="index.html">الصفحة الرئيسية</a></li>
+                    <li><a href="products.html?cat=fivem">منتجات الفايف إم</a></li>
+                    <li><a href="products.html?cat=discord">منتجات الديسكورد</a></li>
+                </ul>
+            </li>
         </ul>
     </nav>
+
+    <!-- الملف الشخصي -->
+    <div class="profile-icon" id="profileIcon">
+        <svg width="18" height="18" viewBox="0 0 24 24">
+            <path fill="white" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4Zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4Z"/>
+        </svg>
+    </div>
+
+    <!-- القائمة المنسدلة -->
+    <div class="profile-dropdown" id="profileDropdown">
+        <button onclick="window.location.href='profile.html'">حسابي</button>
+        <button onclick="window.location.href='orders.html'">طلباتي</button>
+        <button onclick="window.location.href='settings.html'">الإعدادات</button>
+        <button onclick="logout()">تسجيل الخروج</button>
+    </div>
+
 </header>
+
+<!-- القائمة الجانبية -->
+<div id="sideMenu" class="side-menu">
+    <a href="index.html">الصفحة الرئيسية</a>
+    <a href="products.html?cat=fivem">منتجات فايف إم</a>
+    <a href="products.html?cat=discord">منتجات الديسكورد</a>
+    <a href="terms.html">الشروط والأحكام</a>
+    <a href="YOUR_DISCORD_LINK">سيرفر الديسكورد</a>
+</div>
+
+<!-- زر الرجوع -->
+<div class="back-btn-cart" onclick="goBackProperly()">
+    ⟵ Back
+</div>
 
 <section class="products-page" style="margin-top:140px;">
 
@@ -31,7 +71,6 @@
 
         <div id="cartItems" style="margin-top:20px;"></div>
 
-        <!-- عرض السعر بالريال والدولار -->
         <h3 style="margin-top:20px;">
             الإجمالي: <span id="cartTotal">0 ر.س</span>
         </h3>
@@ -41,7 +80,6 @@
 
         <h2>إتمام الشراء</h2>
 
-        <!-- زر تأكيد الطلب -->
         <button class="login-submit" id="confirmOrderBtn">تأكيد الطلب</button>
 
     </div>
@@ -96,14 +134,11 @@ function renderCheckoutCart() {
         cartItems.appendChild(div);
     });
 
-    // عرض الإجمالي بالريال
     cartTotal.textContent = total.toFixed(2) + " ر.س";
 
-    // تحويل الريال إلى دولار
     const usdRate = 0.27;
     const usdTotal = (total * usdRate).toFixed(2);
 
-    // عرض الدولار تحت الإجمالي
     usdText.textContent = `(≈ ${usdTotal} USD)`;
 }
 
@@ -131,12 +166,8 @@ function removeItem(id) {
 }
 
 renderCheckoutCart();
-</script>
 
-<!-- ============================
-     زر تأكيد الطلب → صفحة الدفع
-============================ -->
-<script>
+/* زر تأكيد الطلب */
 document.getElementById("confirmOrderBtn").addEventListener("click", () => {
 
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
@@ -146,9 +177,26 @@ document.getElementById("confirmOrderBtn").addEventListener("click", () => {
         return;
     }
 
-    // الانتقال لصفحة الدفع
     window.location.href = "payment.html";
 });
+
+/* تسجيل الخروج */
+function logout() {
+    localStorage.removeItem("loggedUser");
+    window.location.href = "account.html";
+}
+</script>
+<script>
+function goBackProperly() {
+    const ref = document.referrer;
+
+    // إذا المستخدم جاء من صفحة الدفع أو السلة
+    if (ref.includes("payment") || ref.includes("checkout")) {
+        window.location.href = "index.html"; // يرجع للصفحة الرئيسية
+    } else {
+        history.back(); // يرجع للصفحة اللي كان فيها فعلاً
+    }
+}
 </script>
 
 </body>

@@ -25,7 +25,7 @@ const productsData = [
     },
     {
         id: 3,
-        title: " اعادة تركيب",
+        title: "اعادة تركيب",
         price: "9.99",
         image: "RE.png",
         category: "fivem",
@@ -65,7 +65,7 @@ const productsData = [
 ];
 
 /* ============================
-   دالة إنشاء بطاقة المنتج
+   إنشاء بطاقة المنتج
 ============================ */
 
 function createProductCard(p) {
@@ -146,7 +146,7 @@ if (productsGrid) {
 }
 
 /* ============================
-   زر شراء الآن (PayPal)
+   شراء الآن
 ============================ */
 
 function buyNow(id) {
@@ -157,7 +157,7 @@ function buyNow(id) {
 }
 
 /* ============================
-   تفعيل زر إضافة للسلة
+   إضافة للسلة
 ============================ */
 
 function activateAddToCartButtons() {
@@ -195,7 +195,7 @@ function activateAddToCartButtons() {
 }
 
 /* ============================
-   رسالة التنبيه
+   تنبيه
 ============================ */
 
 function showNiceAlert(message) {
@@ -233,7 +233,7 @@ function updateCartCount() {
 updateCartCount();
 
 /* ============================
-   البحث — فتح وإغلاق
+   البحث
 ============================ */
 
 const searchIcon = document.querySelector(".search-icon");
@@ -266,10 +266,6 @@ if (searchIcon && headerEl && searchBox) {
     });
 }
 
-/* ============================
-   البحث — تصفية المنتجات
-============================ */
-
 function filterProducts(query) {
     if (!productsGrid) return;
 
@@ -289,195 +285,75 @@ if (searchInput) {
 }
 
 /* ============================
-   تسجيل الدخول
+   قائمة الملف الشخصي المنسدلة
 ============================ */
 
-const profileIcon = document.querySelector(".profile-icon");
+const profileIcon = document.getElementById("profileIcon");
+const profileDropdown = document.getElementById("profileDropdown");
 
 if (profileIcon) {
     profileIcon.addEventListener("click", () => {
-        const loggedUser = JSON.parse(localStorage.getItem("loggedUser") || "null");
+        const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
 
-        if (loggedUser) {
-            window.location.href = "profile.html";
-        } else {
+        if (!user) {
             window.location.href = "account.html";
-        }
-    });
-}
-
-/* ============================
-   EmailJS + خطوات تسجيل الدخول
-============================ */
-
-const loginPopup = document.querySelector(".login-popup");
-const closeLogin = document.querySelector(".close-login");
-
-const stepEmail = document.getElementById("accStepEmail");
-const stepCode = document.getElementById("accStepCode");
-const stepSignup = document.getElementById("accStepSignup");
-
-if (closeLogin && loginPopup) {
-    closeLogin.addEventListener("click", () => {
-        loginPopup.style.display = "none";
-    });
-}
-
-/* ============================
-   إرسال رمز التحقق
-============================ */
-
-const sendCodeBtn = document.getElementById("accSendCode");
-const verifyCodeBtn = document.getElementById("accVerifyBtn");
-const createAccountBtn = document.getElementById("accCreateAccount");
-
-let tempEmail = "";
-let tempCode = "";
-
-if (sendCodeBtn) {
-    sendCodeBtn.addEventListener("click", async () => {
-        const emailInput = document.getElementById("accEmail");
-        if (!emailInput) return;
-
-        const email = emailInput.value.trim();
-        if (!email) return alert("الرجاء إدخال البريد الإلكتروني");
-
-        tempEmail = email;
-        tempCode = String(Math.floor(100000 + Math.random() * 900000));
-
-        try {
-            await emailjs.send("service_hy5xrr2", "template_9io3rt8", {
-                to_email: tempEmail,
-                code: tempCode
-            });
-
-            showNiceAlert("تم إرسال رمز التحقق! الرجاء فحص بريدك.");
-
-            fade(stepEmail, stepCode);
-
-        } catch (err) {
-            console.error(err);
-            alert("فشل إرسال الرمز");
-        }
-    });
-}
-
-/* ============================
-   التحقق من الرمز
-============================ */
-
-if (verifyCodeBtn) {
-    verifyCodeBtn.addEventListener("click", () => {
-        const codeInput = document.getElementById("accVerifyCode");
-        if (!codeInput) return;
-
-        const code = codeInput.value.trim();
-
-        if (code !== tempCode) return alert("رمز التحقق غير صحيح");
-
-        const users = JSON.parse(localStorage.getItem("users") || "[]");
-        const existing = users.find(u => u.email === tempEmail);
-
-        if (existing) {
-            localStorage.setItem("loggedUser", JSON.stringify(existing));
-            alert("تم تسجيل الدخول بنجاح");
-
-            const redirect = localStorage.getItem("redirectAfterLogin");
-            if (redirect === "checkout") {
-                localStorage.removeItem("redirectAfterLogin");
-                window.location.href = "checkout.html";
-            }
-
-        } else {
-            fade(stepCode, stepSignup);
-        }
-    });
-}
-
-/* ============================
-   إنشاء حساب
-============================ */
-
-if (createAccountBtn) {
-    createAccountBtn.addEventListener("click", () => {
-        const first = document.getElementById("accFirst").value.trim();
-        const last = document.getElementById("accLast").value.trim();
-        const phone = document.getElementById("accPhone").value.trim();
-
-        if (first.length < 2) {
-            alert("الاسم الأول يجب أن يكون حرفين على الأقل");
             return;
         }
 
-        if (last.length < 2) {
-            alert("الاسم الأخير يجب أن يكون حرفين على الأقل");
-            return;
-        }
-
-        if (!/^[0-9]{9,15}$/.test(phone)) {
-            alert("رقم الجوال غير صحيح. يجب أن يكون من 9 إلى 15 رقمًا.");
-            return;
-        }
-
-        const users = JSON.parse(localStorage.getItem("users") || "[]");
-
-        const exists = users.find(u => u.email === tempEmail);
-        if (exists) {
-            alert("يوجد حساب مسجل بهذا البريد مسبقًا");
-            return;
-        }
-
-        const newUser = {
-            email: tempEmail,
-            first,
-            last,
-            phone
-        };
-
-        users.push(newUser);
-        localStorage.setItem("users", JSON.stringify(users));
-        localStorage.setItem("loggedUser", JSON.stringify(newUser));
-
-        alert("تم إنشاء الحساب وتسجيل الدخول بنجاح");
-
-        const redirect = localStorage.getItem("redirectAfterLogin");
-        if (redirect === "checkout") {
-            localStorage.removeItem("redirectAfterLogin");
-            window.location.href = "checkout.html";
-        }
+        profileDropdown.classList.toggle("show");
     });
 }
 
+document.addEventListener("click", (e) => {
+    if (!profileIcon.contains(e.target) && !profileDropdown.contains(e.target)) {
+        profileDropdown.classList.remove("show");
+    }
+});
+
 /* ============================
-   تأثير Fade
+   القائمة الجانبية العامة
 ============================ */
 
-function fade(hideEl, showEl) {
-    hideEl.style.opacity = 1;
-    hideEl.style.transition = "opacity .3s";
-    hideEl.style.opacity = 0;
+const sideMenu = document.getElementById("sideMenu");
+const sideMenuBtn = document.getElementById("sideMenuBtn");
 
-    setTimeout(() => {
-        hideEl.style.display = "none";
-        showEl.style.display = "block";
-        showEl.style.opacity = 0;
-        showEl.style.transition = "opacity .3s";
-        setTimeout(() => showEl.style.opacity = 1, 10);
-    }, 300);
+sideMenuBtn.addEventListener("click", () => {
+    sideMenu.classList.toggle("open");
+    sideMenuBtn.classList.toggle("hidden");
+});
+
+document.addEventListener("click", (e) => {
+    if (!sideMenu.contains(e.target) && !sideMenuBtn.contains(e.target)) {
+        sideMenu.classList.remove("open");
+        sideMenuBtn.classList.remove("hidden");
+    }
+});
+
+/* ============================
+   تأثير Scroll على الهيدر
+============================ */
+
+window.addEventListener("scroll", () => {
+    if (window.scrollY > 50) {
+        document.querySelector("header").classList.add("scrolled");
+    } else {
+        document.querySelector("header").classList.remove("scrolled");
+    }
+});
+
+/* ============================
+   التنقل
+============================ */
+
+function goOrders() {
+    window.location.href = "orders.html";
 }
 
-function showAlert(message, type = "success") {
-    const alertBox = document.getElementById("niceAlert");
+function openSettings() {
+    window.location.href = "settings.html";
+}
 
-    alertBox.innerHTML = `
-        ${type === "success" ? "✔" : type === "error" ? "⚠" : "ℹ"} 
-        ${message}
-    `;
-
-    alertBox.className = "nice-alert " + (type === "error" ? "error" : type === "info" ? "info" : "");
-    alertBox.classList.add("show");
-
-    setTimeout(() => {
-        alertBox.classList.remove("show");
-    }, 2500);
+function logout() {
+    localStorage.removeItem("loggedUser");
+    window.location.href = "account.html";
 }

@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تعديل البيانات - CA1 STORE</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        body {
+            transition: opacity .3s ease;
+        }
+
+        .profile-page {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 30px;
+            padding-bottom: 40px;
+        }
+
+        .edit-box {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(255,255,255,0.03);
+            padding: 35px;
+            border-radius: 16px;
+        }
+
+        .profile-title {
+            font-size: 26px;
+            margin-bottom: 35px;
+            text-align: center;
+        }
+
+        .profile-field {
+            margin-bottom: 30px;
+            position: relative;
+            padding-left: 60px;
+        }
+
+        .profile-field-label {
+            margin-bottom: 4px;
+            font-size: 15px;
+            opacity: .85;
+        }
+
+        .edit-input {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+
+        .edit-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            opacity: .75;
+            transition: .2s;
+        }
+
+        .edit-icon:hover {
+            opacity: 1;
+        }
+
+        .profile-btn {
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            background: #f9fafc36;
+            color: #fff;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .profile-btn:hover {
+            background: #72757a;
+        }
+
+        /* نافذة تعديل البريد */
+        .email-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .email-modal-box {
+            width: 380px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.18);
+            padding: 28px;
+            border-radius: 18px;
+            backdrop-filter: blur(14px);
+            box-shadow: 0 0 25px rgba(0,0,0,0.35);
+            position: relative;
+            animation: popup .25s ease;
+        }
+
+        @keyframes popup {
+            from { transform: scale(.85); opacity: 0; }
+            to   { transform: scale(1); opacity: 1; }
+        }
+
+        .email-modal-box h3 {
+            margin: 0 0 18px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .email-modal-box label {
+            font-size: 14px;
+            opacity: .85;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .email-modal-box input {
+            width: 100%;
+            padding: 13px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.25);
+            color: white;
+            font-size: 15px;
+            margin-bottom: 14px;
+            transition: .25s;
+        }
+
+        .email-modal-box input:focus {
+            background: rgba(255,255,255,0.22);
+            box-shadow: 0 0 12px rgba(255,255,255,0.35);
+        }
+
+        .email-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.18);
+            color: #fff;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: 0.25s ease;
+        }
+
+        .email-btn:hover {
+            background: rgba(255,255,255,0.18);
+            transform: translateY(-2px);
+            box-shadow: 0 0 14px rgba(255,255,255,0.25);
+        }
+
+        .close-email-modal {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            font-size: 22px;
+            cursor: pointer;
+            opacity: .7;
+            transition: .25s;
+        }
+
+        .close-email-modal:hover {
+            opacity: 1;
+            transform: scale(1.15);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: linear-gradient(135deg, #4a8cff, #6aa8ff);
+            color: white;
+            padding: 14px 22px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: 0.35s ease;
+            z-index: 99999;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .shake {
+            animation: shakeAnim .35s ease;
+        }
+
+        @keyframes shakeAnim {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            50% { transform: translateX(6px); }
+            75% { transform: translateX(-6px); }
+            100% { transform: translateX(0); }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="back-btn-cart" onclick="window.location.href='profile.html'">
+        ⟵ Back
+    </div>
+
+    <div class="side-menu-btn" id="sideMenuBtn">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="#fff">
+            <path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/>
+        </svg>
+    </div>
+
+    <nav class="menu-container">
+        <ul class="menu">
+            <li class="dropdown">
+                <a class="drop-btn">القائمة</a>
+                <ul class="dropdown-content">
+                    <li><a href="index.html">الصفحة الرئيسية</a></li>
+                    <li><a href="products.html?cat=fivem">منتجات الفايف إم</a></li>
+                    <li><a href="products.html?cat=discord">منتجات الديسكورد</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+</header>
+
+<section class="profile-page">
+
+    <!-- نافذة تعديل البريد -->
+    <div id="emailModal" class="email-modal">
+        <div class="email-modal-box">
+
+            <span class="close-email-modal" onclick="closeEmailModal()">✕</span>
+
+            <!-- الخطوة 1 -->
+            <div id="stepEmail">
+                <h3>تعديل البريد الإلكتروني</h3>
+
+                <label>البريد الجديد</label>
+                <input type="email" id="newEmail" placeholder="example@mail.com">
+
+                <button class="email-btn" onclick="sendVerificationCode()">
+                    إرسال رمز التحقق
+                </button>
+            </div>
+
+            <!-- الخطوة 2 -->
+            <div id="stepVerify" style="display:none;">
+                <h3>أدخل رمز التحقق</h3>
+
+                <label>رمز التحقق</label>
+                <input type="text" id="verifyCode" placeholder="123456">
+
+                <button class="email-btn" onclick="confirmEmailChange()">
+                    تأكيد التغيير
+                </button>
+
+                <button class="email-btn" id="resendBtn" onclick="resendCodeEmailJS()" style="margin-top:10px;">
+                    إعادة إرسال الرمز
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="profile-box edit-box">
+
+        <h2 class="profile-title">تعديل البيانات</h2>
+
+        <!-- البريد الإلكتروني -->
+        <div class="profile-field">
+            <div class="profile-field-label">البريد الإلكتروني</div>
+            <div class="profile-field-value" id="emailValue"></div>
+
+            <div class="edit-icon" onclick="openEmailModal()">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="#fff">
+                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- الاسم الأول -->
+        <div class="profile-field">
+            <div class="profile-field-label">الاسم الأول</div>
+            <input type="text" id="firstName" class="edit-input">
+
+            <div class="edit-icon" onclick="document.getElementById('firstName').focus()">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="#fff">
+                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- الاسم الأخير -->
+        <div class="profile-field">
+            <div class="profile-field-label">الاسم الأخير</div>
+            <input type="text" id="lastName" class="edit-input">
+
+            <div class="edit-icon" onclick="document.getElementById('lastName').focus()">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="#fff">
+                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                </svg>
+            </div>
+        </div>
+
+        <button class="profile-btn" onclick="saveUserInfo()">
+            Save
+        </button>
+
+    </div>
+
+</section>
+
+<div id="toast" class="toast">تم إرسال رمز التحقق</div>
+
+<!-- EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+<script>
+    emailjs.init("Xxmf1RVjn0UE85ob9");
+
+    let generatedCode = null;
+    let timer = null;
+    let timeLeft = 60;
+
+    function startTimer() {
+        const resendBtn = document.getElementById("resendBtn");
+        resendBtn.disabled = true;
+        resendBtn.textContent = "إعادة الإرسال (60)";
+
+        timeLeft = 60;
+
+        timer = setInterval(() => {
+            timeLeft--;
+            resendBtn.textContent = `إعادة الإرسال (${timeLeft})`;
+
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                resendBtn.disabled = false;
+                resendBtn.textContent = "إعادة إرسال الرمز";
+            }
+        }, 1000);
+    }
+
+    function sendVerificationCode() {
+        const newEmail = document.getElementById("newEmail").value.trim();
+        if (!newEmail.includes("@")) {
+            showToast("البريد غير صالح");
+            return;
+        }
+
+        generatedCode = Math.floor(1000 + Math.random() * 9000);
+
+        emailjs.send("service_zmn43rn", "template_9io3rt8", {
+            to_email: newEmail,
+            code: generatedCode
+        }).then(() => {
+            showToast("تم إرسال رمز التحقق");
+            document.getElementById("stepEmail").style.display = "none";
+            document.getElementById("stepVerify").style.display = "block";
+
+            startTimer();
+        }).catch(() => {
+            showToast("حدث خطأ أثناء الإرسال");
+        });
+    }
+
+    function resendCodeEmailJS() {
+        if (timeLeft > 0) return;
+
+        const newEmail = document.getElementById("newEmail").value.trim();
+
+        generatedCode = Math.floor(1000 + Math.random() * 9000);
+
+        emailjs.send("service_zmn43rn", "template_9io3rt8", {
+            to_email: newEmail,
+            code: generatedCode
+        }).then(() => {
+            showToast("تم إعادة إرسال الرمز");
+            startTimer();
+        });
+    }
+
+    function confirmEmailChange() {
+        const code = document.getElementById("verifyCode").value.trim();
+
+        if (code != generatedCode) {
+            document.getElementById("verifyCode").classList.add("shake");
+            showToast("الرمز غير صحيح");
+
+            setTimeout(() => {
+                document.getElementById("verifyCode").classList.remove("shake");
+            }, 400);
+
+            return;
+        }
+
+        user.email = document.getElementById("newEmail").value.trim();
+        localStorage.setItem("loggedUser", JSON.stringify(user));
+
+        showToast("تم تغيير البريد بنجاح");
+
+        setTimeout(() => {
+            closeEmailModal();
+            location.reload();
+        }, 800);
+    }
+</script>
+
+<script>
+    const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
+    if (!user) window.location.href = "account.html";
+
+    document.getElementById("emailValue").textContent = user.email || "—";
+    document.getElementById("firstName").value = user.firstName || "";
+    document.getElementById("lastName").value = user.lastName || "";
+
+    function showToast(msg) {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.classList.add("show");
+
+        setTimeout(() => {
+            t.classList.remove("show");
+        }, 2500);
+    }
+
+    function saveUserInfo() {
+        const first = document.getElementById("firstName").value.trim();
+        const last = document.getElementById("lastName").value.trim();
+
+const nameRegex = /^([A-Za-z ]+|[\u0600-\u06FF ]+)$/;
+
+        if (!nameRegex.test(first)) return showToast("الاسم الأول غير صالح");
+        if (!nameRegex.test(last)) return showToast("الاسم الأخير غير صالح");
+
+        user.firstName = first;
+        user.lastName = last;
+
+        localStorage.setItem("loggedUser", JSON.stringify(user));
+
+        showToast("تم حفظ التغييرات");
+
+        setTimeout(() => {
+            document.body.style.opacity = "0";
+            setTimeout(() => window.location.href = "profile.html", 300);
+        }, 800);
+    }
+
+    function openEmailModal() {
+        document.getElementById("emailModal").style.display = "flex";
+    }
+
+    function closeEmailModal() {
+        document.getElementById("emailModal").style.display = "none";
+        document.getElementById("stepEmail").style.display = "block";
+        document.getElementById("stepVerify").style.display = "none";
+    }
+</script>
+
+</body>
+</html>

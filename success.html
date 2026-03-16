@@ -30,12 +30,34 @@
             </svg>
         </div>
 
-        <h2 style="font-size:26px; margin-bottom:10px;">تم الدفع بنجاح 🎉</h2>
+        <h2 style="font-size:26px; margin-bottom:10px;">تم الدفع بنجاح </h2>
 
         <p style="opacity:0.85; font-size:16px; margin-bottom:25px;">
-            شكرًا لك! تم استلام طلبك بنجاح، وتم حفظه في حسابك.  
-            يمكنك عرض تفاصيل الطلب في صفحة "طلباتي".
+            شكرًا لك! تم استلام طلبك بنجاح.  
+            فيما يلي تفاصيل فاتورتك.
         </p>
+
+        <!-- صندوق الفاتورة -->
+        <div id="invoiceBox" style="
+            background:#fff;
+            padding:20px;
+            border-radius:10px;
+            width:90%;
+            max-width:450px;
+            margin:0 auto 25px;
+            text-align:right;
+            box-shadow:0 0 15px rgba(0,0,0,0.15);
+        ">
+            <h3 style="margin-bottom:15px; text-align:center;">تفاصيل الفاتورة</h3>
+
+            <p><strong>رقم الطلب:</strong> <span id="orderId"></span></p>
+            <p><strong>المنتج:</strong> <span id="product"></span></p>
+            <p><strong>السعر:</strong> <span id="price"></span> ر.س</p>
+            <p><strong>الكمية:</strong> <span id="qty"></span></p>
+            <p><strong>الإجمالي:</strong> <span id="total"></span> ر.س</p>
+            <p><strong>البريد الإلكتروني:</strong> <span id="email"></span></p>
+            <p><strong>رقم عملية PayPal:</strong> <span id="transactionId"></span></p>
+        </div>
 
         <!-- زر عرض الطلبات -->
         <button class="login-submit" onclick="window.location.href='orders.html'">
@@ -52,28 +74,72 @@
 
 <script>
     /* ============================================================
-       حفظ الطلب بعد الدفع
+       حماية الصفحة
     ============================================================ */
-
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-
-    if (cart.length > 0) {
-        const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-
-        const order = {
-            id: "CA1-" + Date.now(),
-            date: new Date().toLocaleString(),
-            items: cart,
-            total: total.toFixed(2)
-        };
-
-        const orders = JSON.parse(localStorage.getItem("orders") || "[]");
-        orders.push(order);
-        localStorage.setItem("orders", JSON.stringify(orders));
+    const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
+    if (!user) {
+        window.location.href = "account.html";
     }
 
-    // تنظيف السلة
+    /* ============================================================
+       جلب الفاتورة من payment.js
+    ============================================================ */
+    const invoice = JSON.parse(localStorage.getItem("invoice"));
+
+    if (!invoice) {
+        document.getElementById("invoiceBox").innerHTML =
+            "<p style='text-align:center;'>لا توجد فاتورة لعرضها.</p>";
+    } else {
+        document.getElementById("orderId").textContent = invoice.orderId;
+        document.getElementById("product").textContent = invoice.product;
+        document.getElementById("price").textContent = invoice.price;
+        document.getElementById("qty").textContent = invoice.qty;
+        document.getElementById("total").textContent = invoice.total;
+        document.getElementById("email").textContent = invoice.email;
+        document.getElementById("transactionId").textContent = invoice.transactionId;
+    }
+
+    /* ============================================================
+       إضافة الطلب لحساب المستخدم
+    ============================================================ */
+    if (invoice) {
+        let users = JSON.parse(localStorage.getItem("users") || "[]");
+        let current = users.find(u => u.email === user.email);
+
+        if (current) {
+            if (!current.orders) current.orders = [];
+
+            current.orders.push({
+                id: invoice.orderId,
+                date: new Date().toLocaleString(),
+                items: [{
+                    title: invoice.product,
+                    price: invoice.price,
+                    qty: invoice.qty
+                }],
+                total: invoice.total
+            });
+
+            // تحديث users[]
+            localStorage.setItem("users", JSON.stringify(users));
+
+            // تحديث loggedUser
+            localStorage.setItem("loggedUser", JSON.stringify(current));
+        }
+    }
+
+    /* ============================================================
+       تنظيف بيانات الفاتورة والسلة
+    ============================================================ */
+    localStorage.removeItem("invoice");
     localStorage.removeItem("cart");
+</script>
+<script>
+    // منع الرجوع للصفحات السابقة بعد الدفع
+    history.pushState(null, "", location.href);
+    window.onpopstate = function () {
+        window.location.href = "index.html";
+    };
 </script>
 
 </body>

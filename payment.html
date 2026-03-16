@@ -45,11 +45,11 @@
 <header>
     <nav>
         <ul class="menu">
-            <div class="back-btn" onclick="window.location.href='checkout.html'">
-                <svg width="26" height="26" viewBox="0 0 24 24">
-                    <path fill="white" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-                </svg>
-            </div>
+<div class="back-btn" onclick="goBackProperly()">
+    <svg width="26" height="26" viewBox="0 0 24 24">
+        <path fill="white" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+    </svg>
+</div>
         </ul>
     </nav>
 </header>
@@ -96,6 +96,20 @@
 </script>
 
 <script src="payment.js"></script>
+<script>
+function goBackProperly() {
+    const ref = document.referrer;
+
+    // إذا جاء من checkout أو payment → نرجعه للصفحة الرئيسية
+    if (ref.includes("checkout") || ref.includes("payment")) {
+        window.location.href = "index.html";
+        return;
+    }
+
+    // غير ذلك → يرجع للصفحة السابقة فعلياً
+    history.back();
+}
+</script>
 
 </body>
 </html>

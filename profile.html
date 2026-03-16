@@ -2,63 +2,116 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>الملف الشخصي</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الملف الشخصي - CA1 STORE</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-<div class="stars"></div>
-
 <header>
-    <nav>
+
+    <!-- زر رجوع (معدّل) -->
+    <div class="back-btn-cart" onclick="window.location.href='index.html'">
+        ⟵ Back
+    </div>
+
+    <div class="side-menu-btn" id="sideMenuBtn">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="#fff">
+            <path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/>
+        </svg>
+    </div>
+
+    <nav class="menu-container">
         <ul class="menu">
-            <li><a href="index.html">الرئيسية</a></li>
-            <li><a href="profile.html" class="active">الملف الشخصي</a></li>
+            <li class="dropdown">
+                <a class="drop-btn">القائمة</a>
+                <ul class="dropdown-content">
+                    <li><a href="index.html">الصفحة الرئيسية</a></li>
+                    <li><a href="products.html?cat=fivem">منتجات الفايف إم</a></li>
+                    <li><a href="products.html?cat=discord">منتجات الديسكورد</a></li>
+                </ul>
+            </li>
         </ul>
     </nav>
+
+    <div class="profile-icon" id="profileIcon">
+        <svg width="18" height="18" viewBox="0 0 24 24">
+            <path fill="white" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4Zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4Z"/>
+        </svg>
+    </div>
+
+    <div class="profile-dropdown" id="profileDropdown">
+        <button onclick="window.location.href='profile.html'">حسابي</button>
+        <button onclick="window.location.href='settings.html'">الإعدادات</button>
+        <button onclick="logout()">تسجيل الخروج</button>
+    </div>
+
 </header>
 
-<section class="account-page">
+<div id="sideMenu" class="side-menu">
+    <a href="index.html">الصفحة الرئيسية</a>
+    <a href="products.html?cat=fivem">منتجات فايف إم</a>
+    <a href="products.html?cat=discord">منتجات الديسكورد</a>
+    <a href="terms.html">الشروط والأحكام</a>
+    <a href="YOUR_DISCORD_LINK">سيرفر الديسكورد</a>
+</div>
 
-    <div class="login-box" id="profileBox">
-        <h2>الملف الشخصي</h2>
+<section class="profile-page">
 
-        <div id="profileContent">
-            <!-- سيتم تعبئته عبر JavaScript -->
-        </div>
+    <div class="profile-box">
 
-        <button class="login-submit" id="logoutBtn" style="margin-top:20px;">
+        <h2 class="profile-title">الملف الشخصي</h2>
+
+        <div id="profileInfo" class="profile-fields"></div>
+
+        <button class="profile-btn edit-btn" onclick="editProfile()">
+            <svg class="btn-icon" viewBox="0 0 24 24">
+                <path fill="white" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+            </svg>
+            تعديل البيانات
+        </button>
+
+        <button class="profile-btn logout-btn" onclick="logout()">
+            <svg class="btn-icon" viewBox="0 0 24 24">
+                <path fill="white" d="M16 13v-2H7V8l-5 4 5 4v-3h9zm3-10H5c-1.1 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
+            </svg>
             تسجيل الخروج
         </button>
+
     </div>
 
 </section>
 
 <script>
-    // جلب بيانات المستخدم
     const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
+    if (!user) window.location.href = "account.html";
 
-    // لو ما فيه مستخدم → رجوع لصفحة تسجيل الدخول
-    if (!user) {
-        window.location.href = "account.html";
-    }
+    document.getElementById("profileInfo").innerHTML = `
+        <div class="profile-field">
+            <div class="profile-field-label">البريد الإلكتروني</div>
+            <div class="profile-field-value">${user.email}</div>
+        </div>
 
-    // تعبئة البيانات
-    const box = document.getElementById("profileContent");
-    box.innerHTML = `
-        <p><strong>الاسم الأول:</strong> ${user.first}</p>
-        <p><strong>الاسم الأخير:</strong> ${user.last}</p>
-        <p><strong>البريد الإلكتروني:</strong> ${user.email}</p>
-        <p><strong>رقم الجوال:</strong> ${user.phone}</p>
+        <div class="profile-field">
+            <div class="profile-field-label">الاسم الأول</div>
+            <div class="profile-field-value">${user.firstName || "—"}</div>
+        </div>
+
+        <div class="profile-field">
+            <div class="profile-field-label">الاسم الأخير</div>
+            <div class="profile-field-value">${user.lastName || "—"}</div>
+        </div>
     `;
 
-    // زر تسجيل الخروج
-    document.getElementById("logoutBtn").addEventListener("click", () => {
+    function editProfile() {
+        window.location.href = "edit.html";
+    }
+
+    function logout() {
         localStorage.removeItem("loggedUser");
-        alert("تم تسجيل الخروج بنجاح");
         window.location.href = "index.html";
-    });
+    }
 </script>
 
 </body>

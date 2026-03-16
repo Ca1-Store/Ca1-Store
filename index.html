@@ -5,145 +5,287 @@
 <title>CA1 STORE</title>
 <link rel="stylesheet" href="styles.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<head>
-<meta charset="UTF-8">
-<title>CA1 STORE</title>
-<link rel="stylesheet" href="styles.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-<!-- PayPal Script -->
-<script src="https://www.paypalobjects.com/ncp/cart/cart.js" data-merchant-id="S8VLB4J3KLZ34"></script>
 </head>
 
 <body>
-<body>
 
-<div class="stars"></div>
+<!-- نافذة تسجيل الدخول -->
+<div id="loginOverlay" class="login-overlay" onclick="closeLoginPopup()"></div>
+
+<div id="loginPopup" class="login-popup">
+    <div class="auth-icon">
+        <svg viewBox="0 0 24 24">
+            <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+        </svg>
+    </div>
+
+    <div class="auth-title">تسجيل الدخول</div>
+
+    <div id="emailStep">
+        <input type="email" id="emailInput" class="auth-input" placeholder="البريد الإلكتروني">
+        <button class="auth-btn" onclick="sendCode()">إرسال رمز التحقق</button>
+    </div>
+
+    <div id="codeStep" style="display:none;">
+        <input type="text" id="codeInput" class="auth-input" placeholder="رمز التحقق">
+        <button class="auth-btn" onclick="verifyLogin()">تأكيد الدخول</button>
+
+        <button id="resendBtn" class="auth-btn" disabled>
+            إعادة الإرسال بعد 60s
+        </button>
+    </div>
+</div>
+
+<section class="hero">
+<a href="#productsSection" class="hero-arrow">
+    <span>الإنتقال</span>
+</a>
+
+    <div class="hero-content">
+        <img src="CA1.ico" alt="CA1 STORE" class="hero-logo">
+        <h1 class="hero-title">CA1 STORE</h1>
+        <p class="hero-sub">منتجات رقمية - فايف إم - ديسكورد</p>
+    </div>
+</section>
+
+<section class="features">
+    <div class="feature-box">
+        <div class="icon">⚡</div>
+        <h3>سرعة تسليم فورية</h3>
+        <p>استلم منتجك خلال ثوانٍ بعد الدفع.</p>
+    </div>
+
+    <div class="feature-box">
+        <div class="icon">💳</div>
+        <h3>دفع آمن</h3>
+        <p>طرق دفع موثوقة ومشفرة بالكامل.</p>
+    </div>
+
+    <div class="feature-box">
+        <div class="icon">🎧</div>
+        <h3>دعم فني سريع</h3>
+        <p>نخدمك على مدار الساعة عبر الديسكورد.</p>
+    </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="why-us">
+    <h2>لماذا تختار CA1 STORE؟</h2>
+    <p>نقدم لك أفضل المنتجات الرقمية بجودة عالية وخدمة سريعة.</p>
+</section>
+
+<div class="divider"></div>
+
+<section class="how-it-works">
+    <h2>كيف يعمل المتجر؟</h2>
+
+    <div class="steps">
+
+        <div class="step">
+            <div class="icon">🛒</div>
+            <h3>اختر المنتج</h3>
+            <p>تصفح منتجاتنا واختر الخدمة المناسبة لك بكل سهولة.</p>
+        </div>
+
+        <div class="step">
+            <div class="icon">💳</div>
+            <h3>أكمل عملية الدفع</h3>
+            <p>ادفع عبر وسائل الدفع الآمنة والمشفرة بالكامل.</p>
+        </div>
+
+        <div class="step">
+            <div class="icon">🎫</div>
+            <h3>افتح تذكرة في الديسكورد</h3>
+            <p>بعد الدفع، قم بفتح تذكرة شراء داخل سيرفر الديسكورد ليتم تسليم المنتج لك مباشرة.</p>
+        </div>
+
+        <div class="step">
+            <div class="icon">🎧</div>
+            <h3>دعم فني دائم</h3>
+            <p>فريقنا جاهز لمساعدتك على مدار الساعة عبر الديسكورد.</p>
+        </div>
+
+    </div>
+
+<section class="join-discord">
+    <div class="discord-box">
+
+        <div class="discord-icon">
+            <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord Icon">
+        </div>
+
+        <h2>انضم إلى سيرفر الديسكورد</h2>
+        <p>للحصول على الدعم الفني، فتح تذكرة شراء، واستلام منتجاتك بسرعة، انضم إلى سيرفر CA1 الآن.</p>
+
+        <div class="discord-stats">
+            <div class="stat">
+                <span class="num">58</span>
+                <span class="label">عضو في السيرفر</span>
+            </div>
+        </div>
+
+        <a href="YOUR_DISCORD_LINK" class="discord-btn">
+            <span>الانضمام الآن</span>
+            <svg width="22" height="22" viewBox="0 0 24 24">
+                <path fill="white" d="M14 12l-6 6V6z"/>
+            </svg>
+        </a>
+    </div>
+</section>
+
+</div>
 
 <header>
 
-<!-- أيقونة ديسكورد -->
-<div class="discord-icon" onclick="window.open('https://discord.gg/Pt7U4bcF7M','_blank')">
-<svg width="22" height="22" viewBox="0 0 24 24">
-<path d="M20.317 4.369a19.91 19.91 0 0 0-4.885-1.515.07.07 0 0 0-.073.035c-.211.375-.444.864-.608 1.249a18.27 18.27 0 0 0-5.4 0 12.64 12.64 0 0 0-.617-1.249.077.077 0 0 0-.073-.035 19.9 19.9 0 0 0-4.885 1.515.064.064 0 0 0-.03.026C2.02 9.033 1.215 13.58 1.5 18.08a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.076.076 0 0 0 .082-.027c.461-.63.873-1.295 1.226-1.994a.076.076 0 0 0-.041-.105 13.2 13.2 0 0 1-1.882-.9.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.07.07 0 0 1 .073-.01c3.957 1.806 8.24 1.806 12.16 0a.07.07 0 0 1 .074.009c.12.099.246.198.373.292a.077.077 0 0 1-.006.128 12.3 12.3 0 0 1-1.883.899.076.076 0 0 0-.04.106c.36.698.772 1.363 1.225 1.993a.076.076 0 0 0 .082.028 19.86 19.86 0 0 0 6.002-3.03.076.076 0 0 0 .03-.056c.5-6.177-.838-10.68-3.548-13.685a.06.06 0 0 0-.03-.027Z"/>
-</svg>
-</div>
+    <!-- زر القائمة الجانبية -->
+    <div class="side-menu-btn" id="sideMenuBtn">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="#fff">
+            <path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/>
+        </svg>
+    </div>
 
-<!-- القائمة -->
-<nav>
-<ul class="menu">
-<li><a href="products.html?cat=fivem">منتجات الفايف إم</a></li>
-<li><a href="products.html?cat=discord">منتجات الديسكورد</a></li>
-</ul>
-</nav>
+    <!-- القائمة الوسطية -->
+    <nav class="menu-container">
+        <ul class="menu">
+            <li class="dropdown">
+                <a class="drop-btn">القائمة</a>
+                <ul class="dropdown-content">
+                    <li><a href="index.html">الصفحة الرئيسية</a></li>
+                    <li><a href="products.html?cat=fivem">منتجات الفايف إم</a></li>
+                    <li><a href="products.html?cat=discord">منتجات الديسكورد</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
 
 <!-- البحث -->
 <div class="search-icon" id="searchToggle">
-<svg width="18" height="18" viewBox="0 0 24 24">
-<path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79L20 20.5 21.5 19 15.5 14Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"/>
-</svg>
+    <svg width="18" height="18" viewBox="0 0 24 24">
+        <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79L20 20.5 21.5 19 15.5 14Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"/>
+    </svg>
+</div>
+
+<div class="search-box" id="searchBox">
+    <input type="text" id="searchInput" placeholder="ابحث عن منتج...">
 </div>
 
 <!-- الملف الشخصي -->
-<div class="profile-icon">
+<div class="profile-icon" id="profileIcon" style="cursor:pointer;">
     <svg width="18" height="18" viewBox="0 0 24 24">
-<path fill="white" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4Zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4Z"/>
-</svg>
+        <path fill="white" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4Zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4Z"/>
+    </svg>
 </div>
 
-<!-- زر الهوم -->
-<div class="home-btn" onclick="window.location.href='index.html'">
-<svg width="18" height="18" viewBox="0 0 24 24">
-<path fill="white" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-</svg>
-</div>
-
-<!-- السلة -->
-<div class="cart-icon" id="cartBtn">
-<span class="cart-count" id="cartCount">0</span>
-<svg width="18" height="18" viewBox="0 0 24 24">
-<path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2Zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2ZM7.16 14h9.93c.75 0 1.4-.41 1.73-1.03L21.8 7.48A.75.75 0 0 0 21.12 6H6.21L5.27 3.5A1 1 0 0 0 4.33 3H3v2h.67l3 7.59-.76 1.41C5.37 14.37 5 15.03 5 15.75 5 16.99 5.96 18 7.16 18H19v-2H7.42a.25.25 0 0 1-.26-.25c0-.04.01-.08.03-.11L7.16 14Z"/>
-</svg>
-</div>
-<!-- مربع البحث -->
-<div class="search-box" id="searchBox">
-<input type="text" id="searchInput" placeholder="ابحث عن منتج...">
+<!-- القائمة المنسدلة للملف الشخصي -->
+<div class="profile-dropdown" id="profileDropdown">
+    <a href="profile.html"><i class="fa-solid fa-user"></i> حسابي</a>
+    <a href="orders.html"><i class="fa-solid fa-bag-shopping"></i> طلباتي</a>
+    <a href="settings.html"><i class="fa-solid fa-gear"></i> الإعدادات</a>
+    <a onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> تسجيل الخروج</a>
 </div>
 
 </header>
 
-<div class="container">
-<img src="CA1222.png" alt="CA1 STORE">
-<div class="overlay"></div>
-
-<div class="text">
-<span class="logo-glow title-text">CA1 STORE</span>
-<span class="sub">منتجات رقمية - فايف إم - ديسكورد</span>
-</div>
+<!-- السلة -->
+<div class="cart-icon" id="cartBtn">
+    <span class="cart-count" id="cartCount">0</span>
+    <svg width="28" height="28" viewBox="0 0 24 24">
+        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2Zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2ZM7.16 14h9.93c.75 0 1.4-.41 1.73-1.03L21.8 7.48A.75.75 0 0 0 21.12 6H6.21L5.27 3.5A1 1 0 0 0 4.33 3H3v2h.67l3 7.59-.76 1.41C5.37 14.37 5 15.03 5 15.75 5 16.99 5.96 18 7.16 18H19v-2H7.42a.25.25 0 0 1-.26-.25c0-.04.01-.08.03-.11L7.16 14Z"/>
+    </svg>
 </div>
 
-<section class="products-page">
-
-<aside class="sidebar">
-
-<h3>تصفية المنتجات</h3>
-
-<div class="filter-group">
-<label>القسم</label>
-<select id="filterCategory">
-<option value="all">كل الأقسام</option>
-<option value="fivem">منتجات فايف إم</option>
-<option value="discord">منتجات الديسكورد</option>
-<option value="coming">قريبًا</option>
-</select>
+<!-- القائمة الجانبية -->
+<div id="sideMenu" class="side-menu">
+    <a href="index.html">الصفحة الرئيسية</a>
+    <a href="products.html?cat=fivem">منتجات فايف إم</a>
+    <a href="products.html?cat=discord">منتجات الديسكورد</a>
+    <a href="terms.html">الشروط والأحكام</a>
+    <a href="YOUR_DISCORD_LINK">سيرفر الديسكورد</a>
 </div>
 
-<div class="filter-group">
-<label>السعر</label>
-<select id="filterPrice">
-<option value="all">كل الأسعار</option>
-<option value="low">أقل من 20</option>
-<option value="mid">من 20 إلى 50</option>
-<option value="high">أعلى من 50</option>
-</select>
-</div>
+<section class="products-page" id="productsSection">
+    <aside class="sidebar">
 
-<div class="filter-group">
-<label>الحالة</label>
-<select id="filterStatus">
-<option value="all">الكل</option>
-<option value="available">متاح</option>
-<option value="soon">قريبًا</option>
-</select>
-</div>
+        <h3>تصفية المنتجات</h3>
 
-</aside>
+        <div class="filter-group">
+            <label>القسم</label>
+            <select id="filterCategory">
+                <option value="all">كل الأقسام</option>
+                <option value="fivem">منتجات فايف إم</option>
+                <option value="discord">منتجات الديسكورد</option>
+                <option value="coming">قريبًا</option>
+            </select>
+        </div>
 
-<div class="products-grid" id="productsGrid"></div>
+        <div class="filter-group">
+            <label>السعر</label>
+            <select id="filterPrice">
+                <option value="all">كل الأسعار</option>
+                <option value="low">أقل من 20</option>
+                <option value="mid">من 20 إلى 50</option>
+                <option value="high">أعلى من 50</option>
+            </select>
+        </div>
 
+        <div class="filter-group">
+            <label>الحالة</label>
+            <select id="filterStatus">
+                <option value="all">الكل</option>
+                <option value="available">متاح</option>
+                <option value="soon">قريبًا</option>
+            </select>
+        </div>
+
+    </aside>
+
+    <div class="products-grid" id="productsGrid"></div>
 </section>
 
 <div id="niceAlert" class="nice-alert">تمت إضافة المنتج للسلة</div>
 
 <script src="script.js"></script>
 
-<!-- PayPal Cart Hidden Button -->
-<div style="display:none;">
-    <paypal-cart-button data-id="pp-view-cart" id="paypalCartBtn"></paypal-cart-button>
-</div>
-
 <script>
-  cartPaypal.Cart({ id: "pp-view-cart" })
+/* القائمة الجانبية */
+const sideMenu = document.getElementById("sideMenu");
+const sideMenuBtn = document.getElementById("sideMenuBtn");
 
-  // ربط أيقونة السلة بزر PayPal
-  document.getElementById("cartBtn").addEventListener("click", () => {
-      document.getElementById("paypalCartBtn").click();
-  });
+sideMenuBtn.addEventListener("click", () => {
+    sideMenu.classList.add("open");
+    sideMenuBtn.classList.add("hidden");
+});
+
+document.addEventListener("click", (e) => {
+    if (!sideMenu.contains(e.target) && !sideMenuBtn.contains(e.target)) {
+        sideMenu.classList.remove("open");
+        sideMenuBtn.classList.remove("hidden");
+    }
+});
+
+/* القائمة المنسدلة للملف الشخصي */
+const profileIcon = document.getElementById("profileIcon");
+const profileDropdown = document.getElementById("profileDropdown");
+
+profileIcon.addEventListener("click", () => {
+    profileDropdown.classList.toggle("open");
+});
+
+document.addEventListener("click", (e) => {
+    if (!profileDropdown.contains(e.target) && !profileIcon.contains(e.target)) {
+        profileDropdown.classList.remove("open");
+    }
+});
+
+/* تسجيل الخروج */
+function logout() {
+    localStorage.removeItem("loggedUser");
+    window.location.href = "account.html";
+}
 </script>
-
 
 </body>
 </html>

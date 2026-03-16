@@ -2,75 +2,78 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>حسابي</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول - CA1 STORE</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
-<body>
-    <div class="stars"></div>
+<body class="dark-login">
 
-    <header>
-        <nav>
-            <ul class="menu">
-                <li><a href="index.html">الرئيسية</a></li>
-                <li><a href="account.html" class="active">حسابي</a></li>
-            </ul>
-        </nav>
-    </header>
+    <!-- زر الرجوع -->
+    <div class="back-btn-fixed" onclick="history.back()">
+        ⟵ Back
+    </div>
+    <!-- خلفية الإغلاق -->
+    <div class="overlay-exit" onclick="closeLogin()"></div>
 
-    <!-- صفحة الحساب -->
-    <section class="account-page">
+    <!-- Toast -->
+    <div id="verifyToast" class="verify-toast"></div>
 
-        <!-- الخطوة 1: إدخال الإيميل -->
-        <div class="login-box" id="accStepEmail">
-            <h2>تسجيل الدخول</h2>
+    <!-- صندوق تسجيل الدخول -->
+    <div id="authBox" class="auth-box">
 
-            <div class="field">
-                <input type="email" id="accEmail" placeholder="البريد الإلكتروني">
-            </div>
-
-            <button class="login-submit" id="accSendCode">إرسال رمز التحقق</button>
+        <div class="auth-icon">
+            <svg viewBox="0 0 24 24">
+                <path fill="white" d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+            </svg>
         </div>
 
-        <!-- الخطوة 2: إدخال الرمز -->
-        <div class="login-box" id="accStepCode" style="display:none;">
-            <h2>أدخل رمز التحقق</h2>
+        <div class="auth-title">تسجيل الدخول</div>
 
-            <div class="field">
-                <input type="text" id="accVerifyCode" placeholder="رمز التحقق">
-            </div>
-
-            <button class="login-submit" id="accVerifyBtn">تأكيد</button>
+        <!-- الخطوة 1 -->
+        <div id="emailStep">
+            <input type="email" id="emailInput" class="auth-input" placeholder="البريد الإلكتروني">
+            <button class="auth-btn" onclick="sendCode()">إرسال رمز التحقق</button>
         </div>
 
-        <!-- الخطوة 3: إنشاء حساب جديد -->
-        <div class="login-box" id="accStepSignup" style="display:none;">
-            <h2>إنشاء حساب جديد</h2>
+        <!-- الخطوة 2 -->
+        <div id="codeStep" style="display:none;">
+            <input type="text" id="codeInput" class="auth-input" placeholder="رمز التحقق">
+            <button class="auth-btn" onclick="verifyLogin()">تأكيد الدخول</button>
 
-            <div class="field">
-                <input type="text" id="accFirst" placeholder="الاسم الأول">
-            </div>
-
-            <div class="field">
-                <input type="text" id="accLast" placeholder="الاسم الأخير">
-            </div>
-
-            <div class="field">
-                <input type="tel" id="accPhone" placeholder="رقم الجوال">
-            </div>
-
-            <button class="login-submit" id="accCreateAccount">إنشاء الحساب</button>
+            <button id="resendBtn" class="auth-btn" disabled onclick="resendCode()">
+                إعادة الإرسال بعد 60s
+            </button>
         </div>
 
-    </section>
+    </div>
 
     <!-- EmailJS -->
     <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script src="email.js"></script>
+
     <script>
-        emailjs.init("Xxmf1RVjn0UE85ob9");  // Public Key
+        const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
+        if (user) window.location.href = "profile.html";
+
+        function showToast(msg) {
+            const t = document.getElementById("verifyToast");
+            t.textContent = msg;
+            t.classList.add("show");
+            setTimeout(() => t.classList.remove("show"), 2000);
+        }
+
+        // دوال EmailJS من ملف email.js
+        function sendCode() { sendCodeEmailJS(); }
+        function resendCode() { resendCodeEmailJS(); }
+        function verifyLogin() { verifyLoginEmailJS(); }
+
+        function closeLogin() {
+            const box = document.getElementById("authBox");
+            box.classList.add("hide");
+            setTimeout(() => window.location.href = "index.html", 300);
+        }
     </script>
 
-    <!-- سكربت الموقع -->
-    <script src="script.js"></script>
 </body>
 </html>

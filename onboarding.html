@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>استكمال البيانات - CA1 STORE</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="dark-login">
+
+    <!-- زر رجوع -->
+    <div class="back-btn-cart" onclick="history.back()">
+        ⟵ Back
+    </div>
+
+    <div class="login-container">
+
+        <!-- الصندوق -->
+        <div class="login-card" style="max-width:420px;">
+
+            <h2 class="login-title">استكمال البيانات</h2>
+
+            <input type="text" id="firstName" class="input-field" placeholder="الاسم الأول">
+            <input type="text" id="lastName" class="input-field" placeholder="الاسم الأخير">
+
+            <button class="btn-primary" onclick="saveUserInfo()">متابعة</button>
+
+        </div>
+    </div>
+
+    <script>
+        // حماية الصفحة
+        const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
+        if (!user) {
+            window.location.href = "account.html";
+        }
+
+        // تعبئة البيانات إذا كانت موجودة
+        document.getElementById("firstName").value = user.firstName || "";
+        document.getElementById("lastName").value = user.lastName || "";
+
+function saveUserInfo() {
+    const first = document.getElementById("firstName").value.trim();
+    const last = document.getElementById("lastName").value.trim();
+
+    const nameRegex = /^[\u0600-\u06FFa-zA-Z ]{2,}$/;
+
+    if (!nameRegex.test(first)) {
+        alert("الاسم الأول يجب أن يكون حرفين على الأقل وبدون أرقام أو رموز");
+        return;
+    }
+
+    if (!nameRegex.test(last)) {
+        alert("الاسم الأخير يجب أن يكون حرفين على الأقل وبدون أرقام أو رموز");
+        return;
+    }
+
+    user.firstName = first;
+    user.lastName = last;
+
+    localStorage.setItem("loggedUser", JSON.stringify(user));
+
+    // تأثير الخروج السلس
+    document.body.style.opacity = "0";
+    setTimeout(() => {
+        window.location.href = "index.html";
+    }, 300);
+}
+    </script>
+
+</body>
+</html>

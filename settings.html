@@ -2,11 +2,11 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>طلباتي - CA1 STORE</title>
+    <title>الإعدادات - CA1 STORE</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="checkout-page">
+<body>
 
 <header>
 
@@ -62,17 +62,28 @@
     ⟵ Back
 </div>
 
-<section class="account-page">
+<div class="settings-box">
+    <h2>تعطيل الحساب</h2>
 
-    <div class="checkout-full" style="padding:35px; max-width:650px; margin:auto;">
+    <p class="settings-desc">
+        يمكنك حذف حسابك من المتجر بشكل نهائي، بما في ذلك الطلبات السابقة وجميع البيانات المرتبطة به.
+    </p>
 
-        <h2 style="text-align:center; margin-bottom:25px;">طلباتي</h2>
+    <button class="disable-btn" onclick="openDeleteConfirm()">تعطيل الحساب</button>
+</div>
 
-        <div id="ordersList"></div>
+<!-- نافذة تأكيد الحذف -->
+<div id="deleteConfirm" class="confirm-overlay">
+    <div class="confirm-box">
+        <h3>هل أنت متأكد؟</h3>
+        <p>سيتم حذف حسابك نهائيًا ولا يمكن التراجع عن هذا الإجراء.</p>
 
+        <div class="confirm-actions">
+            <button class="btn-cancel" onclick="closeDeleteConfirm()">إلغاء</button>
+            <button class="btn-delete" onclick="deleteAccount()">حذف</button>
+        </div>
     </div>
-
-</section>
+</div>
 
 <script src="script.js"></script>
 
@@ -80,50 +91,46 @@
 const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
 if (!user) window.location.href = "account.html";
 
-const orders = user.orders || [];
-const box = document.getElementById("ordersList");
-
-if (orders.length === 0) {
-    box.innerHTML = `
-        <div class="orders-empty-box">
-            <h2>لا توجد طلبات</h2>
-            <p>لم تقم بأي عملية شراء حتى الآن.</p>
-        </div>
-    `;
-} else {
-    orders.slice().reverse().forEach((order, index) => {
-
-        const div = document.createElement("div");
-        div.className = "order-card";
-
-        div.innerHTML = `
-            <h3 class="order-title">طلب #${orders.length - index}</h3>
-
-            <p><strong>رقم الطلب:</strong> ${order.id}</p>
-            <p><strong>التاريخ:</strong> ${order.date}</p>
-            <p><strong>الإجمالي:</strong> ${order.total} ر.س</p>
-
-            <p style="margin-top:15px;"><strong>المنتجات:</strong></p>
-
-            <div style="margin-top:10px;">
-                ${order.items.map(i => `
-                    <div class="order-item">
-                        <p><strong>${i.title}</strong></p>
-                        <p>السعر: ${i.price} ر.س — الكمية: ${i.qty}</p>
-                    </div>
-                `).join("")}
-            </div>
-        `;
-
-        box.appendChild(div);
-    });
+/* فتح نافذة التأكيد */
+function openDeleteConfirm() {
+    document.getElementById("deleteConfirm").style.display = "flex";
 }
 
+/* إغلاق نافذة التأكيد */
+function closeDeleteConfirm() {
+    document.getElementById("deleteConfirm").style.display = "none";
+}
+
+/* حذف الحساب نهائيًا */
+function deleteAccount() {
+    const email = user.email;
+
+    let users = JSON.parse(localStorage.getItem("users") || "[]");
+    users = users.filter(u => u.email !== email);
+    localStorage.setItem("users", JSON.stringify(users));
+
+    localStorage.removeItem("loggedUser");
+
+    closeDeleteConfirm();
+
+    // إظهار التوست الجديد
+    const toast = document.getElementById("deleteToast");
+    toast.classList.add("show");
+
+    // إخفاؤه بعد 2 ثانية
+    setTimeout(() => {
+        toast.classList.remove("show");
+        window.location.href = "index.html";
+    }, 2000);
+}
+
+/* تسجيل الخروج */
 function logout() {
     localStorage.removeItem("loggedUser");
     window.location.href = "account.html";
 }
 </script>
+<div id="deleteToast" class="toast-success">تم حذف الحساب نهائيًا</div>
 
 </body>
 </html>
