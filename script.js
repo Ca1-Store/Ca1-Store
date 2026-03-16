@@ -372,3 +372,62 @@ function logout() {
     sessionStorage.clear();
     window.location.href = "account.html";
 }
+/* ============================
+   الفلاتر
+============================ */
+
+const filterCategory = document.getElementById("filterCategory");
+const filterPrice = document.getElementById("filterPrice");
+const filterStatus = document.getElementById("filterStatus");
+
+function applyFilters() {
+    if (!productsGrid) return;
+
+    let filtered = [...productsData];
+
+    // فلتر القسم
+    if (filterCategory && filterCategory.value !== "all") {
+        filtered = filtered.filter(p => p.category === filterCategory.value);
+    }
+
+    // فلتر السعر
+    if (filterPrice && filterPrice.value !== "all") {
+        if (filterPrice.value === "low") {
+            filtered = filtered.filter(p => Number(p.price) < 20);
+        }
+        if (filterPrice.value === "mid") {
+            filtered = filtered.filter(p => Number(p.price) >= 20 && Number(p.price) <= 50);
+        }
+        if (filterPrice.value === "high") {
+            filtered = filtered.filter(p => Number(p.price) > 50);
+        }
+    }
+
+    // فلتر الحالة
+    if (filterStatus && filterStatus.value !== "all") {
+        filtered = filtered.filter(p => p.status === filterStatus.value);
+    }
+
+    // إعادة عرض المنتجات
+    productsGrid.innerHTML = "";
+    filtered.forEach(p => {
+        const card = createProductCard(p);
+        productsGrid.appendChild(card);
+    });
+
+    activateAddToCartButtons();
+}
+
+// تشغيل الفلاتر عند التغيير
+if (filterCategory) filterCategory.addEventListener("change", applyFilters);
+if (filterPrice) filterPrice.addEventListener("change", applyFilters);
+if (filterStatus) filterStatus.addEventListener("change", applyFilters);
+
+// تشغيل الفلاتر عند فتح الصفحة إذا كان هناك cat في الرابط
+const urlParams = new URLSearchParams(window.location.search);
+const catParam = urlParams.get("cat");
+
+if (catParam && filterCategory) {
+    filterCategory.value = catParam;
+    applyFilters();
+}
