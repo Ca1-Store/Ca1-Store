@@ -13,6 +13,7 @@ const productsData = [
         status: "available",
         paypal: "https://www.paypal.com/ncp/payment/28Q47CF3QFH5L"
     },
+
     {
         id: 2,
         title: "جرافيكس فايف ام | 𝐂𝐚-𝟐",
@@ -23,6 +24,7 @@ const productsData = [
         status: "soon",
         paypal: null
     },
+
     {
         id: 3,
         title: "اعادة تركيب",
@@ -32,16 +34,28 @@ const productsData = [
         status: "available",
         paypal: "https://www.paypal.com/ncp/payment/7L3HS223L8RVC"
     },
+
+    /* ============================
+       🔥 منتج ChatGPT Plus (خصم من 70 → 21.99)
+       وتم نقله لقسم الاشتراكات
+    ============================= */
+
     {
         id: 4,
-        title: "Coming Soon",
-        desc: "قريبًا",
-        price: "0.0",
-        image: "cms.avif",
-        category: "discord",
-        status: "soon",
-        paypal: null
+        title: "ChatGPT Plus – اشتراك شهر واحد",
+        desc: "اشتراك رسمي لمدة شهر – تفعيل فوري",
+        price: 21.99,
+        oldPrice: 70.00, // السعر قبل الخصم
+        image: "cg.png",
+        category: "subscriptions",
+        status: "available",
+        paypal: "ضع رابط الدفع هنا"
     },
+
+    /* ============================
+       باقي منتجات الديسكورد كما هي
+    ============================= */
+
     {
         id: 5,
         title: "Coming Soon",
@@ -52,6 +66,7 @@ const productsData = [
         status: "soon",
         paypal: null
     },
+
     {
         id: 6,
         title: "Coming Soon",
@@ -82,12 +97,21 @@ function createProductCard(p) {
     }
 
     let priceHTML = "";
-    if (p.id === 1) {
+
+    // خصم المنتج الجديد (ChatGPT Plus)
+    if (p.oldPrice) {
+        priceHTML = `
+            <span class="old-price">${p.oldPrice} ر.س</span>
+            <span class="new-price">${p.price} ر.س</span>
+        `;
+    }
+    else if (p.id === 1) {
         priceHTML = `
             <span class="old-price">33.99 ر.س</span>
             <span class="new-price">24.99 ر.س</span>
         `;
-    } else {
+    }
+    else {
         priceHTML = p.price === "قريبًا" ? "قريبًا" : p.price + " ر.س";
     }
 
@@ -95,6 +119,7 @@ function createProductCard(p) {
         <div class="product-image-box">
             <img src="${p.image}">
             ${p.status === "soon" ? `<span class="soon-badge">قريبًا</span>` : ""}
+            ${p.oldPrice ? `<span class="discount-badge">خصم</span>` : ""}
             ${p.id === 1 ? `<span class="discount-badge">خصم</span>` : ""}
         </div>
 
