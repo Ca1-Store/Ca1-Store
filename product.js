@@ -26,15 +26,15 @@ if (!product) {
     productTitle.textContent = product.title;
     productDesc.textContent = product.desc || "";
 
-    // السعر الجديد للمنتج رقم 1
-    let finalPrice = product.price;
+    /* ============================
+       عرض السعر (يدعم الخصم تلقائياً)
+    ============================ */
 
-    if (product.id === 1) {
+    if (product.oldPrice) {
         productPrice.innerHTML = `
-            <span class="old-price">34.99 ر.س</span>
-            <span class="new-price">24.99 ر.س</span>
+            <span class="old-price">${product.oldPrice} ر.س</span>
+            <span class="new-price">${product.price} ر.س</span>
         `;
-        finalPrice = 24.99;
     } else {
         productPrice.textContent =
             product.price === "قريبًا" ? "قريبًا" : product.price + " ر.س";
@@ -44,22 +44,19 @@ if (!product) {
        زر شراء الآن (PayPal)
     ============================ */
 
-    const paypal1 = document.getElementById("paypal1");
-    const paypal3 = document.getElementById("paypal3");
+    const paypalBtn = document.getElementById("paypalBtn");
     const notAvailable = document.getElementById("notAvailable");
 
     // إخفاء الجميع أولاً
-    paypal1.classList.add("hidden");
-    paypal3.classList.add("hidden");
+    paypalBtn.classList.add("hidden");
     notAvailable.classList.add("hidden");
 
     if (product.status === "soon") {
         notAvailable.classList.remove("hidden");
     } else {
-        if (product.id === 1) {
-            paypal1.classList.remove("hidden");
-        } else if (product.id === 3) {
-            paypal3.classList.remove("hidden");
+        if (product.paypal) {
+            paypalBtn.href = product.paypal;
+            paypalBtn.classList.remove("hidden");
         } else {
             notAvailable.classList.remove("hidden");
         }

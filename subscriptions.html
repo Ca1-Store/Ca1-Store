@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قسم الاشتراكات - CA1 Store</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header>
+
+    <nav>
+        <ul class="menu">
+            <li>
+                <a href="index.html" class="home-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                    </svg>
+                </a>
+            </li>
+
+            <!-- روابط الأقسام -->
+            <li><a href="products.html?cat=fivem">فايف إم</a></li>
+            <li><a href="products.html?cat=discord">ديسكورد</a></li>
+            <li><a class="active" href="subscriptions.html">الاشتراكات</a></li>
+        </ul>
+    </nav>
+
+</header>
+
+<section class="products-page">
+
+    <!-- الفلتر الجانبي -->
+    <aside class="sidebar">
+        <h3>تصفية المنتجات</h3>
+
+        <div class="filter-group">
+            <label>الفئة</label>
+            <select id="categoryFilter">
+                <option value="subscriptions">الاشتراكات</option>
+            </select>
+        </div>
+
+    </aside>
+
+    <!-- شبكة المنتجات -->
+    <div class="products-grid" id="productsGrid"></div>
+
+</section>
+
+<!-- الإشعار -->
+<div id="niceAlert" class="nice-alert">تمت إضافة المنتج للسلة</div>
+
+<script src="script.js"></script>
+
+<script>
+
+// عرض منتجات الاشتراكات فقط
+const grid = document.getElementById("productsGrid");
+grid.innerHTML = "";
+
+const subs = productsData.filter(p => p.category === "subscriptions");
+
+subs.forEach(p => {
+    const card = createProductCard(p);
+    grid.appendChild(card);
+});
+
+// تفعيل زر الإضافة للسلة
+activateAddToCartButtons();
+
+</script>
+
+</body>
+</html>
