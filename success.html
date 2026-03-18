@@ -100,7 +100,7 @@
     }
 
     /* ============================================================
-       إضافة الطلب لحساب المستخدم
+       إضافة الطلب + الكود الفريد
     ============================================================ */
     if (invoice) {
         let users = JSON.parse(localStorage.getItem("users") || "[]");
@@ -109,15 +109,19 @@
         if (current) {
             if (!current.orders) current.orders = [];
 
+            // توليد كود فريد
+            const generatedKey = crypto.randomUUID();
+
+            // إضافة الطلب مع الكود
             current.orders.push({
                 id: invoice.orderId,
                 date: new Date().toLocaleString(),
-                items: [{
-                    title: invoice.product,
-                    price: invoice.price,
-                    qty: invoice.qty
-                }],
-                total: invoice.total
+                product: invoice.product,
+                price: invoice.price,
+                qty: invoice.qty,
+                total: invoice.total,
+                key: generatedKey,
+                used: false
             });
 
             // تحديث users[]
@@ -134,6 +138,7 @@
     localStorage.removeItem("invoice");
     localStorage.removeItem("cart");
 </script>
+
 <script>
     // منع الرجوع للصفحات السابقة بعد الدفع
     history.pushState(null, "", location.href);
