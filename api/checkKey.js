@@ -1,34 +1,39 @@
-export default function handler(req, res) {
-    const { searchParams } = new URL(req.url, `http://${req.headers.host}`);
-    const key = searchParams.get("key");
+import { db } from "../lib/firebaseAdmin.js";
+
+export default async function handler(req, res) {
+    if (req.method !== "POST") {
+        return res.status(405).json({ error: "Method not allowed" });
+    }
+
+    const { key } = req.body;
 
     if (!key) {
         return res.status(400).json({ valid: false, error: "No key provided" });
     }
 
-    // قراءة المستخدمين من localStorage (محاكاة)
-    // في موقعك الحقيقي، راح نستبدلها بقاعدة بيانات لاحقًا
-    let users = global.usersDB || [];
+    try {
+        const keysRef = db.collection("keys");
+        const snapshot = await keysRef.where("key", "==", key).get();
 
-    // البحث عن الكود داخل الطلبات
-    let found = null;
-
-    for (const user of users) {
-        if (!user.orders) continue;
-
-        const order = user.orders.find(o => o.key === key);
-        if (order) {
-            found = order;
-            break;
+        if (snapshot.empty) {
+            return res.status(200).json({ valid: false, message: "Invalid key" });
         }
-    }
 
-    if (!found) {
-        return res.status(200).json({ valid: false });
-    }
+        const doc = snapshot.docs[0];
+        const data = doc.data();
 
-    return res.status(200).json({
-        valid: true,
-        used: found.used
-    });
+        if (data.used === true) {
+            return res.status(200).json({ valid: false, message: "Key already used" });
+        }
+
+        return res.status(200).json({
+            valid: true,
+            email: data.email,
+            product: data.product
+        });
+
+    } catch (error) {
+        console.error("Error checking key:", error);
+        return res.status(500).json({ error: "Server error" });
+    }
 }
