@@ -1,23 +1,36 @@
-export default function handler(req, res) {
-    const { searchParams } = new URL(req.url, `http://${req.headers.host}`);
-    const key = searchParams.get("key");
+import { db } from "../lib/firebaseAdmin.js";
+
+export default async function handler(req, res) {
+    if (req.method !== "POST") {
+        return res.status(405).json({ error: "Method not allowed" });
+    }
+
+    const { key } = req.body;
 
     if (!key) {
         return res.status(400).json({ success: false, error: "No key provided" });
     }
 
-    // قاعدة بيانات مؤقتة (محاكاة)
-    let users = global.usersDB || [];
+    try {
+        const keysRef = db.collection("keys");
+        const snapshot = await keysRef.where("key", "==", key).get();
 
-    for (const user of users) {
-        if (!user.orders) continue;
-
-        const order = user.orders.find(o => o.key === key);
-        if (order) {
-            order.used = true;
-            return res.status(200).json({ success: true });
+        if (snapshot.empty) {
+            return res.status(200).json({ success: false, message: "Invalid key" });
         }
-    }
 
-    return res.status(200).json({ success: false });
+        const doc = snapshot.docs[0];
+
+        // تحديث حالة الكود إلى "مستخدم"
+        await doc.ref.update({
+            used: true,
+            usedAt: new Date().toISOString()
+        });
+
+        return res.status(200).json({ success: true });
+
+    } catch (error) {
+        console.error("Error using key:", error);
+        return res.status(500).json({ success: false, error: "Server error" });
+    }
 }

@@ -57,14 +57,15 @@
             <p><strong>الإجمالي:</strong> <span id="total"></span> ر.س</p>
             <p><strong>البريد الإلكتروني:</strong> <span id="email"></span></p>
             <p><strong>رقم عملية PayPal:</strong> <span id="transactionId"></span></p>
+
+            <!-- 🔥 عرض الكود -->
+            <p><strong>الكود الخاص بك:</strong> <span id="activationKey" style="color:#009624; font-weight:bold;"></span></p>
         </div>
 
-        <!-- زر عرض الطلبات -->
         <button class="login-submit" onclick="window.location.href='orders.html'">
             عرض طلباتي
         </button>
 
-        <!-- زر العودة -->
         <button class="login-submit" style="margin-top:10px;" onclick="window.location.href='index.html'">
             العودة للرئيسية
         </button>
@@ -100,37 +101,50 @@
     }
 
     /* ============================================================
-       إضافة الطلب + الكود الفريد
+       🔥 توليد الكود من السيرفر + حفظه في الطلبات
     ============================================================ */
-    if (invoice) {
-        let users = JSON.parse(localStorage.getItem("users") || "[]");
-        let current = users.find(u => u.email === user.email);
+    async function generateKeyForOrder() {
+        if (!invoice) return;
 
-        if (current) {
-            if (!current.orders) current.orders = [];
-
-            // توليد كود فريد
-            const generatedKey = crypto.randomUUID();
-
-            // إضافة الطلب مع الكود
-            current.orders.push({
-                id: invoice.orderId,
-                date: new Date().toLocaleString(),
+        const res = await fetch("/api/generateKey", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                orderId: invoice.orderId,
                 product: invoice.product,
-                price: invoice.price,
-                qty: invoice.qty,
-                total: invoice.total,
-                key: generatedKey,
-                used: false
-            });
+                email: invoice.email
+            })
+        });
 
-            // تحديث users[]
-            localStorage.setItem("users", JSON.stringify(users));
+        const data = await res.json();
 
-            // تحديث loggedUser
-            localStorage.setItem("loggedUser", JSON.stringify(current));
+        if (data.success) {
+            // عرض الكود للعميل
+            document.getElementById("activationKey").textContent = data.key;
+
+            // حفظ الطلب داخل حساب المستخدم
+            let users = JSON.parse(localStorage.getItem("users") || "[]");
+            let current = users.find(u => u.email === user.email);
+
+            if (current) {
+                if (!current.orders) current.orders = [];
+
+                current.orders.push({
+                    id: invoice.orderId,
+                    date: new Date().toLocaleString(),
+                    product: invoice.product,
+                    total: invoice.total,
+                    key: data.key,
+                    used: false
+                });
+
+                localStorage.setItem("users", JSON.stringify(users));
+                localStorage.setItem("loggedUser", JSON.stringify(current));
+            }
         }
     }
+
+    generateKeyForOrder();
 
     /* ============================================================
        تنظيف بيانات الفاتورة والسلة

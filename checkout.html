@@ -7,6 +7,8 @@
 </head>
 
 <body class="checkout-page">
+<input id="keyInput" placeholder="ادخل الكود هنا">
+<button onclick="checkKey()">تحقق من الكود</button>
 
 <header>
 
@@ -89,6 +91,26 @@
 <div id="niceAlert" class="nice-alert">تمت إضافة المنتج للسلة</div>
 
 <script src="script.js"></script>
+<script>
+async function checkKey() {
+    const key = document.getElementById("keyInput").value;
+
+    const res = await fetch("/api/checkKey", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ key })
+    });
+
+    const data = await res.json();
+    console.log(data);
+
+    if (data.valid) {
+        alert("✔ الكود صحيح — المنتج: " + data.product);
+    } else {
+        alert("❌ الكود غير صحيح أو مستخدم");
+    }
+}
+</script>
 
 <script>
 /* ============================
