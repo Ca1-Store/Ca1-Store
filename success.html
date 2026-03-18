@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <title>تم الدفع بنجاح - CA1 STORE</title>
     <link rel="stylesheet" href="styles.css">
+
+    <!-- إصلاح مشكلة الألوان داخل الفاتورة -->
+    <style>
+        #invoiceBox,
+        #invoiceBox p,
+        #invoiceBox span,
+        #invoiceBox strong,
+        #invoiceBox h3 {
+            color: #111 !important;
+        }
+    </style>
 </head>
 
 <body class="checkout-page">
@@ -30,7 +41,7 @@
             </svg>
         </div>
 
-        <h2 style="font-size:26px; margin-bottom:10px;">تم الدفع بنجاح </h2>
+        <h2 style="font-size:26px; margin-bottom:10px;">تم الدفع بنجاح</h2>
 
         <p style="opacity:0.85; font-size:16px; margin-bottom:25px;">
             شكرًا لك! تم استلام طلبك بنجاح.  
@@ -59,7 +70,9 @@
             <p><strong>رقم عملية PayPal:</strong> <span id="transactionId"></span></p>
 
             <!-- 🔥 عرض الكود -->
-            <p><strong>الكود الخاص بك:</strong> <span id="activationKey" style="color:#009624; font-weight:bold;"></span></p>
+            <p><strong>الكود الخاص بك:</strong> 
+                <span id="activationKey" style="color:#009624; font-weight:bold;"></span>
+            </p>
         </div>
 
         <button class="login-submit" onclick="window.location.href='orders.html'">
