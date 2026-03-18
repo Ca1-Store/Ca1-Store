@@ -1,19 +1,34 @@
 export default function handler(req, res) {
-  try {
-    const url = new URL(req.url, `http://${req.headers.host}`);
-    const key = url.searchParams.get("key");
+    const { searchParams } = new URL(req.url, `http://${req.headers.host}`);
+    const key = searchParams.get("key");
 
     if (!key) {
-      return res.status(400).send("no key provided");
+        return res.status(400).json({ valid: false, error: "No key provided" });
     }
 
-    if (key === "12345") {
-      return res.status(200).send("valid key");
+    // قراءة المستخدمين من localStorage (محاكاة)
+    // في موقعك الحقيقي، راح نستبدلها بقاعدة بيانات لاحقًا
+    let users = global.usersDB || [];
+
+    // البحث عن الكود داخل الطلبات
+    let found = null;
+
+    for (const user of users) {
+        if (!user.orders) continue;
+
+        const order = user.orders.find(o => o.key === key);
+        if (order) {
+            found = order;
+            break;
+        }
     }
 
-    return res.status(403).send("invalid key");
+    if (!found) {
+        return res.status(200).json({ valid: false });
+    }
 
-  } catch (error) {
-    return res.status(500).send("server error: " + error.message);
-  }
+    return res.status(200).json({
+        valid: true,
+        used: found.used
+    });
 }
