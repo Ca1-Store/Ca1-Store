@@ -28,8 +28,8 @@ export default async function handler(req, res) {
 
         return res.status(200).json({
             valid: true,
-            email: data.email,
-            product: data.product
+            email: data.email || "",
+            product: data.product || ""
         });
 
     } catch (error) {
