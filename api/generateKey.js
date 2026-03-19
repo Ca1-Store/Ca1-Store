@@ -1,27 +1,21 @@
 import { db } from "../lib/firebaseAdmin.js";
-import { v4 as uuidv4 } from "uuid";
 
 export default async function handler(req, res) {
     if (req.method !== "POST") {
         return res.status(405).json({ error: "Method not allowed" });
     }
 
-    const { orderId, product, email } = req.body;
+    const { key, product } = req.body;
 
-    if (!orderId || !product || !email) {
-        return res.status(400).json({ error: "Missing data" });
+    if (!key || !product) {
+        return res.status(400).json({ error: "Missing key or product" });
     }
 
     try {
-        // توليد كود فريد
-        const key = uuidv4();
-
-        // حفظه في Firebase
         await db.collection("keys").add({
             key,
-            orderId,
             product,
-            email,
+            email: "",
             used: false,
             createdAt: new Date().toISOString()
         });
