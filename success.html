@@ -111,53 +111,35 @@
         document.getElementById("total").textContent = invoice.total;
         document.getElementById("email").textContent = invoice.email;
         document.getElementById("transactionId").textContent = invoice.transactionId;
+
+        // عرض الكود مباشرة
+        document.getElementById("activationKey").textContent = invoice.key;
     }
 
     /* ============================================================
-       🔥 توليد الكود من السيرفر + حفظه في الطلبات
+       حفظ الطلب داخل حساب المستخدم (نسخة احتياطية)
     ============================================================ */
-    async function generateKeyForOrder() {
-        if (!invoice) return;
+    if (invoice) {
+        let user = JSON.parse(localStorage.getItem("loggedUser") || "{}");
 
-        const res = await fetch("/api/generateKey", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                orderId: invoice.orderId,
+        if (!user.orders) user.orders = [];
+
+        // إضافة الطلب إذا لم يكن مضافًا مسبقًا
+        const exists = user.orders.some(o => o.id === invoice.orderId);
+
+        if (!exists) {
+            user.orders.push({
+                id: invoice.orderId,
+                date: new Date().toLocaleString(),
                 product: invoice.product,
-                email: invoice.email
-            })
-        });
+                total: invoice.total,
+                key: invoice.key,
+                used: false
+            });
 
-        const data = await res.json();
-
-        if (data.success) {
-            // عرض الكود للعميل
-            document.getElementById("activationKey").textContent = data.key;
-
-            // حفظ الطلب داخل حساب المستخدم
-            let users = JSON.parse(localStorage.getItem("users") || "[]");
-            let current = users.find(u => u.email === user.email);
-
-            if (current) {
-                if (!current.orders) current.orders = [];
-
-                current.orders.push({
-                    id: invoice.orderId,
-                    date: new Date().toLocaleString(),
-                    product: invoice.product,
-                    total: invoice.total,
-                    key: data.key,
-                    used: false
-                });
-
-                localStorage.setItem("users", JSON.stringify(users));
-                localStorage.setItem("loggedUser", JSON.stringify(current));
-            }
+            localStorage.setItem("loggedUser", JSON.stringify(user));
         }
     }
-
-    generateKeyForOrder();
 
     /* ============================================================
        تنظيف بيانات الفاتورة والسلة

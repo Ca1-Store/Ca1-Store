@@ -20,14 +20,27 @@ export default async function handler(req, res) {
         }
 
         const doc = snapshot.docs[0];
+        const data = doc.data();
 
-        // تحديث حالة الكود إلى "مستخدم"
+        // إذا الكود مستخدم مسبقًا
+        if (data.used === true) {
+            return res.status(200).json({
+                success: false,
+                message: "Key already used"
+            });
+        }
+
+        // تحديث حالة الكود إلى مستخدم
         await doc.ref.update({
             used: true,
             usedAt: new Date().toISOString()
         });
 
-        return res.status(200).json({ success: true });
+        return res.status(200).json({
+            success: true,
+            message: "Key activated successfully",
+            product: data.product
+        });
 
     } catch (error) {
         console.error("Error using key:", error);

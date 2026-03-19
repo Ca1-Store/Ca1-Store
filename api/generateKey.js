@@ -5,17 +5,17 @@ export default async function handler(req, res) {
         return res.status(405).json({ error: "Method not allowed" });
     }
 
-    const { key, product } = req.body;
+    const { key, product, email } = req.body;
 
     if (!key || !product) {
-        return res.status(400).json({ error: "Missing key or product" });
+        return res.status(400).json({ success: false, error: "Missing key or product" });
     }
 
     try {
         await db.collection("keys").add({
             key,
             product,
-            email: "",
+            email: email || "",
             used: false,
             createdAt: new Date().toISOString()
         });

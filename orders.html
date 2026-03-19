@@ -77,9 +77,15 @@
 <script src="script.js"></script>
 
 <script>
+/* ============================================================
+   حماية تسجيل الدخول
+============================================================ */
 const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
 if (!user) window.location.href = "account.html";
 
+/* ============================================================
+   عرض الطلبات
+============================================================ */
 const orders = user.orders || [];
 const box = document.getElementById("ordersList");
 
@@ -132,12 +138,18 @@ if (orders.length === 0) {
     });
 }
 
+/* ============================================================
+   نسخ الكود
+============================================================ */
 function copyCode(code) {
     navigator.clipboard.writeText(code).then(() => {
         alert("تم نسخ الكود بنجاح");
     });
 }
 
+/* ============================================================
+   تسجيل الخروج
+============================================================ */
 function logout() {
     localStorage.removeItem("loggedUser");
     window.location.href = "account.html";

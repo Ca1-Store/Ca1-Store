@@ -16,6 +16,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const loadingText = document.getElementById("loadingText");
 
+    /* ============================================================
+       🔥 دالة توليد كود عشوائي
+    ============================================================ */
+    function generateRandomKey() {
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        let key = "";
+        for (let i = 0; i < 16; i++) {
+            key += chars[Math.floor(Math.random() * chars.length)];
+        }
+        return key;
+    }
+
     paypal.Buttons({
 
         style: {
@@ -42,13 +54,27 @@ document.addEventListener("DOMContentLoaded", () => {
         },
 
         onApprove: function(data, actions) {
-            return actions.order.capture().then(function(details) {
+            return actions.order.capture().then(async function(details) {
 
                 const item = cart[0];
                 const totalSAR = item.price * item.qty;
 
                 /* ============================================================
-                   1) إرسال الفاتورة إلى Google Sheets
+                   🔥 1) توليد كود تلقائي + حفظه في قاعدة البيانات
+                ============================================================ */
+                const generatedKey = generateRandomKey();
+
+                await fetch("/api/generateKey", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        key: generatedKey,
+                        product: item.title
+                    })
+                });
+
+                /* ============================================================
+                   2) إرسال الفاتورة إلى Google Sheets
                 ============================================================ */
                 fetch("https://script.google.com/macros/s/AKfycbxHB6W4H8ZAh2pkQz60BgEVA8rhRIM0KWlIf-YxkJGijArc9pNEeCsD4Pmfh3i8R5THuQ/exec", {
                     method: "POST",
@@ -64,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
 
                 /* ============================================================
-                   2) حفظ بيانات الفاتورة لصفحة success.html
+                   3) حفظ بيانات الفاتورة لصفحة success.html
                 ============================================================ */
                 localStorage.setItem("invoice", JSON.stringify({
                     orderId: data.orderID,
@@ -73,11 +99,30 @@ document.addEventListener("DOMContentLoaded", () => {
                     qty: item.qty,
                     total: totalSAR,
                     email: details.payer.email_address,
-                    transactionId: details.id
+                    transactionId: details.id,
+                    key: generatedKey
                 }));
 
                 /* ============================================================
-                   3) تفريغ السلة + الانتقال لصفحة النجاح
+                   🔥 4) إضافة الطلب إلى user.orders
+                ============================================================ */
+                let user = JSON.parse(localStorage.getItem("loggedUser") || "{}");
+
+                if (!user.orders) user.orders = [];
+
+                user.orders.push({
+                    id: data.orderID,
+                    date: new Date().toLocaleString(),
+                    total: totalSAR,
+                    product: item.title,
+                    key: generatedKey,
+                    used: false
+                });
+
+                localStorage.setItem("loggedUser", JSON.stringify(user));
+
+                /* ============================================================
+                   5) تفريغ السلة + الانتقال لصفحة النجاح
                 ============================================================ */
                 localStorage.removeItem("cart");
                 window.location.href = "success.html";
