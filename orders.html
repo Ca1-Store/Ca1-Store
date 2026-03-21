@@ -131,6 +131,14 @@ if (orders.length === 0) {
                 <button onclick="copyCode('${order.key}')" class="login-submit" style="margin-top:8px;">
                     نسخ الكود
                 </button>
+
+                <!-- زر تحميل الأداة يظهر فقط لمنتج جرافيكس فايف ام -->
+                ${order.product.includes("جرافيكس فايف ام") ? `
+                    <button class="login-submit" style="margin-top:8px; width:100%;"
+                        onclick="window.location.href='https://drive.google.com/uc?export=download&id=1RLc-zew5KX4Se2Mmz9auVMtFff2tnrSz'">
+                        تحميل أداة التثبيت (CA Store Installer)
+                    </button>
+                ` : ""}
             </div>
         `;
 
