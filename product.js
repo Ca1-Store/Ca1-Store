@@ -44,21 +44,32 @@ if (!product) {
        زر شراء الآن (PayPal)
     ============================ */
 
-    const paypalBtn = document.getElementById("paypalBtn");
+    const buyNowBtn = document.getElementById("buyNowBtn");
     const notAvailable = document.getElementById("notAvailable");
 
     // إخفاء الجميع أولاً
-    paypalBtn.classList.add("hidden");
+    buyNowBtn.classList.add("hidden");
     notAvailable.classList.add("hidden");
 
-    if (product.status === "soon") {
+    // المنتج غير متاح
+    if (product.status === "soon" || !product.paypal) {
         notAvailable.classList.remove("hidden");
     } else {
-        if (product.paypal) {
-            paypalBtn.href = product.paypal;
-            paypalBtn.classList.remove("hidden");
-        } else {
-            notAvailable.classList.remove("hidden");
-        }
+        // المنتج متاح
+        buyNowBtn.classList.remove("hidden");
+        buyNowBtn.onclick = () => {
+            const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
+
+            if (!user || !user.email) {
+                if (typeof openLoginPopup === "function") {
+                    openLoginPopup();
+                } else {
+                    window.location.href = "account.html";
+                }
+                return;
+            }
+
+            window.location.href = product.paypal;
+        };
     }
 }
