@@ -1348,11 +1348,6 @@ body.product-page .product-container {
 
 /* صندوق الصورة */
 body.product-page .product-image-box {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.12);
-    padding: 0px;
-    border-radius: 16px;
-    backdrop-filter: blur(10px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1360,11 +1355,9 @@ body.product-page .product-image-box {
 
 /* حجم الصورة المثالي */
 body.product-page .product-image-box img {
-    width: 110%;
-    max-width: 700px;
-    height: auto;
-    border-radius: 14px;
-    box-shadow: 0 0 18px rgba(0,0,0,0.35);
+    width: 100%;
+    max-width: 750px;
+    display: block;
 }
 
 /* صندوق المعلومات */
@@ -3214,4 +3207,7 @@ body::after {
     border-radius: 14px;
     pointer-events: none;
     box-shadow: 0 0 60px rgba(253, 198, 255, 0.356);
+}
+#productDesc {
+    white-space: pre-line;
 }
