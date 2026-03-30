@@ -30,7 +30,7 @@ desc: `CA-1 PACK نسخة
 
 بعد شرائك المنتج بادر بفتح تذكرة بسيرفر الديسكورد.`,
 price: 24.99,
-image: "CA-1.png",
+image: "CA-1 (2).png",
 category: "fivem",
 status: "available",
 paypal: "https://www.paypal.com/ncp/payment/28Q47CF3QFH5L"
