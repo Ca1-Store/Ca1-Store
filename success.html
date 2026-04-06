@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>تم الدفع بنجاح - CA1 STORE</title>
+    <title>تم الدفع بنجاح - CA STORE</title>
     <link rel="stylesheet" href="styles.css">
 
     <!-- إصلاح مشكلة الألوان داخل الفاتورة -->
@@ -119,15 +119,6 @@
         // عرض الكود مباشرة
         document.getElementById("activationKey").textContent = invoice.key;
 
-        // زر التحميل يظهر فقط لمنتج جرافيكس فايف ام
-        if (invoice.product.includes("جرافيكس فايف ام")) {
-            document.getElementById("installerBtnBox").innerHTML = `
-                <button class="login-submit" style="margin-top:15px; width:100%;"
-                    onclick="window.location.href='https://drive.google.com/uc?export=download&id=1RLc-zew5KX4Se2Mmz9auVMtFff2tnrSz'">
-                    تحميل أداة التثبيت (CA Store Installer)
-                </button>
-            `;
-        }
     }
 
     /* ============================================================

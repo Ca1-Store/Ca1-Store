@@ -3,10 +3,10 @@
 ============================ */
 
 const productsData = [
-    {
-id: 1,
-title: "جرافيكس فايف ام | 𝐂𝐚-𝟏-𝐏𝐚𝐜𝐤",
-desc: `CA-1 PACK نسخة
+{
+    id: 1,
+    title: "جرافيكس فايف ام | 𝐂𝐚-𝟏-𝐏𝐚𝐜𝐤",
+    desc: `CA-1 PACK نسخة
 
 جرافيكس مخصص للفايتات مع لمسة واقعية جميلة.
 
@@ -29,29 +29,46 @@ desc: `CA-1 PACK نسخة
 فلتر البلور للتصوير
 
 بعد شرائك المنتج بادر بفتح تذكرة بسيرفر الديسكورد.`,
-price: 24.99,
-image: "CA-1 (2).png",
-category: "fivem",
-status: "available",
-paypal: "https://www.paypal.com/ncp/payment/28Q47CF3QFH5L"
+    price: 29.99,
+    image: "CA-1 (2).png",
+    category: "fivem",
+    status: "available",
+    paypal: "https://www.paypal.com/ncp/payment/28Q47CF3QFH5L"
     },
 
-    {
-        id: 2,
-        title: "جرافيكس فايف ام | 𝐂𝐚-𝟐",
-        desc: "قريبًا",
-        price: "قريبًا",
-        image: "cms.avif",
-        category: "fivem",
-        status: "soon",
-        paypal: null
+{
+    id: 2,
+    title: "جرافيكس فايف ام | 𝐂𝐚-𝟐-𝐏𝐚𝐜𝐤",
+    desc: `CA-2 PACK الإصدار الجديد
+
+تجربة جرافيكس مطوّرة بالكامل، مصممة للفايتات والتصوير الاحترافي، مع تحسينات بصرية عميقة تعطيك واقعية أعلى وثبات أفضل داخل اللعبة.
+
+🔹 10 فلاتر جاهزة بتدرجات مختلفة  
+🔹 إضاءة نهارية محسّنة وواضحة  
+🔹 سماء ديناميكية مع تأثيرات Aurora & Galaxy  
+🔹 تحكم كامل بالألوان (الشجر – البحر – السماء – الغيوم – الشوارع)  
+🔹 فلتر SSR مطوّر  
+🔹 Killeffect محسّن  
+🔹 تأثيرات مطر على الشاشة والسيارة  
+🔹 تأثيرات دماء واقعية  
+🔹 فلتر خاص للفايتات الليلية  
+🔹 فلتر Blur احترافي  
+🔹 إمكانية تغيير الطقس إلى ثلج  
+
+بعد الشراء افتح تذكرة في سيرفر الديسكورد.`,
+    price: 44.99,
+    oldPrice: 64.99,
+    image: "combined_image_small.png",
+    category: "fivem",
+    status: "available",
+    paypal: "https://www.paypal.com/ncp/payment/BQV36TDMKEZZS"
     },
 
     {
         id: 3,
         title: "اعادة تركيب",
         price: "9.99",
-        image: "RE.png",
+        image: "Copilot_20260330_010158.png",
         category: "fivem",
         status: "available",
         paypal: "https://www.paypal.com/ncp/payment/7L3HS223L8RVC"
@@ -127,12 +144,6 @@ function createProductCard(p) {
             <span class="new-price">${p.price} ر.س</span>
         `;
     }
-    else if (p.id === 1) {
-        priceHTML = `
-            <span class="old-price">33.99 ر.س</span>
-            <span class="new-price">24.99 ر.س</span>
-        `;
-    }
     else {
         priceHTML = p.price === "قريبًا" ? "قريبًا" : p.price + " ر.س";
     }
@@ -142,7 +153,6 @@ function createProductCard(p) {
             <img src="${p.image}">
             ${p.status === "soon" ? `<span class="soon-badge">قريبًا</span>` : ""}
             ${p.oldPrice ? `<span class="discount-badge">خصم</span>` : ""}
-            ${p.id === 1 ? `<span class="discount-badge">خصم</span>` : ""}
         </div>
 
         <h3>${p.title}</h3>
