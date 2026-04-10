@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const loadingText = document.getElementById("loadingText");
 
     /* ============================================================
-       🔥 دالة توليد كود عشوائي
+       🔥 دالة توليد كود عشوائي (بدون حفظ خارجي)
     ============================================================ */
     function generateRandomKey() {
         const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -60,21 +60,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 const totalSAR = item.price * item.qty;
 
                 /* ============================================================
-                   🔥 1) توليد كود تلقائي + حفظه في قاعدة البيانات
+                   🔥 1) توليد كود تلقائي (بدون إرسال لأي API)
                 ============================================================ */
                 const generatedKey = generateRandomKey();
 
-                await fetch("/api/generateKey", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        key: generatedKey,
-                        product: item.title
-                    })
-                });
-
                 /* ============================================================
-                   2) إرسال الفاتورة إلى Google Sheets
+                   2) إرسال الفاتورة إلى Google Sheets (تبقى كما هي)
                 ============================================================ */
                 fetch("https://script.google.com/macros/s/AKfycbxHB6W4H8ZAh2pkQz60BgEVA8rhRIM0KWlIf-YxkJGijArc9pNEeCsD4Pmfh3i8R5THuQ/exec", {
                     method: "POST",
@@ -104,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }));
 
                 /* ============================================================
-                   🔥 4) إضافة الطلب إلى user.orders
+                   4) إضافة الطلب إلى user.orders
                 ============================================================ */
                 let user = JSON.parse(localStorage.getItem("loggedUser") || "{}");
 

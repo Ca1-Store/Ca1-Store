@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+        <link rel="icon" href="Copilot_20260330_010158.png">
+
 <head>
     <meta charset="UTF-8">
-    <title>تم الدفع بنجاح - CA STORE</title>
+    <title>تم الدفع بنجاح - Ca Store</title>
     <link rel="stylesheet" href="styles.css">
 
     <!-- إصلاح مشكلة الألوان داخل الفاتورة -->
@@ -69,14 +71,6 @@
             <p><strong>البريد الإلكتروني:</strong> <span id="email"></span></p>
             <p><strong>رقم عملية PayPal:</strong> <span id="transactionId"></span></p>
 
-            <!-- 🔥 عرض الكود -->
-            <p><strong>الكود الخاص بك:</strong> 
-                <span id="activationKey" style="color:#009624; font-weight:bold;"></span>
-            </p>
-
-            <!-- زر التحميل يظهر فقط لمنتج جرافيكس فايف ام -->
-            <div id="installerBtnBox"></div>
-
         </div>
 
         <button class="login-submit" onclick="window.location.href='orders.html'">
@@ -115,9 +109,6 @@
         document.getElementById("total").textContent = invoice.total;
         document.getElementById("email").textContent = invoice.email;
         document.getElementById("transactionId").textContent = invoice.transactionId;
-
-        // عرض الكود مباشرة
-        document.getElementById("activationKey").textContent = invoice.key;
 
     }
 

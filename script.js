@@ -95,16 +95,16 @@ const productsData = [
        باقي منتجات الديسكورد كما هي
     ============================= */
 
-    {
-        id: 5,
-        title: "Coming Soon",
-        desc: "قريبًا",
-        price: "0.0",
-        image: "cms.avif",
-        category: "discord",
-        status: "soon",
-        paypal: null
-    },
+{
+    id: 5,
+    title: "Nitro Gaming – 1 month",
+    desc: "هذا المنتج غير متوفر حاليًا",
+    price: "نفذت الكمية",
+    image: "Nitro.png",
+    category: "discord",
+    status: "out_of_stock",
+    paypal: null
+},
 
     {
         id: 6,
@@ -144,9 +144,15 @@ function createProductCard(p) {
             <span class="new-price">${p.price} ر.س</span>
         `;
     }
-    else {
-        priceHTML = p.price === "قريبًا" ? "قريبًا" : p.price + " ر.س";
+else {
+    if (p.status === "out_of_stock") {
+        priceHTML = "نفذت الكمية";
+    } else if (p.status === "soon") {
+        priceHTML = "قريبًا";
+    } else {
+        priceHTML = p.price + " ر.س";
     }
+}
 
     card.innerHTML = `
         <div class="product-image-box">

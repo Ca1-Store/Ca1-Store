@@ -3211,3 +3211,6 @@ body::after {
 #productDesc {
     white-space: pre-line;
 }
+.product-card.out-of-stock .price {
+    display: none !important;
+}
