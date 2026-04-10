@@ -66,12 +66,12 @@ const productsData = [
 
     {
         id: 3,
-        title: "اعادة تركيب",
-        price: "9.99",
-        image: "Copilot_20260330_010158.png",
+        title: "جرافيكس فايف ام | 𝐂𝐚-𝟑-𝐏𝐚𝐜𝐤",
+        price: "قريبًا",
+        image: "cms.avif",
         category: "fivem",
-        status: "available",
-        paypal: "https://www.paypal.com/ncp/payment/7L3HS223L8RVC"
+        status: "soon",
+        paypal: null
     },
 
     /* ============================
@@ -88,7 +88,7 @@ const productsData = [
         image: "cg.png",
         category: "subscriptions",
         status: "available",
-        paypal: "ضع رابط الدفع هنا"
+        paypal: " https://www.paypal.com/ncp/payment/UR9YGZDLBQY6J"
     },
 
     /* ============================
