@@ -29,7 +29,7 @@ const productsData = [
 فلتر البلور للتصوير
 
 بعد شرائك المنتج بادر بفتح تذكرة بسيرفر الديسكورد.`,
-    price: 29.99,
+    price: 25.98,
     image: "CA-1 (2).png",
     category: "fivem",
     status: "available",
@@ -56,8 +56,8 @@ const productsData = [
 🔹 إمكانية تغيير الطقس إلى ثلج  
 
 بعد الشراء افتح تذكرة في سيرفر الديسكورد.`,
-    price: 44.99,
-    oldPrice: 64.99,
+    price: 37.99,
+    oldPrice: 50.99,
     image: "combined_image_small.png",
     category: "fivem",
     status: "available",
