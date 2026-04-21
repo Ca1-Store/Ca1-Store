@@ -13,24 +13,52 @@
 
 <header>
 
-    <nav>
-        <ul class="menu">
-            <li>
-                <a href="index.html" class="home-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-                    </svg>
-                </a>
-            </li>
+    <!-- زر القائمة الجانبية -->
+    <div class="side-menu-btn" id="sideMenuBtn">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="#fff">
+            <path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/>
+        </svg>
+    </div>
 
-            <!-- روابط الأقسام -->
-            <li><a href="products.html?cat=fivem">فايف إم</a></li>
-            <li><a href="products.html?cat=discord">ديسكورد</a></li>
-            <li><a class="active" href="subscriptions.html">الاشتراكات</a></li>
+    <!-- القائمة الوسطية -->
+    <nav class="menu-container">
+        <ul class="menu">
+            <li class="dropdown">
+                <a class="drop-btn">القائمة</a>
+                <ul class="dropdown-content">
+                    <li><a href="index.html">الصفحة الرئيسية</a></li>
+                    <li><a href="products.html?cat=fivem">منتجات الفايف إم</a></li>
+                    <li><a href="products.html?cat=discord">منتجات الديسكورد</a></li>
+                </ul>
+            </li>
         </ul>
     </nav>
 
+    <!-- الملف الشخصي -->
+    <div class="profile-icon" id="profileIcon">
+        <svg width="18" height="18" viewBox="0 0 24 24">
+            <path fill="white" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4Zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4Z"/>
+        </svg>
+    </div>
+
+    <!-- القائمة المنسدلة -->
+    <div class="profile-dropdown" id="profileDropdown">
+        <button onclick="window.location.href='profile.html'">حسابي</button>
+        <button onclick="window.location.href='orders.html'">طلباتي</button>
+        <button onclick="window.location.href='settings.html'">الإعدادات</button>
+        <button onclick="logout()">تسجيل الخروج</button>
+    </div>
+
 </header>
+
+<!-- القائمة الجانبية -->
+<div id="sideMenu" class="side-menu">
+    <a href="index.html">الصفحة الرئيسية</a>
+    <a href="products.html?cat=fivem">منتجات فايف إم</a>
+    <a href="products.html?cat=discord">منتجات الديسكورد</a>
+    <a href="terms.html">الشروط والأحكام</a>
+    <a href="YOUR_DISCORD_LINK">سيرفر الديسكورد</a>
+</div>
 
 <section class="products-page">
 
