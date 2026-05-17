@@ -61,14 +61,14 @@
 
     <div id="emailStep">
       <input type="email" id="emailInput" class="auth-input" placeholder="البريد الإلكتروني" autocomplete="email">
-      <button class="auth-btn" onclick="sendCode()">إرسال رمز التحقق</button>
+      <button class="auth-btn" onclick="sendCodeEmailJS()">إرسال رمز التحقق</button>
     </div>
 
     <div id="codeStep" style="display:none;">
       <p style="text-align:center;color:var(--muted);font-size:14px;margin-bottom:18px;">تم إرسال رمز التحقق إلى بريدك الإلكتروني</p>
       <input type="text" id="codeInput" class="auth-input" placeholder="رمز التحقق المكوّن من 6 أرقام" maxlength="6">
-      <button class="auth-btn" onclick="verifyLogin()">تأكيد الدخول</button>
-      <button id="resendBtn" class="auth-btn" disabled style="margin-top:10px;opacity:.5;" onclick="resendCode()">إعادة الإرسال بعد <span id="countdown">60</span>s</button>
+      <button class="auth-btn" onclick="verifyLoginEmailJS()">تأكيد الدخول</button>
+      <button id="resendBtn" class="auth-btn" disabled style="margin-top:10px;opacity:.5;" onclick="resendCodeEmailJS()">إعادة الإرسال بعد <span id="countdown">60</span>s</button>
     </div>
   </div>
 </div>
