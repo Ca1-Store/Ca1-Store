@@ -1,75 +1,65 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-        <link rel="icon" href="Copilot_20260330_010158.png">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>استكمال البيانات - Ca Store</title>
-<link rel="stylesheet" href="styles.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إعداد الحساب — CA Store</title>
+  <link rel="icon" href="Copilot_20260330_010158.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
+<body>
 
-<body class="dark-login">
+<header>
+  <a class="brand" href="index.html">
+    <div class="brand-logo">CA</div>
+    <span class="brand-name">CA STORE</span>
+  </a>
+</header>
 
-    <!-- زر رجوع -->
-    <div class="back-btn-cart" onclick="history.back()">
-        ⟵ Back
+<div class="dark-login">
+  <div class="auth-box">
+    <div class="auth-icon">
+      <svg viewBox="0 0 24 24" width="36" height="36">
+        <path fill="white" d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm-1 14.59L6.41 12 7.83 10.58 11 13.75l6.17-6.17 1.42 1.42z"/>
+      </svg>
     </div>
+    <div class="auth-title">أكمل إعداد حسابك</div>
+    <p style="text-align:center;color:var(--muted);font-size:14px;margin:-14px 0 22px;">
+      يرجى إضافة بعض المعلومات لإتمام التسجيل
+    </p>
 
-    <div class="login-container">
+    <input type="text" id="onboardName" class="auth-input" placeholder="اسمك الكامل *">
+    <input type="text" id="onboardPhone" class="auth-input" placeholder="رقم الهاتف (اختياري)">
+    <input type="text" id="onboardCountry" class="auth-input" placeholder="البلد (اختياري)">
+    <button class="auth-btn" onclick="completeOnboarding()">
+      <i class="fa-solid fa-arrow-left"></i> إكمال وإنشاء الحساب
+    </button>
+  </div>
+</div>
 
-        <!-- الصندوق -->
-        <div class="login-card" style="max-width:420px;">
+<script src="script.min.js"></script>
+<script>
+const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
+if (!user) { window.location.href = "account.html"; }
+if (user && user.name) { window.location.href = "index.html"; }
 
-            <h2 class="login-title">استكمال البيانات</h2>
-
-            <input type="text" id="firstName" class="input-field" placeholder="الاسم الأول">
-            <input type="text" id="lastName" class="input-field" placeholder="الاسم الأخير">
-
-            <button class="btn-primary" onclick="saveUserInfo()">متابعة</button>
-
-        </div>
-    </div>
-
-    <script>
-        // حماية الصفحة
-        const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
-        if (!user) {
-            window.location.href = "account.html";
-        }
-
-        // تعبئة البيانات إذا كانت موجودة
-        document.getElementById("firstName").value = user.firstName || "";
-        document.getElementById("lastName").value = user.lastName || "";
-
-function saveUserInfo() {
-    const first = document.getElementById("firstName").value.trim();
-    const last = document.getElementById("lastName").value.trim();
-
-    const nameRegex = /^[\u0600-\u06FFa-zA-Z ]{2,}$/;
-
-    if (!nameRegex.test(first)) {
-        alert("الاسم الأول يجب أن يكون حرفين على الأقل وبدون أرقام أو رموز");
-        return;
-    }
-
-    if (!nameRegex.test(last)) {
-        alert("الاسم الأخير يجب أن يكون حرفين على الأقل وبدون أرقام أو رموز");
-        return;
-    }
-
-    user.firstName = first;
-    user.lastName = last;
-
-    localStorage.setItem("loggedUser", JSON.stringify(user));
-
-    // تأثير الخروج السلس
-    document.body.style.opacity = "0";
-    setTimeout(() => {
-        window.location.href = "index.html";
-    }, 300);
+function completeOnboarding() {
+  const name    = document.getElementById("onboardName").value.trim();
+  const phone   = document.getElementById("onboardPhone").value.trim();
+  const country = document.getElementById("onboardCountry").value.trim();
+  if (!name) {
+    document.getElementById("onboardName").classList.add("shake");
+    setTimeout(() => document.getElementById("onboardName").classList.remove("shake"), 400);
+    return;
+  }
+  const updated = { ...user, name, phone, country };
+  localStorage.setItem("loggedUser", JSON.stringify(updated));
+  window.location.href = "index.html";
 }
-    </script>
-
+</script>
 </body>
 </html>
