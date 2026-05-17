@@ -1,87 +1,154 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+        <link rel="icon" href="Copilot_20260330_010158.png">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>الإعدادات — CA Store</title>
-  <link rel="icon" href="Copilot_20260330_010158.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <title>الإعدادات - Ca Store</title>
+    <link rel="stylesheet" href="styles.min.css">
 </head>
+
 <body>
 
 <header>
-  <a class="brand" href="index.html">
-    <div class="brand-logo">CA</div>
-    <span class="brand-name">CA STORE</span>
-  </a>
-  <nav class="main-nav">
-    <a href="index.html" class="nav-link">الرئيسية</a>
-    <a href="profile.html" class="nav-link">حسابي</a>
-    <a href="orders.html" class="nav-link">طلباتي</a>
-  </nav>
-  <div class="side-menu-btn" id="sideMenuBtn">
-    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
-  </div>
+
+    <!-- زر القائمة الجانبية -->
+    <div class="side-menu-btn" id="sideMenuBtn">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="#fff">
+            <path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/>
+        </svg>
+    </div>
+
+    <!-- القائمة الوسطية -->
+    <nav class="menu-container">
+        <ul class="menu">
+            <li class="dropdown">
+                <a class="drop-btn">القائمة</a>
+                <ul class="dropdown-content">
+                    <li><a href="index.html">الصفحة الرئيسية</a></li>
+                    <li><a href="products.html?cat=fivem">منتجات الفايف إم</a></li>
+                    <li><a href="products.html?cat=discord">منتجات الديسكورد</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- الملف الشخصي -->
+    <div class="profile-icon" id="profileIcon">
+        <svg width="18" height="18" viewBox="0 0 24 24">
+            <path fill="white" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4Zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4Z"/>
+        </svg>
+    </div>
+
+    <!-- القائمة المنسدلة -->
+    <div class="profile-dropdown" id="profileDropdown">
+        <button onclick="window.location.href='profile.html'">حسابي</button>
+        <button onclick="window.location.href='orders.html'">طلباتي</button>
+        <button onclick="window.location.href='settings.html'">الإعدادات</button>
+        <button onclick="logout()">تسجيل الخروج</button>
+    </div>
+
 </header>
 
+<!-- القائمة الجانبية -->
 <div id="sideMenu" class="side-menu">
-  <a href="index.html">الصفحة الرئيسية</a>
-  <a href="profile.html">حسابي</a>
-  <a href="orders.html">طلباتي</a>
+    <a href="index.html">الصفحة الرئيسية</a>
+    <a href="products.html?cat=fivem">منتجات فايف إم</a>
+    <a href="products.html?cat=discord">منتجات الديسكورد</a>
+    <a href="terms.html">الشروط والأحكام</a>
+    <a href="YOUR_DISCORD_LINK">سيرفر الديسكورد</a>
 </div>
 
-<div class="settings-page">
-  <div class="settings-box">
-    <h2>الإعدادات</h2>
+<!-- زر الرجوع -->
+<div class="back-btn-cart" onclick="history.back()">
+    ⟵ Back
+</div>
+
+<div class="settings-box">
+    <h2>تعطيل الحساب</h2>
+
     <p class="settings-desc">
-      يمكنك من هنا إدارة حسابك. تنبيه: حذف الحساب لا يمكن التراجع عنه، وستُفقد جميع بياناتك وطلباتك نهائياً.
+        يمكنك حذف حسابك من المتجر بشكل نهائي، بما في ذلك الطلبات السابقة وجميع البيانات المرتبطة به.
     </p>
-    <button class="disable-btn" onclick="showConfirm()">
-      <i class="fa-solid fa-trash-can"></i> حذف الحساب
-    </button>
-  </div>
+
+    <button class="disable-btn" onclick="openDeleteConfirm()">تعطيل الحساب</button>
 </div>
 
-<div class="confirm-overlay" id="confirmOverlay" style="display:flex;">
-  <div class="confirm-box" style="display:none;" id="confirmBox">
-    <h3>⚠️ تأكيد الحذف</h3>
-    <p>هل أنت متأكد؟ لا يمكن التراجع عن هذا الإجراء.</p>
-    <div class="confirm-actions">
-      <button class="btn-cancel" onclick="hideConfirm()">إلغاء</button>
-      <button class="btn-delete" onclick="deleteAccount()">حذف الحساب</button>
+<!-- نافذة تأكيد الحذف -->
+<div id="deleteConfirm" class="confirm-overlay">
+    <div class="confirm-box">
+        <h3>هل أنت متأكد؟</h3>
+        <p>سيتم حذف حسابك نهائيًا ولا يمكن التراجع عن هذا الإجراء.</p>
+
+        <div class="confirm-actions">
+            <button class="btn-cancel" onclick="closeDeleteConfirm()">إلغاء</button>
+            <button class="btn-delete" onclick="deleteAccount()">حذف</button>
+        </div>
     </div>
-  </div>
 </div>
-<style>
-#confirmOverlay { display:none; }
-#confirmOverlay.show { display:flex; }
-#confirmBox { display:block !important; }
-</style>
 
-<div class="toast-success" id="toastSuccess">تم الحذف بنجاح ✓</div>
-
-<script src="script.min.js"></script>
 <script>
+/* حماية قوية ضد التلاعب */
 const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
-if (!user) { window.location.href = "account.html"; }
 
-function showConfirm() {
-  document.getElementById("confirmOverlay").classList.add("show");
+if (!user || !user.email) {
+    localStorage.removeItem("loggedUser");
+    window.location.href = "account.html";
 }
-function hideConfirm() {
-  document.getElementById("confirmOverlay").classList.remove("show");
+
+/* تنظيف البيانات */
+function clean(text) {
+    return String(text)
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
 }
+
+/* حماية حذف الحساب */
+let confirmAllowed = false;
+
+function openDeleteConfirm() {
+    confirmAllowed = true;
+    document.getElementById("deleteConfirm").style.display = "flex";
+}
+
+function closeDeleteConfirm() {
+    confirmAllowed = false;
+    document.getElementById("deleteConfirm").style.display = "none";
+}
+
+/* حذف الحساب نهائيًا */
 function deleteAccount() {
-  localStorage.removeItem("loggedUser");
-  sessionStorage.clear();
-  const t = document.getElementById("toastSuccess");
-  t.classList.add("show");
-  setTimeout(() => { window.location.href = "account.html"; }, 1800);
+    if (!confirmAllowed) return;
+
+    const email = user.email;
+
+    let users = JSON.parse(localStorage.getItem("users") || "[]");
+    users = users.filter(u => u.email !== email);
+    localStorage.setItem("users", JSON.stringify(users));
+
+    localStorage.removeItem("loggedUser");
+    sessionStorage.clear();
+
+    closeDeleteConfirm();
+
+    const toast = document.getElementById("deleteToast");
+    toast.classList.add("show");
+
+    setTimeout(() => {
+        toast.classList.remove("show");
+        window.location.href = "index.html";
+    }, 2000);
+}
+
+/* تسجيل خروج آمن */
+function logout() {
+    localStorage.removeItem("loggedUser");
+    sessionStorage.clear();
+    window.location.href = "account.html";
 }
 </script>
+
+<div id="deleteToast" class="toast-success">تم حذف الحساب نهائيًا</div>
+
 </body>
 </html>

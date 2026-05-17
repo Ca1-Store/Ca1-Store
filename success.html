@@ -1,59 +1,155 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+        <link rel="icon" href="Copilot_20260330_010158.png">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>تمت العملية — CA Store</title>
-  <link rel="icon" href="Copilot_20260330_010158.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <title>تم الدفع بنجاح - Ca Store</title>
+<link rel="stylesheet" href="styles.min.css">
+
+    <!-- إصلاح مشكلة الألوان داخل الفاتورة -->
+    <style>
+        #invoiceBox,
+        #invoiceBox p,
+        #invoiceBox span,
+        #invoiceBox strong,
+        #invoiceBox h3 {
+            color: #111 !important;
+        }
+    </style>
 </head>
-<body>
 
-<header>
-  <a class="brand" href="index.html">
-    <div class="brand-logo">CA</div>
-    <span class="brand-name">CA STORE</span>
-  </a>
-</header>
+<body class="checkout-page">
 
-<div style="min-height:100vh;display:grid;place-items:center;padding:calc(var(--header-h)+40px) 24px 60px;">
-  <div style="text-align:center;max-width:560px;width:100%;">
-    <div class="success-check">
-      <i class="fa-solid fa-check" style="font-size:38px;color:#fff;"></i>
+<div class="stars"></div>
+
+<section class="account-page">
+    <div class="checkout-full" style="text-align:center; padding:40px;">
+
+        <!-- أيقونة نجاح -->
+        <div style="
+            width:90px;
+            height:90px;
+            margin:0 auto 20px;
+            border-radius:50%;
+            background:linear-gradient(135deg,#00c853,#009624);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            box-shadow:0 0 20px rgba(0,255,120,0.4);
+        ">
+            <svg width="55" height="55" viewBox="0 0 24 24">
+                <path fill="white" d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+            </svg>
+        </div>
+
+        <h2 style="font-size:26px; margin-bottom:10px;">تم الدفع بنجاح</h2>
+
+        <p style="opacity:0.85; font-size:16px; margin-bottom:25px;">
+            شكرًا لك! تم استلام طلبك بنجاح.  
+            فيما يلي تفاصيل فاتورتك.
+        </p>
+
+        <!-- صندوق الفاتورة -->
+        <div id="invoiceBox" style="
+            background:#fff;
+            padding:20px;
+            border-radius:10px;
+            width:90%;
+            max-width:450px;
+            margin:0 auto 25px;
+            text-align:right;
+            box-shadow:0 0 15px rgba(0,0,0,0.15);
+        ">
+            <h3 style="margin-bottom:15px; text-align:center;">تفاصيل الفاتورة</h3>
+
+            <p><strong>رقم الطلب:</strong> <span id="orderId"></span></p>
+            <p><strong>المنتج:</strong> <span id="product"></span></p>
+            <p><strong>السعر:</strong> <span id="price"></span> ر.س</p>
+            <p><strong>الكمية:</strong> <span id="qty"></span></p>
+            <p><strong>الإجمالي:</strong> <span id="total"></span> ر.س</p>
+            <p><strong>البريد الإلكتروني:</strong> <span id="email"></span></p>
+            <p><strong>رقم عملية PayPal:</strong> <span id="transactionId"></span></p>
+
+        </div>
+
+        <button class="login-submit" onclick="window.location.href='orders.html'">
+            عرض طلباتي
+        </button>
+
+        <button class="login-submit" style="margin-top:10px;" onclick="window.location.href='index.html'">
+            العودة للرئيسية
+        </button>
+
     </div>
-    <h2 style="font-size:26px;margin:0 0 12px;color:#fff;background:none;-webkit-text-fill-color:#fff;">تمت عملية الدفع بنجاح 🎉</h2>
-    <p style="color:var(--muted);margin:0 0 24px;">شكراً لثقتك بـ CA Store. يرجى فتح تذكرة في سيرفر الديسكورد لاستلام منتجك.</p>
+</section>
 
-    <div id="invoiceBox" style="display:none;"></div>
+<script>
+    /* ============================================================
+       حماية الصفحة
+    ============================================================ */
+    const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
+    if (!user) {
+        window.location.href = "account.html";
+    }
 
-    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:24px;">
-      <a href="orders.html" style="
-        display:inline-flex;align-items:center;gap:8px;
-        padding:13px 24px;border-radius:13px;
-        background:linear-gradient(135deg,var(--brand),var(--brand-2));
-        color:#fff;font-weight:700;
-        box-shadow:0 10px 26px var(--brand-glow);
-        transition:.25s var(--ease);">
-        <i class="fa-solid fa-bag-shopping"></i> طلباتي
-      </a>
-      <a href="https://discord.gg/Pt7U4bcF7M" style="
-        display:inline-flex;align-items:center;gap:8px;
-        padding:13px 24px;border-radius:13px;
-        background:#5865F2;color:#fff;font-weight:700;
-        box-shadow:0 10px 26px rgba(88,101,242,.4);
-        transition:.25s var(--ease);">
-        <i class="fa-brands fa-discord"></i> افتح تذكرة
-      </a>
-    </div>
-  </div>
-</div>
+    /* ============================================================
+       جلب الفاتورة من payment.js
+    ============================================================ */
+    const invoice = JSON.parse(localStorage.getItem("invoice"));
 
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-<script src="Email.JS"></script>
-<script src="payment.js"></script>
+    if (!invoice) {
+        document.getElementById("invoiceBox").innerHTML =
+            "<p style='text-align:center;'>لا توجد فاتورة لعرضها.</p>";
+    } else {
+        document.getElementById("orderId").textContent = invoice.orderId;
+        document.getElementById("product").textContent = invoice.product;
+        document.getElementById("price").textContent = invoice.price;
+        document.getElementById("qty").textContent = invoice.qty;
+        document.getElementById("total").textContent = invoice.total;
+        document.getElementById("email").textContent = invoice.email;
+        document.getElementById("transactionId").textContent = invoice.transactionId;
+
+    }
+
+    /* ============================================================
+       حفظ الطلب داخل حساب المستخدم (نسخة احتياطية)
+    ============================================================ */
+    if (invoice) {
+        let user = JSON.parse(localStorage.getItem("loggedUser") || "{}");
+
+        if (!user.orders) user.orders = [];
+
+        const exists = user.orders.some(o => o.id === invoice.orderId);
+
+        if (!exists) {
+            user.orders.push({
+                id: invoice.orderId,
+                date: new Date().toLocaleString(),
+                product: invoice.product,
+                total: invoice.total,
+                key: invoice.key,
+                used: false
+            });
+
+            localStorage.setItem("loggedUser", JSON.stringify(user));
+        }
+    }
+
+    /* ============================================================
+       تنظيف بيانات الفاتورة والسلة
+    ============================================================ */
+    localStorage.removeItem("invoice");
+    localStorage.removeItem("cart");
+</script>
+
+<script>
+    // منع الرجوع للصفحات السابقة بعد الدفع
+    history.pushState(null, "", location.href);
+    window.onpopstate = function () {
+        window.location.href = "index.html";
+    };
+</script>
+
 </body>
 </html>
