@@ -1,22 +1,13 @@
-/* ============================
-   تهيئة EmailJS
-============================ */
 
 (function() {
     emailjs.init("Xxmf1RVjn0UE85ob9");
 })();
 
-/* ============================
-   التحقق من صحة الإيميل
-============================ */
 
 function isValidEmail(email) {
     return /^\S+@\S+\.\S+$/.test(email);
 }
 
-/* ============================
-   إرسال رمز التحقق
-============================ */
 
 function sendCodeEmailJS() {
     const email = document.getElementById("emailInput").value.trim();
@@ -44,9 +35,6 @@ function sendCodeEmailJS() {
         .catch(() => showVerifyAlert("حدث خطأ أثناء الإرسال"));
 }
 
-/* ============================
-   عدّاد 60 ثانية
-============================ */
 
 function startResendTimer() {
     const btn = document.getElementById("resendBtn");
@@ -67,9 +55,6 @@ function startResendTimer() {
     }, 1000);
 }
 
-/* ============================
-   إعادة إرسال الكود
-============================ */
 
 function resendCodeEmailJS() {
     const email = localStorage.getItem("verifyEmail");
@@ -92,9 +77,6 @@ function resendCodeEmailJS() {
         .catch(() => showVerifyAlert("حدث خطأ أثناء الإرسال"));
 }
 
-/* ============================
-   التحقق من الرمز
-============================ */
 
 function verifyLoginEmailJS() {
     const entered = document.getElementById("codeInput").value.trim();
@@ -140,9 +122,6 @@ function verifyLoginEmailJS() {
     }, 1200);
 }
 
-/* ============================
-   إشعار
-============================ */
 
 function showVerifyAlert(msg) {
     const toast = document.getElementById("verifyToast");

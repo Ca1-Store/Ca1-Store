@@ -16,5 +16,14 @@
     "express": "^5.2.1",
     "nodemailer": "^8.0.2",
     "stripe": "^20.4.1"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ca1-Store/Ca1-Store.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Ca1-Store/Ca1-Store/issues"
+  },
+  "homepage": "https://github.com/Ca1-Store/Ca1-Store#readme"
 }

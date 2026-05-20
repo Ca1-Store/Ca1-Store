@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const loadingText = document.getElementById("loadingText");
 
     /* ============================================================
-       🔥 دالة توليد كود عشوائي (بدون حفظ خارجي)
+      دالة توليد كود عشوائي
     ============================================================ */
     function generateRandomKey() {
         const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -60,12 +60,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 const totalSAR = item.price * item.qty;
 
                 /* ============================================================
-                   🔥 1) توليد كود تلقائي (بدون إرسال لأي API)
+                   توليد كود تلقائي 
                 ============================================================ */
                 const generatedKey = generateRandomKey();
 
                 /* ============================================================
-                   2) إرسال الفاتورة إلى Google Sheets (تبقى كما هي)
+                   إرسال الفاتورة إلى Google Sheets 
                 ============================================================ */
                 fetch("https://script.google.com/macros/s/AKfycbxHB6W4H8ZAh2pkQz60BgEVA8rhRIM0KWlIf-YxkJGijArc9pNEeCsD4Pmfh3i8R5THuQ/exec", {
                     method: "POST",
