@@ -1,170 +1,156 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-    <link rel="icon" href="Copilot_20260330_010158.png">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تفاصيل المنتج</title>
-<link rel="stylesheet" href="styles.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>تفاصيل المنتج — CA Store</title>
+
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
-<body class="product-page">
-
-<!-- القائمة الجانبية العامة -->
-<div id="sideMenu" class="side-menu">
-    <a href="index.html">الصفحة الرئيسية</a>
-    <a href="products.html?cat=fivem">منتجات فايف إم</a>
-    <a href="products.html?cat=discord">منتجات الديسكورد</a>
-    <a href="terms.html">الشروط والأحكام</a>
-    <a href="YOUR_DISCORD_LINK">سيرفر الديسكورد</a>
-</div>
-
-<!-- زر القائمة -->
-<div class="side-menu-btn" id="sideMenuBtn">
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="#fff">
-        <path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/>
-    </svg>
-</div>
+<body>
 
 <header>
 
-    <!-- القائمة المنسدلة للملف الشخصي -->
-    <div class="profile-dropdown" id="profileDropdown">
-        <button onclick="window.location.href='orders.html'">طلباتي</button>
-        <button onclick="window.location.href='settings.html'">الإعدادات</button>
-        <button onclick="logout()">تسجيل الخروج</button>
-    </div>
+  <a class="brand" href="index.html">
+    <div class="brand-logo">CA</div>
+    <span class="brand-name">CA STORE</span>
+  </a>
 
-    <!-- القائمة الوسطية -->
-    <nav class="menu-container">
-        <ul class="menu">
-            <li class="dropdown">
-                <a class="drop-btn">القائمة</a>
-                <ul class="dropdown-content">
-                    <li><a href="index.html">الصفحة الرئيسية</a></li>
-                    <li><a href="products.html?cat=fivem">منتجات الفايف إم</a></li>
-                    <li><a href="products.html?cat=discord">منتجات الديسكورد</a></li>
-                </ul>
-            </li>
-        </ul>
-    </nav>
+  <nav class="main-nav">
+    <a href="index.html" class="nav-link">الرئيسية</a>
+    <a href="products.html?cat=fivem" class="nav-link">فايف إم</a>
+    <a href="products.html?cat=discord" class="nav-link">ديسكورد</a>
+    <a href="products.html?cat=subscriptions" class="nav-link">الاشتراكات</a>
+  </nav>
 
-    <!-- البحث -->
+  <div class="header-actions">
+
     <div class="search-icon" id="searchToggle">
-        <svg width="18" height="18" viewBox="0 0 24 24">
-            <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79L20 20.5 21.5 19 15.5 14Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"/>
-        </svg>
+      <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79L20 20.5 21.5 19 15.5 14Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"/></svg>
     </div>
 
     <div class="search-box" id="searchBox">
-        <input type="text" id="searchInput" placeholder="ابحث عن منتج...">
+      <input type="text" id="searchInput" placeholder="ابحث عن منتج...">
     </div>
 
-    <!-- الملف الشخصي -->
-    <div class="profile-icon" id="profileIcon">
-        <svg width="18" height="18" viewBox="0 0 24 24">
-            <path fill="white" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4Zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4Z"/>
-        </svg>
+    <div class="cart-icon" id="cartBtn">
+      <span class="cart-count" id="cartCount">0</span>
+      <svg viewBox="0 0 24 24">
+        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2Zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2ZM7.16 14h9.93c.75 0 1.4-.41 1.73-1.03L21.8 7.48A.75.75 0 0 0 21.12 6H6.21L5.27 3.5A1 1 0 0 0 4.33 3H3v2h.67l3 7.59-.76 1.41C5.37 14.37 5 15.03 5 15.75 5 16.99 5.96 18 7.16 18H19v-2H7.42Z"/>
+      </svg>
     </div>
+
+    <div class="profile-icon" id="profileIcon">
+      <svg viewBox="0 0 24 24">
+        <path fill="white" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4Zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4Z"/>
+      </svg>
+    </div>
+
+    <button class="signin-btn" id="signinBtn" onclick="window.location.href='account.html'">
+      تسجيل الدخول
+    </button>
+
+  </div>
+
+  <div class="side-menu-btn" id="sideMenuBtn">
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/>
+    </svg>
+  </div>
 
 </header>
 
-<!-- السلة -->
-<div class="cart-icon" id="cartBtn">
-    <span class="cart-count" id="cartCount">0</span>
-    <svg width="28" height="28" viewBox="0 0 24 24">
-        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2Zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2ZM7.16 14h9.93c.75 0 1.4-.41 1.73-1.03L21.8 7.48A.75.75 0 0 0 21.12 6H6.21L5.27 3.5A1 1 0 0 0 4.33 3H3v2h.67l3 7.59-.76 1.41C5.37 14.37 5 15.03 5 15.75 5 16.99 5.96 18 7.16 18H19v-2H7.42a.25.25 0 0 1-.26-.25c0-.04.01-.08.03-.11L7.16 14Z"/>
-    </svg>
+<div class="profile-dropdown" id="profileDropdown" style="display:none;"></div>
+
+<div id="sideMenu" class="side-menu">
+  <a href="index.html">الرئيسية</a>
+  <a href="products.html?cat=fivem">فايف إم</a>
+  <a href="products.html?cat=discord">ديسكورد</a>
+  <a href="products.html?cat=subscriptions">الاشتراكات</a>
 </div>
 
-<!-- محتوى المنتج -->
-<section class="product-page">
+<div class="product-page">
 
-    <div class="product-container">
+  <div class="product-image-box">
+    <img id="productImage" src="">
+  </div>
 
-        <div class="product-image-box">
-            <img id="productImage" src="">
-        </div>
+  <div class="product-info-box">
 
-        <div class="product-info-box">
-            <h2 id="productTitle"></h2>
-            <p id="productDesc"></p>
+    <h1 id="productTitle">جاري التحميل...</h1>
+    <p id="productDesc"></p>
+    <div class="price-box" id="productPrice"></div>
 
-            <div class="price-box" id="productPrice"></div>
+    <button id="buyNowBtn">شراء الآن</button>
+    <button id="addToCartBtn">إضافة للسلة</button>
 
-            <!-- تمت إضافة هذا السطر فقط -->
-            <button id="buyNowBtn" class="buy-now-btn hidden">شراء الآن</button>
+    <div id="notAvailable" style="display:none;">المنتج غير متوفر</div>
 
-        </div>
-
+    <div class="product-reviews">
+      <h3>التقييمات</h3>
+      <div id="productReviews"></div>
     </div>
 
-</section>
+  </div>
+
+</div>
+
+<div id="niceAlert" class="nice-alert"></div>
 
 <script src="script.min.js"></script>
 <script src="product.js"></script>
 
+<!-- 🔥 FIXED HEADER LOGIC (بدون تعارض) -->
 <script>
-/* حماية: منع شراء الآن بدون تسجيل دخول */
-function protectedBuyNow(paypalLink) {
+document.addEventListener("DOMContentLoaded", () => {
+
+  const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
+
+  const signinBtn = document.getElementById("signinBtn");
+  const profileIcon = document.getElementById("profileIcon");
+
+  if (user && user.email) {
+    signinBtn.style.display = "none";
+    profileIcon.style.display = "flex";
+  } else {
+    signinBtn.style.display = "block";
+    profileIcon.style.display = "none";
+  }
+
+  // SIDE MENU FIX
+  const btn = document.getElementById("sideMenuBtn");
+  const menu = document.getElementById("sideMenu");
+
+  btn?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    menu.classList.toggle("open");
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!menu.contains(e.target) && !btn.contains(e.target)) {
+      menu.classList.remove("open");
+    }
+  });
+
+  // PROFILE CLICK FIX
+  const profile = document.getElementById("profileIcon");
+  const dropdown = document.getElementById("profileDropdown");
+
+  profile?.addEventListener("click", () => {
     const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
 
-    if (!user || !user.email) {
-        if (typeof openLoginPopup === "function") {
-            openLoginPopup();
-        } else {
-            window.location.href = "account.html";
-        }
-        return;
+    if (!user) {
+      window.location.href = "account.html";
+      return;
     }
 
-    window.location.href = paypalLink;
-}
+    dropdown.classList.toggle("show");
+  });
 
-/* بعد تحميل بيانات المنتج */
-setTimeout(() => {
-
-    if (!product) return;
-
-    const buyNowBtn = document.getElementById("buyNowBtn");
-    const notAvailable = document.getElementById("notAvailable");
-
-    buyNowBtn.classList.add("hidden");
-    notAvailable.classList.add("hidden");
-
-    if (product.status === "soon" || !product.paypal) {
-        notAvailable.classList.remove("hidden");
-        return;
-    }
-
-    buyNowBtn.classList.remove("hidden");
-    buyNowBtn.onclick = () => protectedBuyNow(product.paypal);
-
-}, 200);
-
-/* حماية زر السلة */
-document.getElementById("cartBtn").addEventListener("click", () => {
-    const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
-
-    if (!user || !user.email) {
-        if (typeof openLoginPopup === "function") {
-            openLoginPopup();
-        } else {
-            window.location.href = "account.html";
-        }
-        return;
-    }
-
-    window.location.href = "checkout.html";
 });
-
-/* تسجيل الخروج */
-function logout() {
-    localStorage.removeItem("loggedUser");
-    sessionStorage.clear();
-    window.location.href = "account.html";
-}
 </script>
 
 </body>

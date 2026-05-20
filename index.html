@@ -1,376 +1,499 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<link rel="icon" href="Copilot_20260330_010158.png">
-<meta charset="UTF-8">
-<title>Ca Store</title>
-<link rel="stylesheet" href="styles.min.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CA Store — منتجات رقمية</title>
+  <link rel="icon" href="Copilot_20260330_010158.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
 
-<!-- نافذة تسجيل الدخول -->
+<!-- Login Overlay -->
 <div id="loginOverlay" class="login-overlay" onclick="closeLoginPopup()"></div>
-
 <div id="loginPopup" class="login-popup">
-    <div class="auth-icon">
-        <svg viewBox="0 0 24 24">
-            <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
-        </svg>
-    </div>
-
-    <div class="auth-title">تسجيل الدخول</div>
-
-    <div id="emailStep">
-        <input type="email" id="emailInput" class="auth-input" placeholder="البريد الإلكتروني">
-        <button class="auth-btn" onclick="sendCode()">إرسال رمز التحقق</button>
-    </div>
-
-    <div id="codeStep" style="display:none;">
-        <input type="text" id="codeInput" class="auth-input" placeholder="رمز التحقق">
-        <button class="auth-btn" onclick="verifyLogin()">تأكيد الدخول</button>
-
-        <button id="resendBtn" class="auth-btn" disabled>
-            إعادة الإرسال بعد 60s
-        </button>
-    </div>
+  <div class="auth-icon">
+    <svg viewBox="0 0 24 24"><path fill="white" d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/></svg>
+  </div>
+  <div class="auth-title">تسجيل الدخول</div>
+  <div id="emailStep">
+    <input type="email" id="emailInput" class="auth-input" placeholder="البريد الإلكتروني">
+    <button class="auth-btn" onclick="sendCode()">إرسال رمز التحقق</button>
+  </div>
+  <div id="codeStep" style="display:none;">
+    <input type="text" id="codeInput" class="auth-input" placeholder="رمز التحقق">
+    <button class="auth-btn" onclick="verifyLogin()">تأكيد الدخول</button>
+    <button id="resendBtn" class="auth-btn" disabled onclick="resendCode()">إعادة الإرسال بعد 60s</button>
+  </div>
 </div>
-
-<!-- الحركة السلسة (CSS) -->
 <style>
-.login-overlay {
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.35s ease;
-}
-
-.login-popup {
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-25px);
-    transition: opacity 0.35s ease, transform 0.35s ease;
-}
-
-.login-overlay.show,
-.login-popup.show {
-    opacity: 1;
-    visibility: visible;
-}
-
-.login-popup.show {
-    transform: translateY(0);
-}
+.login-overlay { opacity:0; visibility:hidden; transition:opacity .35s ease; }
+.login-popup { opacity:0; visibility:hidden; transform:translateY(-25px); transition:opacity .35s ease,transform .35s ease; }
+.login-overlay.show,.login-popup.show { opacity:1; visibility:visible; }
+.login-popup.show { transform:translateY(0); }
 </style>
 
-<section class="hero">
-<a href="#productsSection" class="hero-arrow">
-    <span>الإنتقال</span>
-</a>
-
-    <div class="hero-content">
-        <img src="Copilot_20260330_010158.png" alt="CA STORE" class="hero-logo">
-        <h1 class="hero-title">CA STORE</h1>
-        <p class="hero-sub">منتجات رقمية - فايف إم - ديسكورد</p>
-    </div>
-</section>
-<div class="background-video">
-    <div class="video-wrapper">
-        <video autoplay muted loop>
-            <source src="1.mp4" type="video/mp4">
-        </video>
-        <div class="overlay"></div>
-    </div>
-</div>
-
-<section class="features">
-    <div class="feature-box">
-        <div class="icon">⚡</div>
-        <h3>سرعة تسليم فورية</h3>
-        <p>استلم منتجك خلال ثوانٍ بعد الدفع.</p>
-    </div>
-
-    <div class="feature-box">
-        <div class="icon">💳</div>
-        <h3>دفع آمن</h3>
-        <p>طرق دفع موثوقة ومشفرة بالكامل.</p>
-    </div>
-
-    <div class="feature-box">
-        <div class="icon">🎧</div>
-        <h3>دعم فني سريع</h3>
-        <p>نخدمك على مدار الساعة عبر الديسكورد.</p>
-    </div>
-</section>
-
-<div class="divider"></div>
-
-<section class="why-us">
-    <h2>لماذا تختار CA STORE؟</h2>
-    <p>نقدم لك أفضل المنتجات الرقمية بجودة عالية وخدمة سريعة.</p>
-</section>
-
-<div class="divider"></div>
-
-<section class="how-it-works">
-    <h2>كيف يعمل المتجر؟</h2>
-
-    <div class="steps">
-
-        <div class="step">
-            <div class="icon">🛒</div>
-            <h3>اختر المنتج</h3>
-            <p>تصفح منتجاتنا واختر الخدمة المناسبة لك بكل سهولة.</p>
-        </div>
-
-        <div class="step">
-            <div class="icon">💳</div>
-            <h3>أكمل عملية الدفع</h3>
-            <p>ادفع عبر وسائل الدفع الآمنة والمشفرة بالكامل.</p>
-        </div>
-
-        <div class="step">
-            <div class="icon">🎫</div>
-            <h3>افتح تذكرة في الديسكورد</h3>
-            <p>بعد الدفع، قم بفتح تذكرة شراء داخل سيرفر الديسكورد ليتم تسليم المنتج لك مباشرة.</p>
-        </div>
-
-        <div class="step">
-            <div class="icon">🎧</div>
-            <h3>دعم فني دائم</h3>
-            <p>فريقنا جاهز لمساعدتك على مدار الساعة عبر الديسكورد.</p>
-        </div>
-
-    </div>
-
-<section class="join-discord">
-    <div class="discord-box">
-
-        <div class="discord-icon">
-            <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord Icon">
-        </div>
-
-        <h2>انضم إلى سيرفر الديسكورد</h2>
-        <p>للحصول على الدعم الفني، فتح تذكرة شراء، واستلام منتجاتك بسرعة، انضم إلى سيرفر CA الآن.</p>
-
-        <div class="discord-stats">
-            <div class="stat">
-                <span class="num">300+</span>
-                <span class="label">عضو في السيرفر</span>
-            </div>
-        </div>
-
-        <a href="https://discord.gg/Pt7U4bcF7M" class="discord-btn">
-            <span>الانضمام الآن</span>
-            <svg width="22" height="22" viewBox="0 0 24 24">
-                <path fill="white" d="M14 12l-6 6V6z"/>
-            </svg>
-        </a>
-    </div>
-</section>
-
-</div>
-
+<!-- Header -->
 <header>
+  <a class="brand" href="index.html">
+    <div class="brand-logo">CA</div>
+    <span class="brand-name">CA STORE</span>
+  </a>
 
-    <!-- زر القائمة الجانبية -->
-    <div class="side-menu-btn" id="sideMenuBtn">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="#fff">
-            <path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/>
-        </svg>
+  <nav class="main-nav">
+    <a href="index.html" class="nav-link active">الرئيسية</a>
+    <a href="products.html?cat=fivem" class="nav-link">فايف إم</a>
+    <a href="products.html?cat=discord" class="nav-link">ديسكورد</a>
+    <a href="products.html?cat=subscriptions" class="nav-link">الاشتراكات</a>
+  </nav>
+
+  <div class="header-actions">
+    <div class="search-icon" id="searchToggle">
+      <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79L20 20.5 21.5 19 15.5 14Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"/></svg>
     </div>
+    <div class="search-box" id="searchBox">
+      <input type="text" id="searchInput" placeholder="ابحث عن منتج...">
+    </div>
+    <div class="cart-icon" id="cartBtn">
+      <span class="cart-count" id="cartCount">0</span>
+      <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2Zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2ZM7.16 14h9.93c.75 0 1.4-.41 1.73-1.03L21.8 7.48A.75.75 0 0 0 21.12 6H6.21L5.27 3.5A1 1 0 0 0 4.33 3H3v2h.67l3 7.59-.76 1.41C5.37 14.37 5 15.03 5 15.75 5 16.99 5.96 18 7.16 18H19v-2H7.42a.25.25 0 0 1-.26-.25c0-.04.01-.08.03-.11L7.16 14Z"/></svg>
+    </div>
+    <div class="profile-icon" id="profileIcon">
+      <svg viewBox="0 0 24 24"><path fill="white" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4Zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4Z"/></svg>
+    </div>
+    <button class="signin-btn" id="signinBtn" onclick="window.location.href='account.html'">تسجيل الدخول</button>
+  </div>
 
-    <!-- القائمة الوسطية -->
-    <nav class="menu-container">
-        <ul class="menu">
-            <li class="dropdown">
-                <a class="drop-btn">القائمة</a>
-                <ul class="dropdown-content">
-                    <li><a href="index.html">الصفحة الرئيسية</a></li>
-                    <li><a href="products.html?cat=fivem">منتجات الفايف إم</a></li>
-                    <li><a href="products.html?cat=discord">منتجات الديسكورد</a></li>
-                    <li><a href="subscriptions.html">الاشتراكات</a></li>
-                </ul>
-            </li>
-        </ul>
-    </nav>
-
-<!-- البحث -->
-<div class="search-icon" id="searchToggle">
-    <svg width="18" height="18" viewBox="0 0 24 24">
-        <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79L20 20.5 21.5 19 15.5 14Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"/>
-    </svg>
-</div>
-
-<div class="search-box" id="searchBox">
-    <input type="text" id="searchInput" placeholder="ابحث عن منتج...">
-</div>
-
-<!-- الملف الشخصي -->
-<div class="profile-icon" id="profileIcon" style="cursor:pointer;">
-    <svg width="18" height="18" viewBox="0 0 24 24">
-        <path fill="white" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4Zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4Z"/>
-    </svg>
-</div>
-
-<!-- القائمة المنسدلة للملف الشخصي -->
-<div class="profile-dropdown" id="profileDropdown">
-    <a href="profile.html"><i class="fa-solid fa-user"></i> حسابي</a>
-    <a href="orders.html"><i class="fa-solid fa-bag-shopping"></i> طلباتي</a>
-    <a href="settings.html"><i class="fa-solid fa-gear"></i> الإعدادات</a>
-    <a onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> تسجيل الخروج</a>
-</div>
-
+  <div class="side-menu-btn" id="sideMenuBtn">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+  </div>
 </header>
 
-<!-- السلة -->
-<div class="cart-icon" id="cartBtn">
-    <span class="cart-count" id="cartCount">0</span>
-    <svg width="28" height="28" viewBox="0 0 24 24">
-        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2Zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2ZM7.16 14h9.93c.75 0 1.4-.41 1.73-1.03L21.8 7.48A.75.75 0 0 0 21.12 6H6.21L5.27 3.5A1 1 0 0 0 4.33 3H3v2h.67l3 7.59-.76 1.41C5.37 14.37 5 15.03 5 15.75 5 16.99 5.96 18 7.16 18H19v-2H7.42a.25.25 0 0 1-.26-.25c0-.04.01-.08.03-.11L7.16 14Z"/>
-    </svg>
+<!-- Profile Panel (replaces dropdown) -->
+<div class="profile-panel-overlay" id="profilePanelOverlay"></div>
+<div class="profile-panel" id="profilePanel">
+  <div class="panel-header">
+    <div class="panel-title">الملف الشخصي</div>
+    <button class="panel-close" id="closePanelBtn">✕</button>
+  </div>
+  <div class="panel-avatar-section">
+    <div class="panel-avatar" id="panelAvatar">CA</div>
+    <div class="panel-name" id="panelName">مستخدم CA</div>
+    <div class="panel-email" id="panelEmail">غير مسجّل</div>
+  </div>
+  <nav class="panel-nav">
+    <a href="profile.html" class="panel-link">
+      <i class="fa-solid fa-user"></i>
+      <span>حسابي</span>
+      <i class="fa-solid fa-chevron-left panel-chevron"></i>
+    </a>
+    <a href="orders.html" class="panel-link">
+      <i class="fa-solid fa-bag-shopping"></i>
+      <span>طلباتي</span>
+      <i class="fa-solid fa-chevron-left panel-chevron"></i>
+    </a>
+    <a href="settings.html" class="panel-link">
+      <i class="fa-solid fa-gear"></i>
+      <span>الإعدادات</span>
+      <i class="fa-solid fa-chevron-left panel-chevron"></i>
+    </a>
+    <a href="products.html?cat=subscriptions" class="panel-link">
+      <i class="fa-solid fa-crown"></i>
+      <span>اشتراكاتي</span>
+      <i class="fa-solid fa-chevron-left panel-chevron"></i>
+    </a>
+  </nav>
+  <div class="panel-footer">
+    <button class="panel-logout" onclick="logout()">
+      <i class="fa-solid fa-right-from-bracket"></i>
+      تسجيل الخروج
+    </button>
+  </div>
 </div>
 
-<!-- القائمة الجانبية -->
+<!-- Keep dropdown for JS compatibility (hidden) -->
+<div class="profile-dropdown" id="profileDropdown" style="display:none;"></div>
+
 <div id="sideMenu" class="side-menu">
-    <a href="index.html">الصفحة الرئيسية</a>
-    <a href="products.html?cat=fivem">منتجات فايف إم</a>
-    <a href="products.html?cat=discord">منتجات الديسكورد</a>
-    <a href="terms.html">الشروط والأحكام</a>
-    <a href="YOUR_DISCORD_LINK">سيرفر الديسكورد</a>
+  <a href="index.html">الصفحة الرئيسية</a>
+  <a href="products.html?cat=fivem">منتجات فايف إم</a>
+  <a href="products.html?cat=discord">منتجات الديسكورد</a>
+  <a href="products.html?cat=subscriptions">الاشتراكات</a>
+  <a href="terms.html">الشروط والأحكام</a>
+  <a href="https://discord.gg/Pt7U4bcF7M">سيرفر الديسكورد</a>
 </div>
 
-<section class="products-page" id="productsSection">
-    <aside class="sidebar">
+<!-- ═══════════════════ HERO (Compact — no logo) ═══════════════════ -->
+<section class="hero hero-compact">
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      متجر منتجات رقمية احترافية
+    </div>
+    <h1 class="hero-title">CA STORE</h1>
+    <p class="hero-sub">منتجات فايف إم، ديسكورد، واشتراكات مميزة — بجودة عالية وتسليم فوري</p>
+    <div class="hero-cta-row">
+      <a href="#productsSection" class="cta-primary">
+        <i class="fa-solid fa-store"></i>
+        تصفح المنتجات
+      </a>
+      <a href="https://discord.gg/Pt7U4bcF7M" target="_blank" class="cta-secondary">
+        <svg viewBox="0 0 127.14 96.36" width="16" height="16"><path fill="currentColor" d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.11 0A72.37 72.37 0 0 0 45.64 0a105.89 105.89 0 0 0-26.25 8.09C2.79 32.65-1.71 56.6.54 80.21a105.73 105.73 0 0 0 32.17 16.15 77.7 77.7 0 0 0 6.89-11.11 68.42 68.42 0 0 1-10.85-5.18c.91-.66 1.8-1.34 2.66-2a75.57 75.57 0 0 0 64.32 0c.87.71 1.76 1.39 2.66 2a68.68 68.68 0 0 1-10.87 5.19 77 77 0 0 0 6.89 11.1 105.25 105.25 0 0 0 32.19-16.14c2.64-27.38-4.51-51.11-18.9-72.15zM42.45 65.69C36.18 65.69 31 60 31 53s5-12.74 11.43-12.74S54 46 53.89 53s-5.05 12.69-11.44 12.69zm42.24 0C78.41 65.69 73.25 60 73.25 53s5-12.74 11.44-12.74S96.23 46 96.12 53s-5.04 12.69-11.43 12.69z"/></svg>
+        انضم للديسكورد
+      </a>
+    </div>
+  </div>
+  <!-- Stats bar -->
+  <div class="hero-stats">
+    <div class="hstat"><span class="hstat-num">+100</span><span class="hstat-label">عميل راضٍ</span></div>
+    <div class="hstat-div"></div>
+    <div class="hstat"><span class="hstat-num">فوري</span><span class="hstat-label">تسليم المنتجات</span></div>
+    <div class="hstat-div"></div>
+    <div class="hstat"><span class="hstat-num">24/7</span><span class="hstat-label">دعم فني</span></div>
+  </div>
+</section>
 
-        <h3>تصفية المنتجات</h3>
-
-        <div class="filter-group">
-            <label>القسم</label>
-            <select id="filterCategory">
-                <option value="all">كل الأقسام</option>
-                <option value="fivem">منتجات فايف إم</option>
-                <option value="discord">منتجات الديسكورد</option>
-                <option value="subscriptions">الاشتراكات</option>
-                <option value="coming">قريبًا</option>
-            </select>
-        </div>
-
-        <div class="filter-group">
-            <label>السعر</label>
-            <select id="filterPrice">
-                <option value="all">كل الأسعار</option>
-                <option value="low">أقل من 20</option>
-                <option value="mid">من 20 إلى 50</option>
-                <option value="high">أعلى من 50</option>
-            </select>
-        </div>
-
-        <div class="filter-group">
-            <label>الحالة</label>
-            <select id="filterStatus">
-                <option value="all">الكل</option>
-                <option value="available">متاح</option>
-                <option value="soon">قريبًا</option>
-            </select>
-        </div>
-
-    </aside>
-
-    <div class="products-grid" id="productsGrid"></div>
+<!-- ═══════════════════ PRODUCTS (moved up) ═══════════════════ -->
+<section class="products-page home-products" id="productsSection">
+  <aside class="sidebar">
+    <h3><i class="fa-solid fa-sliders" style="color:var(--brand-light);margin-left:8px;font-size:13px;"></i> تصفية المنتجات</h3>
+    <div class="filter-group">
+      <label>القسم</label>
+      <select id="filterCategory">
+        <option value="all">كل الأقسام</option>
+        <option value="fivem">فايف إم</option>
+        <option value="discord">ديسكورد</option>
+        <option value="subscriptions">الاشتراكات</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>السعر</label>
+      <select id="filterPrice">
+        <option value="all">كل الأسعار</option>
+        <option value="low">أقل من 20</option>
+        <option value="mid">من 20 إلى 50</option>
+        <option value="high">أعلى من 50</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>الحالة</label>
+      <select id="filterStatus">
+        <option value="all">الكل</option>
+        <option value="available">متاح</option>
+        <option value="soon">قريبًا</option>
+      </select>
+    </div>
+  </aside>
+  <div class="products-grid" id="productsGrid"></div>
 </section>
 
 <div id="niceAlert" class="nice-alert">تمت إضافة المنتج للسلة</div>
 
+<div class="divider" style="max-width:100%;margin:0;"></div>
+
+<!-- ═══════════════════ FEATURES ═══════════════════ -->
+<section class="why-us">
+  <div class="section-label"><span>مميزاتنا</span></div>
+  <h2>لماذا تختار CA STORE؟</h2>
+  <p class="section-sub">نقدم أفضل المنتجات الرقمية بجودة عالية وخدمة سريعة ودعم مستمر</p>
+  <div class="features">
+    <div class="feature-box">
+      <div class="icon">⚡</div>
+      <h3>تسليم فوري</h3>
+      <p>استلم منتجك خلال ثوانٍ بعد إتمام الدفع بشكل آلي ومباشر.</p>
+    </div>
+    <div class="feature-box">
+      <div class="icon">🔐</div>
+      <h3>دفع آمن</h3>
+      <p>طرق دفع موثوقة ومشفرة بالكامل عبر PayPal الدولية.</p>
+    </div>
+    <div class="feature-box">
+      <div class="icon">🎧</div>
+      <h3>دعم فني دائم</h3>
+      <p>فريقنا جاهز لمساعدتك على مدار الساعة عبر الديسكورد.</p>
+    </div>
+    <div class="feature-box">
+      <div class="icon">🏆</div>
+      <h3>جودة مضمونة</h3>
+      <p>جميع منتجاتنا مختبرة ومضمونة الجودة قبل طرحها للبيع.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════ HOW IT WORKS ═══════════════════ -->
+<section class="how-it-works">
+  <div class="section-label"><span>كيف يعمل</span></div>
+  <h2>خطوات الشراء</h2>
+  <p class="section-sub">أربع خطوات بسيطة للحصول على منتجك</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="icon">🛒</div>
+      <h3>اختر المنتج</h3>
+      <p>تصفح منتجاتنا واختر الخدمة المناسبة لك بكل سهولة.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="icon">💳</div>
+      <h3>أكمل الدفع</h3>
+      <p>ادفع عبر وسائل الدفع الآمنة والمشفرة بالكامل.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="icon">🎫</div>
+      <h3>افتح تذكرة</h3>
+      <p>بعد الدفع، افتح تذكرة شراء داخل سيرفر الديسكورد.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="icon">🎧</div>
+      <h3>استلم منتجك</h3>
+      <p>فريقنا سيسلمك المنتج فوراً ويقدم لك الدعم اللازم.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ DISCORD ═══════════════════ -->
+<div class="join-discord">
+  <div class="discord-box">
+    <div class="discord-icon">
+      <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord">
+    </div>
+    <h2>انضم إلى سيرفر الديسكورد</h2>
+    <p>للحصول على الدعم الفني، فتح تذكرة شراء، واستلام منتجاتك بسرعة — انضم إلى سيرفر CA الآن.</p>
+    <div class="discord-stats">
+      <div class="stat">
+        <span class="num">300+</span>
+        <span class="label">عضو في السيرفر</span>
+      </div>
+    </div>
+    <a href="https://discord.gg/Pt7U4bcF7M" target="_blank" class="discord-btn">
+      <svg viewBox="0 0 127.14 96.36"><path fill="white" d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.11 0A72.37 72.37 0 0 0 45.64 0a105.89 105.89 0 0 0-26.25 8.09C2.79 32.65-1.71 56.6.54 80.21a105.73 105.73 0 0 0 32.17 16.15 77.7 77.7 0 0 0 6.89-11.11 68.42 68.42 0 0 1-10.85-5.18c.91-.66 1.8-1.34 2.66-2a75.57 75.57 0 0 0 64.32 0c.87.71 1.76 1.39 2.66 2a68.68 68.68 0 0 1-10.87 5.19 77 77 0 0 0 6.89 11.1 105.25 105.25 0 0 0 32.19-16.14c2.64-27.38-4.51-51.11-18.9-72.15zM42.45 65.69C36.18 65.69 31 60 31 53s5-12.74 11.43-12.74S54 46 53.89 53s-5.05 12.69-11.44 12.69zm42.24 0C78.41 65.69 73.25 60 73.25 53s5-12.74 11.44-12.74S96.23 46 96.12 53s-5.04 12.69-11.43 12.69z"/></svg>
+      الانضمام الآن
+    </a>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════ REVIEWS SECTION ═══════════════════ -->
+<section class="review-section" id="reviewSection">
+  <div class="section-label"><span>آراء العملاء</span></div>
+  <h2>ماذا يقول عملاؤنا؟</h2>
+  <p class="section-sub">شاركنا تجربتك مع CA STORE وساعد الآخرين في اتخاذ قرارهم</p>
+
+  <div class="review-layout">
+    <!-- Form -->
+    <div class="review-form-box">
+      <h3><i class="fa-solid fa-pen-to-square" style="color:var(--brand-light);margin-left:10px;"></i> اكتب تقييمك</h3>
+      <div class="review-field">
+        <label>اسمك</label>
+        <input type="text" id="reviewName" placeholder="مثال: أحمد" maxlength="40">
+      </div>
+      <div class="review-field">
+        <label>اسم المنتج</label>
+        <input type="text" id="reviewProduct" placeholder="مثال: سكريبت فايف إم" maxlength="60">
+      </div>
+      <div class="review-field">
+        <label>تقييمك بالنجوم</label>
+        <div class="star-selector" id="starSelector">
+          <span data-v="1">★</span>
+          <span data-v="2">★</span>
+          <span data-v="3">★</span>
+          <span data-v="4">★</span>
+          <span data-v="5">★</span>
+        </div>
+      </div>
+      <div class="review-field">
+        <label>رأيك بالمنتج</label>
+        <textarea id="reviewText" rows="4" placeholder="شاركنا تجربتك..." maxlength="300"></textarea>
+      </div>
+      <button class="review-submit" onclick="submitReview()">
+        <i class="fa-solid fa-paper-plane"></i>
+        إرسال التقييم
+      </button>
+      <div id="reviewMsg" class="review-msg" style="display:none;"></div>
+    </div>
+
+    <!-- Reviews Wall -->
+    <div class="review-wall" id="reviewsWall">
+      <div class="review-empty">
+        <i class="fa-regular fa-star"></i>
+        <p>لا توجد تقييمات بعد — كن أول من يشارك رأيه!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider" style="max-width:100%;margin:0;"></div>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="brand-logo" style="width:36px;height:36px;font-size:13px;">CA</div>
+      <span style="font-weight:800;font-size:16px;">CA STORE</span>
+    </div>
+    <p class="footer-copy">© 2025 CA STORE — جميع الحقوق محفوظة</p>
+    <div class="footer-links">
+      <a href="terms.html">الشروط والأحكام</a>
+      <a href="https://discord.gg/Pt7U4bcF7M" target="_blank">ديسكورد</a>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script src="Email.JS"></script>
 <script src="script.min.js"></script>
-
 <script>
-/* تنظيف البيانات */
-function clean(text) {
-    return String(text)
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
-}
-
-/* جلب المستخدم */
+/* ──────────── USER STATE ──────────── */
 const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
 
-/* إخفاء القائمة إذا المستخدم غير مسجّل */
 if (!user || !user.email) {
-    document.getElementById("profileDropdown").style.display = "none";
+  document.getElementById("signinBtn").style.display = "";
+  document.getElementById("profileIcon").style.display = "none";
+} else {
+  document.getElementById("signinBtn").style.display = "none";
+  // Fill panel info
+  document.getElementById("panelEmail").textContent = user.email;
+  if (user.name) document.getElementById("panelName").textContent = user.name;
+  const initials = (user.name || user.email).slice(0,2).toUpperCase();
+  document.getElementById("panelAvatar").textContent = initials;
 }
 
-/* حماية روابط الحساب */
-if (!user) {
-    document.querySelectorAll("#profileDropdown a").forEach(a => {
-        a.addEventListener("click", (e) => {
-            e.preventDefault();
-            window.location.href = "account.html";
-        });
-    });
-}
-
-/* منع ظهور نافذة تسجيل الدخول للمستخدم المسجّل */
-if (user) {
-    document.getElementById("loginPopup").classList.remove("show");
-    document.getElementById("loginOverlay").classList.remove("show");
-}
-
-/* القائمة الجانبية */
-const sideMenu = document.getElementById("sideMenu");
-const sideMenuBtn = document.getElementById("sideMenuBtn");
-
-sideMenuBtn.addEventListener("click", () => {
-    sideMenu.classList.add("open");
-    sideMenuBtn.classList.add("hidden");
-});
-
-document.addEventListener("click", (e) => {
-    if (!sideMenu.contains(e.target) && !sideMenuBtn.contains(e.target)) {
-        sideMenu.classList.remove("open");
-        sideMenuBtn.classList.remove("hidden");
-    }
-});
-
-/* القائمة المنسدلة للملف الشخصي */
-const profileIcon = document.getElementById("profileIcon");
-const profileDropdown = document.getElementById("profileDropdown");
-
-profileIcon.addEventListener("click", () => {
-    if (!user) {
-        window.location.href = "account.html";
-        return;
-    }
-    profileDropdown.classList.toggle("open");
-});
-
-document.addEventListener("click", (e) => {
-    if (!profileDropdown.contains(e.target) && !profileIcon.contains(e.target)) {
-        profileDropdown.classList.remove("open");
-    }
-});
-
-/* تسجيل خروج آمن */
-function logout() {
-    localStorage.removeItem("loggedUser");
-    sessionStorage.clear();
-    window.location.href = "account.html";
-}
-
-/* دوال فتح وإغلاق النافذة */
+/* ──────────── LOGIN POPUP ──────────── */
 function openLoginPopup() {
-    document.getElementById("loginOverlay").classList.add("show");
-    document.getElementById("loginPopup").classList.add("show");
+  document.getElementById("loginOverlay").classList.add("show");
+  document.getElementById("loginPopup").classList.add("show");
 }
-
 function closeLoginPopup() {
-    document.getElementById("loginOverlay").classList.remove("show");
-    document.getElementById("loginPopup").classList.remove("show");
+  document.getElementById("loginOverlay").classList.remove("show");
+  document.getElementById("loginPopup").classList.remove("show");
 }
 
+/* ──────────── PROFILE PANEL ──────────── */
+const profilePanel = document.getElementById("profilePanel");
+const profilePanelOverlay = document.getElementById("profilePanelOverlay");
 
+function openProfilePanel() {
+  profilePanel.classList.add("open");
+  profilePanelOverlay.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function closeProfilePanel() {
+  profilePanel.classList.remove("open");
+  profilePanelOverlay.classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+document.getElementById("profileIcon") && document.getElementById("profileIcon").addEventListener("click", () => {
+  if (!user) { window.location.href = "account.html"; return; }
+  openProfilePanel();
+});
+profilePanelOverlay.addEventListener("click", closeProfilePanel);
+document.getElementById("closePanelBtn").addEventListener("click", closeProfilePanel);
+
+/* ──────────── LOGOUT ──────────── */
+function logout() {
+  localStorage.removeItem("loggedUser");
+  sessionStorage.clear();
+  window.location.href = "account.html";
+}
+
+/* ──────────── REVIEW SYSTEM ──────────── */
+let currentRating = 0;
+
+// Star selector
+document.getElementById("starSelector").querySelectorAll("span").forEach(star => {
+  star.addEventListener("click", () => {
+    currentRating = parseInt(star.dataset.v);
+    updateStars();
+  });
+  star.addEventListener("mouseenter", () => {
+    highlightStars(parseInt(star.dataset.v));
+  });
+});
+document.getElementById("starSelector").addEventListener("mouseleave", updateStars);
+
+function highlightStars(n) {
+  document.querySelectorAll("#starSelector span").forEach(s => {
+    s.classList.toggle("active", parseInt(s.dataset.v) <= n);
+  });
+}
+function updateStars() {
+  if (currentRating > 0) highlightStars(currentRating);
+  else document.querySelectorAll("#starSelector span").forEach(s => s.classList.remove("active"));
+}
+
+function submitReview() {
+  const name    = document.getElementById("reviewName").value.trim();
+  const product = document.getElementById("reviewProduct").value.trim();
+  const text    = document.getElementById("reviewText").value.trim();
+  const msg     = document.getElementById("reviewMsg");
+
+  if (!name || !product || !currentRating || !text) {
+    msg.style.display = "block";
+    msg.className = "review-msg error";
+    msg.textContent = "يرجى تعبئة جميع الحقول واختيار التقييم بالنجوم";
+    return;
+  }
+
+  const reviews = JSON.parse(localStorage.getItem("castore_reviews") || "[]");
+  reviews.unshift({
+    name, product, rating: currentRating, text,
+    date: new Date().toLocaleDateString("ar-SA")
+  });
+  localStorage.setItem("castore_reviews", JSON.stringify(reviews.slice(0, 50)));
+
+  // Reset
+  document.getElementById("reviewName").value = "";
+  document.getElementById("reviewProduct").value = "";
+  document.getElementById("reviewText").value = "";
+  currentRating = 0;
+  updateStars();
+
+  msg.style.display = "block";
+  msg.className = "review-msg success";
+  msg.textContent = "شكراً! تم إرسال تقييمك بنجاح ✓";
+  setTimeout(() => { msg.style.display = "none"; }, 3500);
+
+  renderReviews();
+}
+
+function renderReviews() {
+  const reviews = JSON.parse(localStorage.getItem("castore_reviews") || "[]");
+  const wall = document.getElementById("reviewsWall");
+
+  if (!reviews.length) {
+    wall.innerHTML = `<div class="review-empty"><i class="fa-regular fa-star"></i><p>لا توجد تقييمات بعد — كن أول من يشارك رأيه!</p></div>`;
+    return;
+  }
+
+  wall.innerHTML = reviews.map((r, i) => `
+    <div class="review-card" style="animation-delay:${i * 0.05}s">
+      <div class="review-stars">${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)}</div>
+      <p class="review-text">"${escHtml(r.text)}"</p>
+      <div class="review-footer">
+        <span class="reviewer-name">${escHtml(r.name)}</span>
+        <span class="reviewer-product"><i class="fa-solid fa-box-open" style="font-size:10px;margin-left:4px;opacity:.6;"></i>${escHtml(r.product)}</span>
+        <span class="review-date">${r.date || ""}</span>
+      </div>
+    </div>
+  `).join("");
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+// Load reviews on page ready
+renderReviews();
 </script>
-
 </body>
 </html>

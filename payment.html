@@ -1,117 +1,49 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-        <link rel="icon" href="Copilot_20260330_010158.png">
-
 <head>
-    <meta charset="UTF-8">
-    <title>الدفع - Ca Store</title>
-
-<link rel="stylesheet" href="styles.min.css">
-
-    <!-- PayPal SDK -->
-    <script src="https://www.paypal.com/sdk/js?client-id=AcvvAdqB7dL3NeWPejZBERx8BsqD-t0R_uljoZRxeTdFBE7Mrv_dODZEjiIWtalas_d2DAsZdDWyW94x&currency=USD"></script>
-
-    <style>
-        .paypal-box {
-            width: 380px;
-            margin: 0 auto;
-            padding: 25px;
-            background: #111;
-            border-radius: 12px;
-            text-align: center;
-        }
-
-        #loadingText {
-            opacity: 0.8;
-            margin-bottom: 15px;
-        }
-
-        #priceInfo {
-            color: white;
-            margin-bottom: 15px;
-            font-size: 18px;
-        }
-
-        #usdInfo {
-            color: #ccc;
-            margin-bottom: 20px;
-            font-size: 15px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الدفع — CA Store</title>
+  <link rel="icon" href="Copilot_20260330_010158.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
-
-<body class="checkout-page">
-
-<div class="stars"></div>
+<body>
 
 <header>
-    <nav>
-        <ul class="menu">
-<div class="back-btn" onclick="goBackProperly()">
-    <svg width="26" height="26" viewBox="0 0 24 24">
-        <path fill="white" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-    </svg>
-</div>
-        </ul>
-    </nav>
+  <a class="brand" href="index.html">
+    <div class="brand-logo">CA</div>
+    <span class="brand-name">CA STORE</span>
+  </a>
+  <div class="header-actions">
+    <a onclick="goBackProperly()" class="back-btn" style="cursor:pointer;">
+      <i class="fa-solid fa-arrow-right"></i> رجوع
+    </a>
+  </div>
 </header>
 
-<section class="products-page" style="margin-top:140px;">
+<div style="min-height:100vh;display:grid;place-items:center;padding:calc(var(--header-h)+40px) 24px 60px;">
+  <div class="paypal-box">
+    <div style="font-size:32px;margin-bottom:16px;">💳</div>
+    <div id="priceInfo">جاري التحميل...</div>
+    <div id="usdInfo"></div>
+    <div id="loadingText">جاري تهيئة بوابة الدفع...</div>
+    <div id="paypal-button-container"></div>
+  </div>
+</div>
 
-    <div class="paypal-box">
-
-        <h2>الدفع</h2>
-
-        <!-- عرض السعر بالريال والدولار -->
-        <p id="priceInfo"></p>
-        <p id="usdInfo"></p>
-
-        <p id="loadingText">جاري تجهيز بوابة الدفع…</p>
-
-        <div id="paypal-button-container"></div>
-
-        <p style="margin-top:10px; opacity:0.5; font-size:13px;">Powered by PayPal</p>
-
-    </div>
-
-</section>
-
-<script>
-    // قراءة السلة
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-
-    if (!cart.length) {
-        alert("السلة فارغة — لا يمكن إتمام الدفع");
-        window.location.href = "checkout.html";
-    }
-
-    // حساب الإجمالي بالريال
-    const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-
-    // تحويل الريال إلى دولار
-    const usdRate = 0.27;
-    const usdTotal = (total * usdRate).toFixed(2);
-
-    // عرض السعر للزبون
-    document.getElementById("priceInfo").textContent = `${total.toFixed(2)} ر.س`;
-    document.getElementById("usdInfo").textContent = `(≈ ${usdTotal} USD)`;
-</script>
-
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script src="Email.JS"></script>
 <script src="payment.js"></script>
 <script>
 function goBackProperly() {
-    const ref = document.referrer;
-
-    // إذا جاء من checkout أو payment → نرجعه للصفحة الرئيسية
-    if (ref.includes("checkout") || ref.includes("payment")) {
-        window.location.href = "index.html";
-        return;
-    }
-
-    // غير ذلك → يرجع للصفحة السابقة فعلياً
-    history.back();
+  const ref = document.referrer;
+  if (ref && ref.includes("checkout")) { window.location.href = "checkout.html"; }
+  else { history.back(); }
 }
 </script>
-
 </body>
 </html>
