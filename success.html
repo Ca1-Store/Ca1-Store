@@ -465,7 +465,7 @@ h1{
 
                 <div class="info-box">
                     <div class="info-title">رقم الطلب</div>
-                    <div class="info-value">#CA-54821</div>
+                    <div class="info-value" id="inv-id">#CA-54821</div>
                 </div>
 
                 <div class="info-box">
@@ -480,7 +480,7 @@ h1{
 
                 <div class="info-box">
                     <div class="info-title">وقت تسجيل الطلب</div>
-                    <div class="info-value">منذ لحظات</div>
+                    <div class="info-value" id="inv-date">منذ لحظات</div>
                 </div>
 
             </div>
@@ -595,6 +595,16 @@ h1{
     </div>
 
 </div>
+
+<script>
+(function () {
+    var inv = JSON.parse(localStorage.getItem("invoice") || "null");
+    if (!inv) return;
+    if (inv.id)   document.getElementById("inv-id").textContent   = "#" + inv.id.slice(-8).toUpperCase();
+    if (inv.date) document.getElementById("inv-date").textContent = inv.date;
+    localStorage.removeItem("invoice");
+})();
+</script>
 
 </body>
 </html>
