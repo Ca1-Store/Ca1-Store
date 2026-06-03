@@ -1,10 +1,17 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+    const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
 
     if (!cart.length) {
         alert("السلة فارغة — لا يمكن إتمام الدفع");
         window.location.href = "checkout.html";
+        return;
+    }
+
+    if (!user || !user.email) {
+        alert("يجب تسجيل الدخول أولاً لإتمام عملية الشراء");
+        window.location.href = "account.html";
         return;
     }
 
@@ -92,12 +99,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 localStorage.setItem("invoice", JSON.stringify(orderEntry));
 
-                let user = JSON.parse(localStorage.getItem("loggedUser") || "{}");
                 if (!user.orders) user.orders = [];
                 user.orders.push(orderEntry);
                 localStorage.setItem("loggedUser", JSON.stringify(user));
 
-                const ordersKey = "orders_" + (user.email || details.payer.email_address || "guest");
+                const ordersKey = "orders_" + user.email;
                 const existing  = JSON.parse(localStorage.getItem(ordersKey) || "[]");
                 existing.push(orderEntry);
                 localStorage.setItem(ordersKey, JSON.stringify(existing));

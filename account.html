@@ -1,91 +1,702 @@
 <!DOCTYPE html>
+
 <html lang="ar" dir="rtl">
+
 <head>
+
   <meta charset="UTF-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>تسجيل الدخول — CA Store</title>
+
   <link rel="icon" href="Copilot_20260330_010158.png">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
+
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
   <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
   <link rel="stylesheet" href="styles.css">
+
+  <style>
+
+    .auth-loading {
+
+      opacity: 0.6;
+
+      pointer-events: none;
+
+    }
+
+    .auth-loading::after {
+
+      content: '';
+
+      position: absolute;
+
+      inset: 0;
+
+      background: rgba(0,0,0,0.3);
+
+      border-radius: inherit;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+    }
+
+    .auth-loading::before {
+
+      content: '';
+
+      position: absolute;
+
+      top: 50%;
+
+      left: 50%;
+
+      transform: translate(-50%, -50%);
+
+      width: 24px;
+
+      height: 24px;
+
+      border: 2px solid rgba(255,255,255,0.3);
+
+      border-top-color: #fff;
+
+      border-radius: 50%;
+
+      animation: spin 0.8s linear infinite;
+
+      z-index: 1;
+
+    }
+
+    @keyframes spin {
+
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+
+    }
+
+    .auth-error {
+
+      color: var(--bad);
+
+      font-size: 13px;
+
+      margin-top: 8px;
+
+      text-align: center;
+
+      display: none;
+
+    }
+
+    .auth-error.show {
+
+      display: block;
+
+    }
+
+    .auth-success {
+
+      color: var(--ok);
+
+      font-size: 13px;
+
+      margin-top: 8px;
+
+      text-align: center;
+
+      display: none;
+
+    }
+
+    .auth-success.show {
+
+      display: block;
+
+    }
+
+    .resend-btn {
+
+      width: 100%;
+
+      padding: 11px;
+
+      border-radius: 12px;
+
+      background: rgba(255,255,255,0.05);
+
+      border: 1px solid var(--line-2);
+
+      color: var(--ink-soft);
+
+      font-weight: 700;
+
+      font-size: 13px;
+
+      cursor: pointer;
+
+      margin-top: 10px;
+
+      transition: all 0.22s var(--ease);
+
+    }
+
+    .resend-btn:hover:not(:disabled) {
+
+      background: rgba(255,255,255,0.1);
+
+      border-color: var(--line-2);
+
+      color: #fff;
+
+    }
+
+    .resend-btn:disabled {
+
+      opacity: 0.5;
+
+      cursor: not-allowed;
+
+    }
+
+    .back-to-email {
+
+      text-align: center;
+
+      margin-top: 16px;
+
+    }
+
+    .back-to-email button {
+
+      background: none;
+
+      border: none;
+
+      color: var(--brand-light);
+
+      font-size: 13px;
+
+      font-weight: 700;
+
+      cursor: pointer;
+
+      transition: color 0.22s var(--ease);
+
+    }
+
+    .back-to-email button:hover {
+
+      color: #fff;
+
+    }
+
+    .input-group {
+
+      position: relative;
+
+      margin-bottom: 14px;
+
+    }
+
+    .input-icon {
+
+      position: absolute;
+
+      left: 14px;
+
+      top: 50%;
+
+      transform: translateY(-50%);
+
+      color: var(--muted);
+
+      font-size: 14px;
+
+      pointer-events: none;
+
+    }
+
+    .auth-input {
+
+      padding-left: 42px;
+
+    }
+
+    .code-inputs {
+
+      display: flex;
+
+      gap: 8px;
+
+      justify-content: center;
+
+      margin-bottom: 14px;
+
+    }
+
+    .code-input {
+
+      width: 45px;
+
+      height: 50px;
+
+      text-align: center;
+
+      font-size: 20px;
+
+      font-weight: 800;
+
+      background: rgba(255,255,255,0.05);
+
+      border: 1px solid var(--line-2);
+
+      border-radius: 12px;
+
+      color: #fff;
+
+      outline: none;
+
+      transition: all 0.22s var(--ease);
+
+    }
+
+    .code-input:focus {
+
+      border-color: var(--brand);
+
+      background: rgba(124,58,237,0.07);
+
+    }
+
+    .code-input::placeholder {
+
+      color: var(--muted-2);
+
+      font-size: 14px;
+
+    }
+
+  </style>
+
 </head>
+
 <body>
 
+
+
 <header>
+
   <a class="brand" href="index.html">
+
     <div class="brand-logo">CA</div>
+
     <span class="brand-name">CA STORE</span>
+
   </a>
+
   <nav class="main-nav">
+
     <a href="index.html" class="nav-link">الرئيسية</a>
+
     <a href="products.html?cat=fivem" class="nav-link">فايف إم</a>
+
     <a href="products.html?cat=discord" class="nav-link">ديسكورد</a>
+
     <a href="subscriptions.html" class="nav-link">الاشتراكات</a>
+
   </nav>
+
   <div class="header-actions">
+
     <div class="search-icon" id="searchToggle">
+
       <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79L20 20.5 21.5 19 15.5 14Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"/></svg>
+
     </div>
+
     <div class="search-box" id="searchBox">
+
       <input type="text" id="searchInput" placeholder="ابحث عن منتج...">
+
     </div>
+
     <div class="cart-icon" id="cartBtn">
+
       <span class="cart-count" id="cartCount">0</span>
+
       <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2Zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2ZM7.16 14h9.93c.75 0 1.4-.41 1.73-1.03L21.8 7.48A.75.75 0 0 0 21.12 6H6.21L5.27 3.5A1 1 0 0 0 4.33 3H3v2h.67l3 7.59-.76 1.41C5.37 14.37 5 15.03 5 15.75 5 16.99 5.96 18 7.16 18H19v-2H7.42a.25.25 0 0 1-.26-.25c0-.04.01-.08.03-.11L7.16 14Z"/></svg>
+
     </div>
+
+    <div class="profile-icon" id="profileIcon" onclick="toggleSideMenu()" style="cursor: pointer;">
+
+      <svg viewBox="0 0 24 24"><path fill="white" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4Zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4Z"/></svg>
+
+    </div>
+
   </div>
-  <div class="side-menu-btn" id="sideMenuBtn">
-    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
-  </div>
+
 </header>
 
+
+
+<!-- Side Menu Overlay -->
+
+<div class="side-menu-overlay" id="sideMenuOverlay" onclick="toggleSideMenu()"></div>
+
+
+
+<!-- Side Menu -->
+
 <div id="sideMenu" class="side-menu">
-  <a href="index.html">الصفحة الرئيسية</a>
-  <a href="products.html?cat=fivem">منتجات فايف إم</a>
-  <a href="products.html?cat=discord">منتجات الديسكورد</a>
-  <a href="subscriptions.html">الاشتراكات</a>
-  <a href="terms.html">الشروط والأحكام</a>
-  <a href="https://discord.gg/Pt7U4bcF7M">سيرفر الديسكورد</a>
+
+  <button class="side-menu-close" id="sideMenuClose" onclick="toggleSideMenu()">
+
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+  </button>
+
+  
+
+  <div class="side-menu-header">
+
+    <div class="side-menu-user">
+
+      <div class="side-menu-avatar" id="sideMenuAvatar">CA</div>
+
+      <div class="side-menu-user-info">
+
+        <h3 id="sideMenuUserName">مستخدم CA</h3>
+
+        <p id="sideMenuUserEmail">غير معروف</p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="side-menu-links">
+
+    <a href="index.html">
+
+      <i class="fa-solid fa-home"></i>
+
+      <span>الصفحة الرئيسية</span>
+
+    </a>
+
+    <a href="profile.html">
+
+      <i class="fa-solid fa-user"></i>
+
+      <span>حسابي</span>
+
+    </a>
+
+    <a href="orders.html">
+
+      <i class="fa-solid fa-bag-shopping"></i>
+
+      <span>طلباتي</span>
+
+    </a>
+
+    <a href="settings.html">
+
+      <i class="fa-solid fa-gear"></i>
+
+      <span>الإعدادات</span>
+
+    </a>
+
+    <a href="products.html?cat=fivem">
+
+      <i class="fa-solid fa-gamepad"></i>
+
+      <span>منتجات فايف إم</span>
+
+    </a>
+
+    <a href="products.html?cat=discord">
+
+      <i class="fa-brands fa-discord"></i>
+
+      <span>منتجات الديسكورد</span>
+
+    </a>
+
+    <a href="subscriptions.html">
+
+      <i class="fa-solid fa-crown"></i>
+
+      <span>اشتراكاتي</span>
+
+    </a>
+
+    <a href="terms.html">
+
+      <i class="fa-solid fa-file-contract"></i>
+
+      <span>الشروط والأحكام</span>
+
+    </a>
+
+  </div>
+
+
+
+  <div class="side-menu-logout">
+
+    <button onclick="sideMenuLogout()">
+
+      <i class="fa-solid fa-right-from-bracket"></i>
+
+      <span>تسجيل الخروج</span>
+
+    </button>
+
+  </div>
+
 </div>
+
+
 
 <div class="dark-login">
+
   <div class="auth-box">
+
     <div class="auth-icon">
+
       <svg viewBox="0 0 24 24" width="36" height="36">
+
         <path fill="white" d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+
       </svg>
+
     </div>
+
     <div class="auth-title">مرحباً بك في CA Store</div>
 
+
+
     <div id="emailStep">
-      <input type="email" id="emailInput" class="auth-input" placeholder="البريد الإلكتروني" autocomplete="email">
-<button class="auth-btn" onclick="sendCodeEmailJS()">إرسال رمز التحقق</button>
+
+      <div class="input-group">
+
+        <input type="email" id="emailInput" class="auth-input" placeholder="البريد الإلكتروني" autocomplete="email">
+
+        <i class="fas fa-envelope input-icon"></i>
+
+      </div>
+
+      <div id="emailError" class="auth-error"></div>
+
+      <button id="sendCodeBtn" class="auth-btn" onclick="sendCodeEmailJS()">إرسال رمز التحقق</button>
+
     </div>
+
+
 
     <div id="codeStep" style="display:none;">
-      <p style="text-align:center;color:var(--muted);font-size:14px;margin-bottom:18px;">تم إرسال رمز التحقق إلى بريدك الإلكتروني</p>
-      <input type="text" id="codeInput" class="auth-input" placeholder="رمز التحقق المكوّن من 6 أرقام" maxlength="6">
-<button class="auth-btn" onclick="verifyLoginEmailJS()">تأكيد الدخول</button>
-     <button id="resendBtn" class="auth-btn" onclick="resendCodeEmailJS()">إعادة الإرسال بعد <span id="countdown">60</span>s</button>
+
+      <p style="text-align:center;color:var(--muted);font-size:14px;margin-bottom:18px;">
+
+        تم إرسال رمز التحقق إلى <span id="sentEmail" style="color:var(--brand-light);font-weight:700;"></span>
+
+      </p>
+
+      <div class="code-inputs">
+
+        <input type="text" class="code-input" maxlength="1" data-index="0" placeholder="_">
+
+        <input type="text" class="code-input" maxlength="1" data-index="1" placeholder="_">
+
+        <input type="text" class="code-input" maxlength="1" data-index="2" placeholder="_">
+
+        <input type="text" class="code-input" maxlength="1" data-index="3" placeholder="_">
+
+        <input type="text" class="code-input" maxlength="1" data-index="4" placeholder="_">
+
+        <input type="text" class="code-input" maxlength="1" data-index="5" placeholder="_">
+
+      </div>
+
+      <div id="codeError" class="auth-error"></div>
+
+      <button id="verifyBtn" class="auth-btn" onclick="verifyLoginEmailJS()">تأكيد الدخول</button>
+
+      <button id="resendBtn" class="resend-btn" disabled>إعادة الإرسال بعد <span id="countdown">60</span> ثانية</button>
+
+      <div class="back-to-email">
+
+        <button onclick="backToEmailStep()">تغيير البريد الإلكتروني</button>
+
+      </div>
+
     </div>
+
   </div>
+
 </div>
 
-<div id="verifyToast" style="
-  position:fixed;top:24px;left:50%;transform:translate(-50%,-20px);
-  padding:12px 22px;border-radius:12px;
-  background:var(--surface-2);border:1px solid var(--line-2);
-  color:#fff;font-size:13.5px;font-weight:700;
-  box-shadow:var(--shadow-md);
-  opacity:0;visibility:hidden;z-index:300;
-  transition:all .28s var(--ease);">
-  تم الإرسال!
-</div>
+
+
+<div id="verifyToast" class="verify-toast"></div>
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
 <script src="Email.JS"></script>
+
 <script src="script.min.js"></script>
+
+<script>
+
+// Code input handling
+
+document.addEventListener('DOMContentLoaded', function() {
+
+  const codeInputs = document.querySelectorAll('.code-input');
+
+  
+
+  codeInputs.forEach((input, index) => {
+
+    input.addEventListener('input', function(e) {
+
+      const value = e.target.value;
+
+      
+
+      // Only allow numbers
+
+      if (!/^\d*$/.test(value)) {
+
+        e.target.value = value.replace(/\D/g, '');
+
+        return;
+
+      }
+
+      
+
+      // Move to next input
+
+      if (value.length === 1 && index < codeInputs.length - 1) {
+
+        codeInputs[index + 1].focus();
+
+      }
+
+    });
+
+    
+
+    input.addEventListener('keydown', function(e) {
+
+      // Handle backspace
+
+      if (e.key === 'Backspace' && !e.target.value && index > 0) {
+
+        codeInputs[index - 1].focus();
+
+      }
+
+    });
+
+    
+
+    input.addEventListener('paste', function(e) {
+
+      e.preventDefault();
+
+      const pastedData = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
+
+      
+
+      pastedData.split('').forEach((char, i) => {
+
+        if (codeInputs[i]) {
+
+          codeInputs[i].value = char;
+
+        }
+
+      });
+
+      
+
+      // Focus the last filled input or the next empty one
+
+      const lastIndex = Math.min(pastedData.length, codeInputs.length - 1);
+
+      codeInputs[lastIndex].focus();
+
+    });
+
+  });
+
+});
+
+
+
+function getCodeFromInputs() {
+
+  const codeInputs = document.querySelectorAll('.code-input');
+
+  let code = '';
+
+  codeInputs.forEach(input => {
+
+    code += input.value;
+
+  });
+
+  return code;
+
+}
+
+
+
+function backToEmailStep() {
+
+  document.getElementById('emailStep').style.display = 'block';
+
+  document.getElementById('codeStep').style.display = 'none';
+
+  document.getElementById('emailError').classList.remove('show');
+
+  document.getElementById('codeError').classList.remove('show');
+
+  
+
+  // Clear code inputs
+
+  const codeInputs = document.querySelectorAll('.code-input');
+
+  codeInputs.forEach(input => input.value = '');
+
+}
+
+</script>
+
 </body>
+
 </html>
+

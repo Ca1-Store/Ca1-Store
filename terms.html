@@ -1,53 +1,266 @@
 <!DOCTYPE html>
+
 <html lang="ar" dir="rtl">
+
 <head>
+
   <meta charset="UTF-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>الشروط والأحكام — CA Store</title>
+
   <link rel="icon" href="Copilot_20260330_010158.png">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
+
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
   <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="styles.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </head>
+
 <body>
 
+
+
 <header>
+
   <a class="brand" href="index.html">
+
     <div class="brand-logo">CA</div>
+
     <span class="brand-name">CA STORE</span>
+
   </a>
+
+  <nav class="main-nav">
+
+    <a href="index.html" class="nav-link">الرئيسية</a>
+
+    <a href="products.html?cat=fivem" class="nav-link">فايف إم</a>
+
+    <a href="products.html?cat=discord" class="nav-link">ديسكورد</a>
+
+    <a href="subscriptions.html" class="nav-link">الاشتراكات</a>
+
+  </nav>
+
   <div class="header-actions">
-    <a href="index.html" class="back-btn">
-      <i style="font-family:system-ui;">←</i> رجوع
-    </a>
+
+    <div class="search-icon" id="searchToggle">
+
+      <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79L20 20.5 21.5 19 15.5 14Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"/></svg>
+
+    </div>
+
+    <div class="search-box" id="searchBox">
+
+      <input type="text" id="searchInput" placeholder="ابحث عن منتج...">
+
+    </div>
+
+    <div class="cart-icon" id="cartBtn">
+
+      <span class="cart-count" id="cartCount">0</span>
+
+      <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2Zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2ZM7.16 14h9.93c.75 0 1.4-.41 1.73-1.03L21.8 7.48A.75.75 0 0 0 21.12 6H6.21L5.27 3.5A1 1 0 0 0 4.33 3H3v2h.67l3 7.59-.76 1.41C5.37 14.37 5 15.03 5 15.75 5 16.99 5.96 18 7.16 18H19v-2H7.42a.25.25 0 0 1-.26-.25c0-.04.01-.08.03-.11L7.16 14Z"/></svg>
+
+    </div>
+
+    <div class="profile-icon" id="profileIcon" onclick="toggleSideMenu()" style="cursor: pointer;">
+
+      <svg viewBox="0 0 24 24"><path fill="white" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4Zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4Z"/></svg>
+
+    </div>
+
+    <button class="signin-btn" id="signinBtn" onclick="window.location.href='account.html'">تسجيل الدخول</button>
+
   </div>
+
 </header>
 
+
+
+<!-- Side Menu Overlay -->
+
+<div class="side-menu-overlay" id="sideMenuOverlay" onclick="toggleSideMenu()"></div>
+
+
+
+<!-- Side Menu -->
+
+<div id="sideMenu" class="side-menu">
+
+  <button class="side-menu-close" id="sideMenuClose" onclick="toggleSideMenu()">
+
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+  </button>
+
+  
+
+  <div class="side-menu-header">
+
+    <div class="side-menu-user">
+
+      <div class="side-menu-avatar" id="sideMenuAvatar">CA</div>
+
+      <div class="side-menu-user-info">
+
+        <h3 id="sideMenuUserName">مستخدم CA</h3>
+
+        <p id="sideMenuUserEmail">غير معروف</p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="side-menu-links">
+
+    <a href="index.html">
+
+      <i class="fa-solid fa-home"></i>
+
+      <span>الصفحة الرئيسية</span>
+
+    </a>
+
+    <a href="profile.html">
+
+      <i class="fa-solid fa-user"></i>
+
+      <span>حسابي</span>
+
+    </a>
+
+    <a href="orders.html">
+
+      <i class="fa-solid fa-bag-shopping"></i>
+
+      <span>طلباتي</span>
+
+    </a>
+
+    <a href="settings.html">
+
+      <i class="fa-solid fa-gear"></i>
+
+      <span>الإعدادات</span>
+
+    </a>
+
+    <a href="products.html?cat=fivem">
+
+      <i class="fa-solid fa-gamepad"></i>
+
+      <span>منتجات فايف إم</span>
+
+    </a>
+
+    <a href="products.html?cat=discord">
+
+      <i class="fa-brands fa-discord"></i>
+
+      <span>منتجات الديسكورد</span>
+
+    </a>
+
+    <a href="subscriptions.html">
+
+      <i class="fa-solid fa-crown"></i>
+
+      <span>اشتراكاتي</span>
+
+    </a>
+
+    <a href="terms.html">
+
+      <i class="fa-solid fa-file-contract"></i>
+
+      <span>الشروط والأحكام</span>
+
+    </a>
+
+  </div>
+
+
+
+  <div class="side-menu-logout">
+
+    <button onclick="sideMenuLogout()">
+
+      <i class="fa-solid fa-right-from-bracket"></i>
+
+      <span>تسجيل الخروج</span>
+
+    </button>
+
+  </div>
+
+</div>
+
+
+
 <div style="padding:0 24px 60px;">
+
   <div class="terms-box">
+
     <h2>الشروط والأحكام</h2>
 
+
+
     <h3>1. قبول الشروط</h3>
+
     <p>باستخدام موقع CA Store، فأنت توافق على الالتزام بهذه الشروط والأحكام. إذا كنت لا توافق على أي منها، فيُرجى التوقف عن استخدام الموقع فوراً.</p>
 
+
+
     <h3>2. الملكية الفكرية</h3>
+
     <p>جميع المنتجات والمحتوى المقدّم عبر المتجر هي ملك حصري لـ CA Store، ولا يُسمح بإعادة بيعها أو مشاركتها مع أي طرف ثالث تحت أي ظرف.</p>
 
+
+
     <h3>3. سياسة الاسترداد</h3>
+
     <p>نظرًا لطبيعة المنتجات الرقمية، لا يُسمح بالاسترداد بعد إتمام الشراء وتسليم المنتج. في حالة وجود مشكلة تقنية مؤكدة، يُمكن التواصل مع الدعم.</p>
 
+
+
     <h3>4. استخدام المنتجات</h3>
+
     <p>المنتجات مخصصة للاستخدام الشخصي فقط، ولا يُسمح بإعادة توزيعها أو بيعها أو مشاركتها مع أطراف أخرى. أي انتهاك سيُعرّض المستخدم للحظر الفوري من المتجر.</p>
 
+
+
     <h3>5. التحديثات</h3>
+
     <p>نحتفظ بحق تحديث هذه الشروط في أي وقت دون إشعار مسبق. يُنصح بمراجعة هذه الصفحة بانتظام للاطلاع على أي تغييرات.</p>
 
+
+
     <h3>6. اتصل بنا</h3>
+
     <p>لأي استفسار، يُرجى التواصل معنا عبر سيرفر الديسكورد: <a href="https://discord.gg/Pt7U4bcF7M" style="color:var(--brand-light);">discord.gg/Pt7U4bcF7M</a></p>
 
+
+
     <a href="index.html" class="terms-back">العودة للرئيسية</a>
+
   </div>
+
 </div>
+
 </body>
+
 </html>
+

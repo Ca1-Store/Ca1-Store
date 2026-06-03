@@ -1,699 +1,1330 @@
 <!DOCTYPE html>
+
 <html lang="ar" dir="rtl">
+
 <head>
+
   <meta charset="UTF-8" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
   <title>الإعدادات — CA Store</title>
 
+
+
   <link rel="icon" href="Copilot_20260330_010158.png">
+
   <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
   <link rel="stylesheet" href="styles.css">
+
+
 
   <style>
 
     .settings-page{
+
       max-width: 1100px;
-      margin: 110px auto 80px;
-      padding: 0 20px;
+
+      margin: calc(var(--header-h) + 40px) auto 80px;
+
+      padding: 0 24px;
+
     }
+
+
 
     .settings-box{
-      background: var(--surface);
+
+      background: rgba(255,255,255,.025);
+
       border: 1px solid var(--line);
-      border-radius: 26px;
+
+      border-radius: var(--r-xl);
+
       padding: 35px;
+
       position: relative;
+
       overflow: hidden;
+
     }
+
+
 
     .settings-box::before{
+
       content:"";
+
       position:absolute;
+
       top:0;
+
       right:0;
+
       width:100%;
+
       height:4px;
-      background:linear-gradient(90deg,var(--brand),#7c3aed);
+
+      background:linear-gradient(90deg,var(--brand),var(--brand-2));
+
     }
+
+
 
     .settings-top{
+
       display:flex;
+
       justify-content:space-between;
+
       align-items:flex-start;
+
       gap:30px;
+
       margin-bottom:35px;
+
     }
+
+
 
     .settings-badge{
+
       display:inline-flex;
+
       align-items:center;
+
       gap:8px;
+
       padding:10px 14px;
+
       border-radius:999px;
+
       background:rgba(124,58,237,.12);
+
       border:1px solid rgba(124,58,237,.25);
+
       color:var(--brand-light);
+
       font-size:13px;
+
       font-weight:800;
+
       margin-bottom:18px;
+
     }
+
+
 
     .settings-box h2{
+
       color:#fff;
-      font-size:30px;
+
+      font-size:28px;
+
       font-weight:800;
+
       margin-bottom:12px;
+
     }
+
+
 
     .settings-desc{
+
       color:var(--muted);
+
       line-height:1.9;
+
       font-size:15px;
+
       max-width:700px;
+
     }
+
+
 
     .settings-avatar-box{
+
       display:flex;
+
       align-items:center;
+
       gap:14px;
+
       background:rgba(255,255,255,.03);
+
       border:1px solid var(--line);
+
       padding:14px 18px;
+
       border-radius:18px;
+
       min-width:260px;
+
     }
+
+
 
     .settings-avatar{
+
       width:62px;
+
       height:62px;
+
       border-radius:18px;
-      background:linear-gradient(135deg,#7c3aed,#4f46e5);
+
+      background:linear-gradient(135deg,var(--brand),var(--brand-2));
+
       display:flex;
+
       align-items:center;
+
       justify-content:center;
+
       color:#fff;
+
       font-size:22px;
+
       font-weight:800;
+
       flex-shrink:0;
+
+      box-shadow: 0 6px 18px var(--brand-glow);
+
     }
+
+
 
     .settings-user-info{
+
       display:flex;
+
       flex-direction:column;
+
     }
+
+
 
     .settings-user-info span{
+
       color:#fff;
+
       font-size:15px;
+
       font-weight:800;
+
     }
+
+
 
     .settings-user-info small{
+
       color:var(--muted);
+
       font-size:13px;
+
       margin-top:4px;
+
     }
+
+
 
     .settings-section{
+
       margin-bottom:30px;
+
     }
+
+
 
     .settings-section-title{
+
       display:flex;
+
       align-items:center;
+
       gap:10px;
+
       color:#fff;
+
       font-size:18px;
+
       font-weight:800;
+
       margin-bottom:18px;
+
     }
+
+
+
+    .settings-section-title i{
+
+      color:var(--brand-light);
+
+    }
+
+
 
     .settings-grid{
+
       display:grid;
+
       grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+
       gap:16px;
+
     }
+
+
 
     .settings-card{
+
       background:rgba(255,255,255,.03);
+
       border:1px solid var(--line);
+
       border-radius:18px;
+
       padding:18px;
+
       display:flex;
+
       align-items:center;
+
       gap:15px;
-      transition:.25s;
+
+      transition:.25s var(--ease);
+
     }
+
+
 
     .settings-card:hover{
+
       transform:translateY(-3px);
+
       border-color:rgba(124,58,237,.35);
+
       background:rgba(124,58,237,.06);
+
     }
+
+
 
     .settings-card-icon{
+
       width:54px;
+
       height:54px;
+
       border-radius:14px;
+
       background:rgba(124,58,237,.12);
+
       border:1px solid rgba(124,58,237,.22);
+
       display:flex;
+
       align-items:center;
+
       justify-content:center;
+
       color:var(--brand-light);
+
       font-size:18px;
+
       flex-shrink:0;
+
     }
+
+
 
     .settings-card-info{
+
       display:flex;
+
       flex-direction:column;
+
     }
+
+
 
     .settings-card-info span{
+
       color:var(--muted);
+
       font-size:13px;
+
       margin-bottom:5px;
+
     }
+
+
 
     .settings-card-info strong{
+
       color:#fff;
+
       font-size:15px;
+
       font-weight:800;
+
     }
+
+
 
     .quick-actions{
+
       display:grid;
+
       grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+
       gap:14px;
+
     }
+
+
 
     .quick-btn{
+
       background:rgba(255,255,255,.03);
+
       border:1px solid var(--line);
+
       border-radius:18px;
+
       padding:18px;
+
       cursor:pointer;
+
       color:#fff;
-      transition:.25s;
+
+      transition:.25s var(--ease);
+
       font-family:'Almarai',sans-serif;
+
       display:flex;
+
       align-items:center;
+
       justify-content:center;
+
       gap:12px;
+
       font-size:14px;
+
       font-weight:800;
+
     }
+
+
 
     .quick-btn:hover{
+
       transform:translateY(-3px);
+
       background:rgba(124,58,237,.12);
+
       border-color:rgba(124,58,237,.28);
+
     }
+
+
 
     .quick-btn i{
+
       color:var(--brand-light);
+
       font-size:16px;
+
     }
+
+
 
     .danger-zone{
+
       background:rgba(239,68,68,.06);
+
       border:1px solid rgba(239,68,68,.16);
+
       border-radius:20px;
+
       padding:24px;
+
       margin-top:10px;
+
     }
+
+
 
     .danger-zone-title{
+
       display:flex;
+
       align-items:center;
+
       gap:10px;
+
       color:#fca5a5;
+
       font-size:18px;
+
       font-weight:800;
+
       margin-bottom:10px;
+
     }
+
+
 
     .danger-zone-text{
+
       color:#d1d5db;
+
       font-size:14px;
+
       line-height:1.8;
+
       margin-bottom:20px;
+
     }
+
+
 
     .btn{
+
       border:none;
+
       outline:none;
+
       cursor:pointer;
+
       font-family:'Almarai',sans-serif;
-      transition:.25s;
+
+      transition:.25s var(--ease);
+
       display:inline-flex;
+
       align-items:center;
+
       justify-content:center;
+
       gap:10px;
+
       font-weight:800;
+
     }
+
+
 
     .btn-danger{
+
       background:linear-gradient(135deg,#dc2626,#ef4444);
+
       color:#fff;
+
       padding:14px 22px;
+
       border-radius:14px;
+
       font-size:15px;
+
       box-shadow:0 10px 25px rgba(239,68,68,.18);
+
     }
+
+
 
     .btn-danger:hover{
+
       transform:translateY(-2px);
+
       box-shadow:0 14px 30px rgba(239,68,68,.25);
+
     }
+
+
 
     .btn-ghost{
+
       background:rgba(255,255,255,.05);
+
       border:1px solid var(--line);
+
       color:#fff;
+
       padding:13px 18px;
+
       border-radius:14px;
+
       font-size:14px;
+
     }
+
+
 
     .btn-ghost:hover{
+
       background:rgba(255,255,255,.08);
+
     }
+
+
 
     .modal{
+
       position:fixed;
+
       inset:0;
+
       background:rgba(0,0,0,.65);
+
       backdrop-filter:blur(8px);
+
       display:flex;
+
       align-items:center;
+
       justify-content:center;
+
       z-index:9999;
+
       opacity:0;
+
       visibility:hidden;
-      transition:.25s;
+
+      transition:.25s var(--ease);
+
       padding:20px;
+
     }
+
+
 
     .modal.show{
+
       opacity:1;
+
       visibility:visible;
+
     }
+
+
 
     .modal-box{
+
       width:100%;
+
       max-width:430px;
-      background:#0f172a;
-      border:1px solid rgba(255,255,255,.08);
+
+      background:var(--surface);
+
+      border:1px solid var(--line-2);
+
       border-radius:24px;
+
       padding:30px;
+
       text-align:center;
+
       transform:scale(.92);
-      transition:.25s;
-      box-shadow:0 20px 60px rgba(0,0,0,.45);
+
+      transition:.25s var(--ease);
+
+      box-shadow:var(--shadow-lg);
+
     }
+
+
 
     .modal.show .modal-box{
+
       transform:scale(1);
+
     }
+
+
 
     .modal-icon{
+
       width:72px;
+
       height:72px;
+
       margin:0 auto 18px;
+
       border-radius:50%;
+
       background:rgba(239,68,68,.12);
+
       border:1px solid rgba(239,68,68,.25);
+
       display:flex;
+
       align-items:center;
+
       justify-content:center;
+
       color:#f87171;
+
       font-size:28px;
+
     }
+
+
 
     .modal-box h3{
+
       color:#fff;
+
       font-size:24px;
+
       font-weight:800;
+
       margin-bottom:12px;
+
     }
+
+
 
     .modal-box p{
+
       color:var(--muted);
+
       line-height:1.8;
+
       font-size:14px;
+
       margin-bottom:24px;
+
     }
+
+
 
     .modal-actions{
+
       display:flex;
+
       gap:12px;
+
     }
+
+
 
     .modal-actions .btn{
+
       flex:1;
+
     }
+
+
 
     .toast-success{
+
       position:fixed;
+
       bottom:30px;
+
       left:50%;
+
       transform:translateX(-50%) translateY(120px);
+
       background:linear-gradient(135deg,#16a34a,#22c55e);
+
       color:#fff;
+
       padding:15px 22px;
+
       border-radius:16px;
+
       font-weight:800;
+
       z-index:99999;
+
       opacity:0;
-      transition:.35s;
+
+      transition:.35s var(--ease);
+
       box-shadow:0 15px 35px rgba(34,197,94,.25);
+
     }
 
+
+
     .toast-success.show{
+
       opacity:1;
+
       transform:translateX(-50%) translateY(0);
+
     }
+
+
 
     @media(max-width:850px){
 
       .settings-top{
+
         flex-direction:column;
+
       }
+
+
 
       .settings-avatar-box{
+
         width:100%;
+
         min-width:unset;
+
       }
+
+
 
       .modal-actions{
+
         flex-direction:column;
+
       }
 
+
+
       .settings-box{
+
         padding:25px;
+
       }
 
     }
 
   </style>
+
 </head>
 
+
+
 <body>
+
+
 
 <header>
 
   <a class="brand" href="index.html">
+
     <div class="brand-logo">CA</div>
+
     <span class="brand-name">CA STORE</span>
+
   </a>
 
+
+
   <nav class="main-nav">
+
     <a href="index.html" class="nav-link">الرئيسية</a>
+
     <a href="products.html?cat=fivem" class="nav-link">فايف إم</a>
+
     <a href="products.html?cat=discord" class="nav-link">ديسكورد</a>
+
     <a href="subscriptions.html" class="nav-link">الاشتراكات</a>
+
   </nav>
+
+
 
   <div class="header-actions">
 
-    <div class="cart-icon" onclick="window.location.href='checkout.html'">
+    <div class="cart-icon" id="cartBtn">
 
       <span class="cart-count" id="cartCount">0</span>
 
-      <svg viewBox="0 0 24 24">
-        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2Zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2ZM7.16 14h9.93c.75 0 1.4-.41 1.73-1.03L21.8 7.48A.75.75 0 0 0 21.12 6H6.21L5.27 3.5A1 1 0 0 0 4.33 3H3v2h.67l3 7.59-.76 1.41C5.37 14.37 5 15.03 5 15.75 5 16.99 5.96 18 7.16 18H19v-2H7.42a.25.25 0 0 1-.26-.25c0-.04.01-.08.03-.11L7.16 14Z"/>
-      </svg>
+      <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2Zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2ZM7.16 14h9.93c.75 0 1.4-.41 1.73-1.03L21.8 7.48A.75.75 0 0 0 21.12 6H6.21L5.27 3.5A1 1 0 0 0 4.33 3H3v2h.67l3 7.59-.76 1.41C5.37 14.37 5 15.03 5 15.75 5 16.99 5.96 18 7.16 18H19v-2H7.42a.25.25 0 0 1-.26-.25c0-.04.01-.08.03-.11L7.16 14Z"/></svg>
 
     </div>
 
+    <div class="profile-icon" id="profileIcon">
+      <svg viewBox="0 0 24 24"><path fill="white" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4Zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4Z"/></svg>
+    </div>
+    <button class="signin-btn" id="signinBtn" onclick="window.location.href='account.html'">تسجيل الدخول</button>
   </div>
-
 </header>
+
+<!-- Profile Panel -->
+<div class="profile-panel-overlay" id="profilePanelOverlay"></div>
+<div class="profile-panel" id="profilePanel">
+  <div class="panel-header">
+    <div class="panel-title">الملف الشخصي</div>
+    <button class="panel-close" id="closePanelBtn">✕</button>
+  </div>
+  <div class="panel-avatar-section">
+    <div class="panel-avatar" id="panelAvatar">CA</div>
+    <div class="panel-name" id="panelName">مستخدم CA</div>
+    <div class="panel-email" id="panelEmail">غير مسجّل</div>
+  </div>
+  <nav class="panel-nav">
+    <a href="profile.html" class="panel-link">
+      <i class="fa-solid fa-user"></i>
+      <span>حسابي</span>
+      <i class="fa-solid fa-chevron-left panel-chevron"></i>
+    </a>
+    <a href="orders.html" class="panel-link">
+      <i class="fa-solid fa-bag-shopping"></i>
+      <span>طلباتي</span>
+      <i class="fa-solid fa-chevron-left panel-chevron"></i>
+    </a>
+    <a href="settings.html" class="panel-link">
+      <i class="fa-solid fa-gear"></i>
+      <span>الإعدادات</span>
+      <i class="fa-solid fa-chevron-left panel-chevron"></i>
+    </a>
+    <a href="products.html?cat=subscriptions" class="panel-link">
+      <i class="fa-solid fa-crown"></i>
+      <span>اشتراكاتي</span>
+      <i class="fa-solid fa-chevron-left panel-chevron"></i>
+    </a>
+  </nav>
+  <div class="panel-footer">
+    <button class="panel-logout" onclick="logout()">
+      <i class="fa-solid fa-right-from-bracket"></i>
+      تسجيل الخروج
+    </button>
+  </div>
+</div>
+
+<!-- Hidden for JS compatibility -->
+<div class="profile-dropdown" id="profileDropdown" style="display:none;"></div>
 
 <div class="settings-page">
 
+
+
   <div class="settings-box">
+
+
 
     <div class="settings-top">
 
+
+
       <div>
 
+
+
         <div class="settings-badge">
+
           <i class="fa-solid fa-gear"></i>
+
           إعدادات الحساب
+
         </div>
+
+
 
         <h2>لوحة إعدادات CA Store</h2>
 
+
+
         <p class="settings-desc">
+
           تحكم بحسابك، إدارة الجلسة، مراجعة معلوماتك الشخصية، وإعدادات الأمان الخاصة بحسابك داخل المتجر.
+
         </p>
 
+
+
       </div>
+
+
 
       <div class="settings-avatar-box">
 
+
+
         <div class="settings-avatar" id="settingsAvatar">
+
           CA
+
         </div>
 
+
+
         <div class="settings-user-info">
+
           <span id="settingsUserName">مستخدم CA</span>
+
           <small id="settingsUserEmail">غير معروف</small>
+
         </div>
+
+
 
       </div>
 
+
+
     </div>
+
+
 
     <!-- معلومات الحساب -->
 
+
+
     <div class="settings-section">
 
+
+
       <div class="settings-section-title">
+
         <i class="fa-solid fa-user"></i>
+
         معلومات الحساب
+
       </div>
+
+
 
       <div class="settings-grid">
 
+
+
         <div class="settings-card">
 
+
+
           <div class="settings-card-icon">
+
             <i class="fa-solid fa-envelope"></i>
+
           </div>
+
+
 
           <div class="settings-card-info">
+
             <span>البريد الإلكتروني</span>
+
             <strong id="emailBox">example@email.com</strong>
+
           </div>
 
+
+
         </div>
+
+
 
         <div class="settings-card">
 
+
+
           <div class="settings-card-icon">
+
             <i class="fa-solid fa-shield-halved"></i>
+
           </div>
+
+
 
           <div class="settings-card-info">
+
             <span>حالة الحساب</span>
+
             <strong style="color:#4ade80;">نشط وآمن</strong>
+
           </div>
 
+
+
         </div>
+
+
 
       </div>
 
+
+
     </div>
+
+
 
     <!-- الإجراءات السريعة -->
 
+
+
     <div class="settings-section">
 
+
+
       <div class="settings-section-title">
+
         <i class="fa-solid fa-bolt"></i>
+
         إجراءات سريعة
+
       </div>
+
+
 
       <div class="quick-actions">
 
+
+
         <button class="quick-btn" onclick="window.location.href='orders.html'">
+
           <i class="fa-solid fa-bag-shopping"></i>
+
           <span>طلباتي</span>
+
         </button>
+
+
 
         <button class="quick-btn" onclick="window.location.href='profile.html'">
+
           <i class="fa-solid fa-user"></i>
+
           <span>ملفي الشخصي</span>
+
         </button>
 
+
+
         <button class="quick-btn" onclick="window.location.href='checkout.html'">
+
           <i class="fa-solid fa-cart-shopping"></i>
+
           <span>السلة</span>
+
         </button>
+
+
 
       </div>
 
+
+
     </div>
+
+
 
     <!-- منطقة الخطر -->
 
+
+
     <div class="danger-zone">
 
+
+
       <div class="danger-zone-title">
+
         <i class="fa-solid fa-triangle-exclamation"></i>
+
         منطقة خطيرة
+
       </div>
+
+
 
       <div class="danger-zone-text">
+
         حذف الحساب سيؤدي إلى تسجيل خروجك ومسح بيانات الجلسة الحالية بشكل كامل.
+
       </div>
 
+
+
       <button class="btn btn-danger" onclick="showConfirm()">
+
         <i class="fa-solid fa-trash"></i>
+
         حذف الحساب
+
       </button>
+
+
 
     </div>
 
+
+
   </div>
 
+
+
 </div>
+
+
 
 <!-- مودال الحذف -->
 
+
+
 <div class="modal" id="confirmOverlay">
+
+
 
   <div class="modal-box">
 
+
+
     <div class="modal-icon">
+
       <i class="fa-solid fa-trash"></i>
+
     </div>
+
+
 
     <h3>تأكيد حذف الحساب</h3>
 
+
+
     <p>
+
       هل أنت متأكد من حذف حسابك؟<br>
+
       لن تتمكن من استرجاع البيانات بعد الحذف.
+
     </p>
+
+
 
     <div class="modal-actions">
 
+
+
       <button class="btn btn-ghost" onclick="hideConfirm()">
+
         إلغاء
+
       </button>
 
+
+
       <button class="btn btn-danger" onclick="deleteAccount()">
+
         حذف الحساب
+
       </button>
+
+
 
     </div>
 
+
+
   </div>
 
+
+
 </div>
 
+
+
 <div class="toast-success" id="toastSuccess">
+
   تم حذف الحساب بنجاح ✓
+
 </div>
+
+
 
 <script src="script.min.js"></script>
 
 <script>
-
+// Check if user is logged in
 const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
 
 if(!user){
   window.location.href = "account.html";
-}
-
-/* بيانات المستخدم */
-
-if(user){
-
-  document.getElementById("settingsUserName").textContent =
-    user.name || "مستخدم CA";
-
-  document.getElementById("settingsUserEmail").textContent =
-    user.email || "غير معروف";
-
-  document.getElementById("emailBox").textContent =
-    user.email || "غير معروف";
-
-  document.getElementById("settingsAvatar").textContent =
-    (user.name || user.email || "CA").slice(0,2).toUpperCase();
-
-}
-
-/* تحديث السلة */
-
-function updateCartCount(){
-
-  const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-
-  const count = cart.reduce((s,i)=> s + (i.qty || 1),0);
-
-  const cartCount = document.getElementById("cartCount");
-
-  if(cartCount){
-    cartCount.textContent = count;
+} else {
+  // Show/hide signin button and profile icon
+  if (!user || !user.email) {
+    document.getElementById("signinBtn").style.display = "";
+    document.getElementById("profileIcon").style.display = "none";
+  } else {
+    document.getElementById("signinBtn").style.display = "none";
   }
+  
+  // Update profile panel
+  const displayName = user.name || user.email || 'CA';
+  document.getElementById("panelAvatar").textContent = displayName.slice(0, 2).toUpperCase();
+  document.getElementById("panelName").textContent = user.name || 'مستخدم CA';
+  document.getElementById("panelEmail").textContent = user.email || 'غير مسجّل';
 
+  /* بيانات المستخدم */
+  document.getElementById("settingsUserName").textContent = user.name || "مستخدم CA";
+  document.getElementById("settingsUserEmail").textContent = user.email || "غير معروف";
+  document.getElementById("emailBox").textContent = user.email || "غير معروف";
+  document.getElementById("settingsAvatar").textContent = (user.name || user.email || "CA").slice(0,2).toUpperCase();
 }
 
-/* المودال */
+// Logout function
+function logout() {
+  localStorage.removeItem("loggedUser");
+  window.location.href = "account.html";
+}
 
-function showConfirm(){
+// Profile Panel Functions
+const profilePanel = document.getElementById("profilePanel");
+const profilePanelOverlay = document.getElementById("profilePanelOverlay");
 
-  document.getElementById("confirmOverlay").classList.add("show");
-
+function openProfilePanel() {
+  profilePanel.classList.add("open");
+  profilePanelOverlay.classList.add("open");
   document.body.style.overflow = "hidden";
+}
 
+function closeProfilePanel() {
+  profilePanel.classList.remove("open");
+  profilePanelOverlay.classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+document.getElementById("profileIcon") && document.getElementById("profileIcon").addEventListener("click", () => {
+  if (!user) { window.location.href = "account.html"; return; }
+  openProfilePanel();
+});
+
+profilePanelOverlay.addEventListener("click", closeProfilePanel);
+document.getElementById("closePanelBtn").addEventListener("click", closeProfilePanel);
+
+// Modal functions
+function showConfirm(){
+  document.getElementById("confirmOverlay").classList.add("show");
+  document.body.style.overflow = "hidden";
 }
 
 function hideConfirm(){
-
   document.getElementById("confirmOverlay").classList.remove("show");
-
   document.body.style.overflow = "";
-
 }
 
-/* حذف الحساب */
-
 function deleteAccount(){
-
   localStorage.removeItem("loggedUser");
-
   sessionStorage.clear();
-
   hideConfirm();
-
+  
   const t = document.getElementById("toastSuccess");
-
   t.classList.add("show");
 
   setTimeout(()=>{
-
     window.location.href = "account.html";
-
   },1600);
-
 }
 
-/* اغلاق عند الضغط بالخارج */
-
-document.getElementById("confirmOverlay").addEventListener("click",(e)=>{
-
+// Close modal when clicking outside
+document.getElementById("confirmOverlay") && document.getElementById("confirmOverlay").addEventListener("click",(e)=>{
   if(e.target.id === "confirmOverlay"){
     hideConfirm();
   }
-
 });
 </script>
+
 </body>
 </html>
