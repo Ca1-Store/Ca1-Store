@@ -130,130 +130,49 @@
 
 
 
-<!-- Side Menu Overlay -->
-
-<div class="side-menu-overlay" id="sideMenuOverlay" onclick="toggleSideMenu()"></div>
-
-
-
-<!-- Side Menu -->
-
-<div id="sideMenu" class="side-menu">
-
-  <button class="side-menu-close" id="sideMenuClose" onclick="toggleSideMenu()">
-
-    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-
-  </button>
-
-  
-
-  <div class="side-menu-header">
-
-    <div class="side-menu-user">
-
-      <div class="side-menu-avatar" id="sideMenuAvatar">CA</div>
-
-      <div class="side-menu-user-info">
-
-        <h3 id="sideMenuUserName">مستخدم CA</h3>
-
-        <p id="sideMenuUserEmail">غير معروف</p>
-
-      </div>
-
-    </div>
-
+<!-- Profile Panel -->
+<div class="profile-panel-overlay" id="profilePanelOverlay"></div>
+<div class="profile-panel" id="profilePanel">
+  <div class="panel-header">
+    <div class="panel-title">الملف الشخصي</div>
+    <button class="panel-close" id="closePanelBtn">✕</button>
   </div>
-
-
-
-  <div class="side-menu-links">
-
-    <a href="index.html">
-
-      <i class="fa-solid fa-home"></i>
-
-      <span>الصفحة الرئيسية</span>
-
-    </a>
-
-    <a href="profile.html">
-
+  <div class="panel-avatar-section">
+    <div class="panel-avatar" id="panelAvatar">CA</div>
+    <div class="panel-name" id="panelName">مستخدم CA</div>
+    <div class="panel-email" id="panelEmail">غير مسجّل</div>
+  </div>
+  <nav class="panel-nav">
+    <a href="profile.html" class="panel-link">
       <i class="fa-solid fa-user"></i>
-
       <span>حسابي</span>
-
+      <i class="fa-solid fa-chevron-left panel-chevron"></i>
     </a>
-
-    <a href="orders.html">
-
+    <a href="orders.html" class="panel-link">
       <i class="fa-solid fa-bag-shopping"></i>
-
       <span>طلباتي</span>
-
+      <i class="fa-solid fa-chevron-left panel-chevron"></i>
     </a>
-
-    <a href="settings.html">
-
+    <a href="settings.html" class="panel-link">
       <i class="fa-solid fa-gear"></i>
-
       <span>الإعدادات</span>
-
+      <i class="fa-solid fa-chevron-left panel-chevron"></i>
     </a>
-
-    <a href="products.html?cat=fivem">
-
-      <i class="fa-solid fa-gamepad"></i>
-
-      <span>منتجات فايف إم</span>
-
-    </a>
-
-    <a href="products.html?cat=discord">
-
-      <i class="fa-brands fa-discord"></i>
-
-      <span>منتجات الديسكورد</span>
-
-    </a>
-
-    <a href="subscriptions.html">
-
+    <a href="products.html?cat=subscriptions" class="panel-link">
       <i class="fa-solid fa-crown"></i>
-
       <span>اشتراكاتي</span>
-
+      <i class="fa-solid fa-chevron-left panel-chevron"></i>
     </a>
-
-    <a href="terms.html">
-
-      <i class="fa-solid fa-file-contract"></i>
-
-      <span>الشروط والأحكام</span>
-
-    </a>
-
-  </div>
-
-
-
-  <div class="side-menu-logout">
-
-    <button onclick="sideMenuLogout()">
-
+  </nav>
+  <div class="panel-footer">
+    <button class="panel-logout" onclick="logout()">
       <i class="fa-solid fa-right-from-bracket"></i>
-
-      <span>تسجيل الخروج</span>
-
+      تسجيل الخروج
     </button>
-
   </div>
-
 </div>
 
-
-
+<!-- Keep dropdown for JS compatibility (hidden) -->
 <div class="profile-dropdown" id="profileDropdown" style="display:none;"></div>
 
 
@@ -779,87 +698,6 @@ if (!user || !user.email) {
 
 
 
-/* PROFILE PANEL */
-
-
-
-const profileIcon = document.getElementById("profileIcon");
-
-const profilePanel = document.getElementById("profilePanel");
-
-const profilePanelOverlay = document.getElementById("profilePanelOverlay");
-
-
-
-if (profileIcon) {
-
-
-
-  profileIcon.addEventListener("click", () => {
-
-
-
-    if (!user) {
-
-      window.location.href = "account.html";
-
-      return;
-
-    }
-
-
-
-    profilePanel.classList.add("open");
-
-    profilePanelOverlay.classList.add("open");
-
-
-
-    document.body.style.overflow = "hidden";
-
-  });
-
-}
-
-
-
-if (profilePanelOverlay) {
-  profilePanelOverlay.addEventListener("click", () => {
-
-
-
-  profilePanel.classList.remove("open");
-
-  profilePanelOverlay.classList.remove("open");
-
-
-
-  document.body.style.overflow = "";
-
-});
-}
-
-
-
-const closePanelBtn = document.getElementById("closePanelBtn");
-if (closePanelBtn) {
-  closePanelBtn.addEventListener("click", () => {
-
-
-
-  profilePanel.classList.remove("open");
-
-  profilePanelOverlay.classList.remove("open");
-
-
-
-  document.body.style.overflow = "";
-
-});
-}
-
-
-
 function logout() {
 
 
@@ -1234,99 +1072,35 @@ function confirmOrder() {
 
 
 
-// Side Menu Functions
+/* PROFILE PANEL */
+const profilePanel = document.getElementById("profilePanel");
+const profilePanelOverlay = document.getElementById("profilePanelOverlay");
 
-function toggleSideMenu() {
-
-  const sideMenu = document.getElementById('sideMenu');
-
-  const sideMenuOverlay = document.getElementById('sideMenuOverlay');
-
-  
-
-  if (sideMenu) {
-
-    sideMenu.classList.toggle('open');
-
-    document.body.style.overflow = sideMenu.classList.contains('open') ? 'hidden' : '';
-
-    
-
-    if (sideMenuOverlay) {
-
-      sideMenuOverlay.classList.toggle('show');
-
-    }
-
-  }
-
+function openProfilePanel() {
+  profilePanel.classList.add("open");
+  profilePanelOverlay.classList.add("open");
+  document.body.style.overflow = "hidden";
 }
 
-
-
-function sideMenuLogout() {
-
-  localStorage.removeItem("loggedUser");
-
-  toggleSideMenu();
-
-  setTimeout(() => {
-
-    window.location.href = "account.html";
-
-  }, 300);
-
+function closeProfilePanel() {
+  profilePanel.classList.remove("open");
+  profilePanelOverlay.classList.remove("open");
+  document.body.style.overflow = "";
 }
 
+document.getElementById("profileIcon") && document.getElementById("profileIcon").addEventListener("click", () => {
+  if (!user) { window.location.href = "account.html"; return; }
+  openProfilePanel();
+});
 
-
-function updateSideMenuUserInfo() {
-
-  const user = JSON.parse(localStorage.getItem('loggedUser') || 'null');
-
-  
-
-  if (user) {
-
-    const avatar = document.getElementById('sideMenuAvatar');
-
-    const userName = document.getElementById('sideMenuUserName');
-
-    const userEmail = document.getElementById('sideMenuUserEmail');
-
-
-
-    if (avatar) {
-
-      const displayName = user.name || user.email || 'CA';
-
-      avatar.textContent = displayName.slice(0, 2).toUpperCase();
-
-    }
-
-
-
-    if (userName) {
-
-      userName.textContent = user.name || 'مستخدم CA';
-
-    }
-
-
-
-    if (userEmail) {
-
-      userEmail.textContent = user.email || 'غير معروف';
-
-    }
-
-  }
-
+if (profilePanelOverlay) {
+  profilePanelOverlay.addEventListener("click", closeProfilePanel);
 }
 
-
-
-updateSideMenuUserInfo();
+const closePanelBtn = document.getElementById("closePanelBtn");
+if (closePanelBtn) {
+  closePanelBtn.addEventListener("click", closeProfilePanel);
+}
 
 // Render cart after DOM is ready
 document.addEventListener("DOMContentLoaded", () => {
