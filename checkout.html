@@ -758,21 +758,22 @@ if (!user || !user.email) {
 
 
 
-  document.getElementById("panelEmail").textContent = user.email;
-
-
-
-  if (user.name) {
-
-    document.getElementById("panelName").textContent = user.name;
-
+  const panelEmail = document.getElementById("panelEmail");
+  if (panelEmail) {
+    panelEmail.textContent = user.email;
   }
 
+  if (user.name) {
+    const panelName = document.getElementById("panelName");
+    if (panelName) {
+      panelName.textContent = user.name;
+    }
+  }
 
-
-  document.getElementById("panelAvatar").textContent =
-
-    (user.name || user.email).slice(0,2).toUpperCase();
+  const panelAvatar = document.getElementById("panelAvatar");
+  if (panelAvatar) {
+    panelAvatar.textContent = (user.name || user.email).slice(0,2).toUpperCase();
+  }
 
 }
 
@@ -822,7 +823,8 @@ if (profileIcon) {
 
 
 
-profilePanelOverlay.addEventListener("click", () => {
+if (profilePanelOverlay) {
+  profilePanelOverlay.addEventListener("click", () => {
 
 
 
@@ -835,10 +837,13 @@ profilePanelOverlay.addEventListener("click", () => {
   document.body.style.overflow = "";
 
 });
+}
 
 
 
-document.getElementById("closePanelBtn").addEventListener("click", () => {
+const closePanelBtn = document.getElementById("closePanelBtn");
+if (closePanelBtn) {
+  closePanelBtn.addEventListener("click", () => {
 
 
 
@@ -851,6 +856,7 @@ document.getElementById("closePanelBtn").addEventListener("click", () => {
   document.body.style.overflow = "";
 
 });
+}
 
 
 
@@ -1226,8 +1232,6 @@ function confirmOrder() {
 
 
 
-renderCartPage();
-
 
 
 // Side Menu Functions
@@ -1324,7 +1328,10 @@ function updateSideMenuUserInfo() {
 
 updateSideMenuUserInfo();
 
-
+// Render cart after DOM is ready
+document.addEventListener("DOMContentLoaded", () => {
+  renderCartPage();
+});
 
 </script>
 
