@@ -157,6 +157,162 @@
   </div>
 </section>
 
+<!-- ═══════════════════ SUPPORT SECTION ═══════════════════ -->
+<section class="support-section">
+  <div class="support-card" id="supportCard">
+    <div class="support-badge">
+      <i class="fa-solid fa-heart"></i>
+      <span>ادعمنا</span>
+    </div>
+    <div class="support-content">
+      <div class="support-image">
+        <img src="Ca.png" alt="دعم المتجر">
+      </div>
+      <div class="support-info">
+        <h2>دعم CA Store</h2>
+        <p>ساعدنا في تقديم منتجات أفضل وتطوير المتجر. دعمك يعني لنا الكثير!</p>
+        <button class="support-btn" onclick="window.open('https://streamlabs.com/r-i-c-k1/tip', '_blank')">
+          <i class="fa-solid fa-hand-holding-heart"></i>
+          ادعم المتجر
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.support-section {
+  max-width: 1200px;
+  margin: 40px auto 20px;
+  padding: 0 20px;
+}
+
+.support-card {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.15) 0%, rgba(124, 58, 237, 0.05) 100%);
+  border: 2px solid rgba(124, 58, 237, 0.3);
+  border-radius: 24px;
+  padding: 30px;
+  position: relative;
+  overflow: hidden;
+}
+
+.support-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.1) 0%, transparent 70%);
+  animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+.support-badge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+  z-index: 2;
+}
+
+.support-content {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  position: relative;
+  z-index: 1;
+}
+
+.support-image {
+  flex-shrink: 0;
+  width: 120px;
+  height: 120px;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 3px solid rgba(124, 58, 237, 0.3);
+  box-shadow: 0 8px 25px rgba(124, 58, 237, 0.3);
+}
+
+.support-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.support-info {
+  flex: 1;
+}
+
+.support-info h2 {
+  font-size: 28px;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 12px;
+}
+
+.support-info p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 16px;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.support-btn {
+  background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+  color: white;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+}
+
+.support-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(124, 58, 237, 0.5);
+}
+
+.support-btn:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .support-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .support-image {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .support-info h2 {
+    font-size: 24px;
+  }
+}
+</style>
+
 <!-- ═══════════════════ PRODUCTS (moved up) ═══════════════════ -->
 <section class="products-page home-products" id="productsSection">
   <aside class="sidebar">
@@ -168,6 +324,7 @@
         <option value="fivem">فايف إم</option>
         <option value="discord">ديسكورد</option>
         <option value="subscriptions">الاشتراكات</option>
+        <option value="support">دعم المتجر</option>
       </select>
     </div>
     <div class="filter-group">
