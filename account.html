@@ -478,77 +478,41 @@
 
 <div class="dark-login">
 
-  <div class="auth-box">
+    <div class="auth-box">
 
     <div class="auth-icon">
 
-      <svg viewBox="0 0 24 24" width="36" height="36">
+      <svg viewBox="0 0 127.14 96.36" width="36" height="36">
 
-        <path fill="white" d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+        <path fill="white" d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.11 0A72.37 72.37 0 0 0 45.64 0a105.89 105.89 0 0 0-26.25 8.09C2.79 32.65-1.71 56.6.54 80.21a105.73 105.73 0 0 0 32.17 16.15 77.7 77.7 0 0 0 6.89-11.11 68.42 68.42 0 0 1-10.85-5.18c.91-.66 1.8-1.34 2.66-2a75.57 75.57 0 0 0 64.32 0c.87.71 1.76 1.39 2.66 2a68.68 68.68 0 0 1-10.87 5.19 77 77 0 0 0 6.89 11.1 105.25 105.25 0 0 0 32.19-16.14c2.64-27.38-4.51-51.11-18.9-72.15zM42.45 65.69C36.18 65.69 31 60 31 53s5-12.74 11.43-12.74S54 46 53.89 53s-5.05 12.69-11.44 12.69zm42.24 0C78.41 65.69 73.25 60 73.25 53s5-12.74 11.44-12.74S96.23 46 96.12 53s-5.04 12.69-11.43 12.69z"/>
 
       </svg>
 
     </div>
 
-    <div class="auth-title">مرحباً بك في CA Store</div>
+    <div class="auth-title">تسجيل الدخول عبر Discord</div>
 
+    <p style="text-align:center;color:var(--muted);font-size:14px;margin-bottom:20px;">
 
+      سجل دخولك للوصول إلى منتجات CA Store
 
-    <div id="emailStep">
+    </p>
 
-      <div class="input-group">
+    <button id="discordLoginBtn" class="auth-btn" style="background:#5865F2;border:none;">
 
-        <input type="email" id="emailInput" class="auth-input" placeholder="البريد الإلكتروني" autocomplete="email">
+      <svg viewBox="0 0 127.14 96.36" width="20" height="20" style="margin-left:8px;vertical-align:middle;">
 
-        <i class="fas fa-envelope input-icon"></i>
+        <path fill="white" d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.11 0A72.37 72.37 0 0 0 45.64 0a105.89 105.89 0 0 0-26.25 8.09C2.79 32.65-1.71 56.6.54 80.21a105.73 105.73 0 0 0 32.17 16.15 77.7 77.7 0 0 0 6.89-11.11 68.42 68.42 0 0 1-10.85-5.18c.91-.66 1.8-1.34 2.66-2a75.57 75.57 0 0 0 64.32 0c.87.71 1.76 1.39 2.66 2a68.68 68.68 0 0 1-10.87 5.19 77 77 0 0 0 6.89 11.1 105.25 105.25 0 0 0 32.19-16.14c2.64-27.38-4.51-51.11-18.9-72.15zM42.45 65.69C36.18 65.69 31 60 31 53s5-12.74 11.43-12.74S54 46 53.89 53s-5.05 12.69-11.44 12.69zm42.24 0C78.41 65.69 73.25 60 73.25 53s5-12.74 11.44-12.74S96.23 46 96.12 53s-5.04 12.69-11.43 12.69z"/>
 
-      </div>
+      </svg>
 
-      <div id="emailError" class="auth-error"></div>
+      تسجيل الدخول بـ Discord
 
-      <button id="sendCodeBtn" class="auth-btn" onclick="sendCodeEmailJS()">إرسال رمز التحقق</button>
+    </button>
 
-    </div>
+    <div id="authError" class="auth-error"></div>
 
-
-
-    <div id="codeStep" style="display:none;">
-
-      <p style="text-align:center;color:var(--muted);font-size:14px;margin-bottom:18px;">
-
-        تم إرسال رمز التحقق إلى <span id="sentEmail" style="color:var(--brand-light);font-weight:700;"></span>
-
-      </p>
-
-      <div class="code-inputs">
-
-        <input type="text" class="code-input" maxlength="1" data-index="0" placeholder="_">
-
-        <input type="text" class="code-input" maxlength="1" data-index="1" placeholder="_">
-
-        <input type="text" class="code-input" maxlength="1" data-index="2" placeholder="_">
-
-        <input type="text" class="code-input" maxlength="1" data-index="3" placeholder="_">
-
-        <input type="text" class="code-input" maxlength="1" data-index="4" placeholder="_">
-
-        <input type="text" class="code-input" maxlength="1" data-index="5" placeholder="_">
-
-      </div>
-
-      <div id="codeError" class="auth-error"></div>
-
-      <button id="verifyBtn" class="auth-btn" onclick="verifyLoginEmailJS()">تأكيد الدخول</button>
-
-      <button id="resendBtn" class="resend-btn" disabled>إعادة الإرسال بعد <span id="countdown">60</span> ثانية</button>
-
-      <div class="back-to-email">
-
-        <button onclick="backToEmailStep()">تغيير البريد الإلكتروني</button>
-
-      </div>
-
-    </div>
+    <div id="authSuccess" class="auth-success"></div>
 
   </div>
 
@@ -566,133 +530,194 @@
 
 <script src="script.min.js"></script>
 
+<script src="config.js"></script>
+
 <script>
 
-// Code input handling
+// Security: Validate URL to prevent open redirects
+function isValidUrl(url) {
+    try {
+        const parsed = new URL(url);
+        return parsed.protocol === "https:" || parsed.protocol === "http:";
+    } catch {
+        return false;
+    }
+}
 
-document.addEventListener('DOMContentLoaded', function() {
+// Security: Sanitize user input
+function sanitizeInput(input) {
+    const div = document.createElement('div');
+    div.textContent = input;
+    return div.innerHTML;
+}
 
-  const codeInputs = document.querySelectorAll('.code-input');
+// Security: Generate CSRF token
+function generateCSRFToken() {
+    const array = new Uint32Array(4);
+    window.crypto.getRandomValues(array);
+    return Array.from(array, dec => ('0' + dec.toString(16)).substr(-2)).join('');
+}
 
-  
-
-  codeInputs.forEach((input, index) => {
-
-    input.addEventListener('input', function(e) {
-
-      const value = e.target.value;
-
-      
-
-      // Only allow numbers
-
-      if (!/^\d*$/.test(value)) {
-
-        e.target.value = value.replace(/\D/g, '');
-
-        return;
-
-      }
-
-      
-
-      // Move to next input
-
-      if (value.length === 1 && index < codeInputs.length - 1) {
-
-        codeInputs[index + 1].focus();
-
-      }
-
-    });
-
+// Discord Login
+async function loginWithDiscord() {
+    const btn = document.getElementById("discordLoginBtn");
+    const errorDiv = document.getElementById("authError");
+    const successDiv = document.getElementById("authSuccess");
     
+    btn.classList.add("auth-loading");
+    errorDiv.classList.remove("show");
+    successDiv.classList.remove("show");
 
-    input.addEventListener('keydown', function(e) {
-
-      // Handle backspace
-
-      if (e.key === 'Backspace' && !e.target.value && index > 0) {
-
-        codeInputs[index - 1].focus();
-
-      }
-
-    });
-
-    
-
-    input.addEventListener('paste', function(e) {
-
-      e.preventDefault();
-
-      const pastedData = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
-
-      
-
-      pastedData.split('').forEach((char, i) => {
-
-        if (codeInputs[i]) {
-
-          codeInputs[i].value = char;
-
+    try {
+        // Validate backend URL
+        if (!isValidUrl(BACKEND_URL)) {
+            throw new Error("Invalid backend URL");
         }
 
-      });
+        // Generate CSRF token
+        const csrfToken = generateCSRFToken();
+        sessionStorage.setItem('csrf_token', csrfToken);
 
-      
+        // Get OAuth URL from backend
+        const res = await fetch(`${BACKEND_URL}/auth/web/url`, {
+            headers: {
+                'X-CSRF-Token': csrfToken
+            }
+        });
+        
+        if (!res.ok) {
+            throw new Error("Failed to connect to backend");
+        }
+        
+        const data = await res.json();
 
-      // Focus the last filled input or the next empty one
+        if (!data.url) {
+            throw new Error("Failed to get OAuth URL");
+        }
 
-      const lastIndex = Math.min(pastedData.length, codeInputs.length - 1);
+        // Validate OAuth URL
+        if (!isValidUrl(data.url) || !data.url.includes('discord.com')) {
+            throw new Error("Invalid OAuth URL");
+        }
 
-      codeInputs[lastIndex].focus();
+        // Redirect to Discord
+        window.location.href = data.url;
 
-    });
+    } catch (err) {
+        console.error("Discord login error:", err);
+        errorDiv.textContent = "فشل الاتصال بالسيرفر. حاول مرة أخرى.";
+        errorDiv.classList.add("show");
+        btn.classList.remove("auth-loading");
+    }
+}
 
-  });
+// Check if user is already logged in
+document.addEventListener('DOMContentLoaded', function() {
+    const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
+    if (user && user.discordId) {
+        window.location.href = "index.html";
+    }
 
+    // Add event listener to login button
+    const loginBtn = document.getElementById("discordLoginBtn");
+    if (loginBtn) {
+        loginBtn.addEventListener("click", loginWithDiscord);
+    }
+
+    // Check for callback code in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get("code");
+
+    if (code) {
+        handleDiscordCallback(code);
+    }
 });
 
+async function handleDiscordCallback(code) {
+    const errorDiv = document.getElementById("authError");
+    const successDiv = document.getElementById("authSuccess");
+    const btn = document.getElementById("discordLoginBtn");
 
+    btn.classList.add("auth-loading");
+    errorDiv.classList.remove("show");
+    successDiv.classList.remove("show");
 
-function getCodeFromInputs() {
+    try {
+        // Validate code
+        if (!code || typeof code !== 'string' || code.length < 10) {
+            throw new Error("Invalid authorization code");
+        }
 
-  const codeInputs = document.querySelectorAll('.code-input');
+        // Validate backend URL
+        if (!isValidUrl(BACKEND_URL)) {
+            throw new Error("Invalid backend URL");
+        }
 
-  let code = '';
+        // Get CSRF token
+        const csrfToken = sessionStorage.getItem('csrf_token');
+        if (!csrfToken) {
+            throw new Error("Security token missing");
+        }
 
-  codeInputs.forEach(input => {
+        const res = await fetch(`${BACKEND_URL}/auth/web/callback`, {
+            method: "POST",
+            headers: { 
+                "Content-Type": "application/json",
+                'X-CSRF-Token': csrfToken
+            },
+            body: JSON.stringify({ code })
+        });
 
-    code += input.value;
+        if (!res.ok) {
+            throw new Error("Failed to authenticate");
+        }
 
-  });
+        const data = await res.json();
 
-  return code;
+        if (data.success) {
+            // Validate user data
+            if (!data.discordId || !data.username) {
+                throw new Error("Invalid user data received");
+            }
 
+            // Save user data with security measures
+            const userData = {
+                discordId: sanitizeInput(data.discordId),
+                username: sanitizeInput(data.username),
+                avatar: data.avatar ? sanitizeInput(data.avatar) : null,
+                plans: Array.isArray(data.plans) ? data.plans : [],
+                token: data.token,
+                loginTime: Date.now()
+            };
+
+            localStorage.setItem("loggedUser", JSON.stringify(userData));
+
+            // Clear CSRF token
+            sessionStorage.removeItem('csrf_token');
+
+            successDiv.textContent = "تم تسجيل الدخول بنجاح! جاري التحويل...";
+            successDiv.classList.add("show");
+
+            // Redirect to home page
+            setTimeout(() => {
+                window.location.href = "index.html";
+            }, 1500);
+
+        } else {
+            throw new Error(data.message || "فشل تسجيل الدخول");
+        }
+
+    } catch (err) {
+        console.error("Callback error:", err);
+        errorDiv.textContent = err.message || "فشل تسجيل الدخول. حاول مرة أخرى.";
+        errorDiv.classList.add("show");
+        btn.classList.remove("auth-loading");
+        
+        // Clear URL parameters
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
 }
 
-
-
-function backToEmailStep() {
-
-  document.getElementById('emailStep').style.display = 'block';
-
-  document.getElementById('codeStep').style.display = 'none';
-
-  document.getElementById('emailError').classList.remove('show');
-
-  document.getElementById('codeError').classList.remove('show');
-
-  
-
-  // Clear code inputs
-
-  const codeInputs = document.querySelectorAll('.code-input');
-
-  codeInputs.forEach(input => input.value = '');
-
-}
 
 </script>
 

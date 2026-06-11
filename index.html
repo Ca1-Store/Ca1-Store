@@ -508,20 +508,49 @@
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script src="Email.JS"></script>
 <script src="script.min.js"></script>
+<script src="config.js"></script>
 <script>
+/* ──────────── SECURITY FUNCTIONS ──────────── */
+// Security: Sanitize user input
+function sanitizeInput(input) {
+    const div = document.createElement('div');
+    div.textContent = input;
+    return div.innerHTML;
+}
+
+// Security: Validate user session
+function validateUserSession(user) {
+    if (!user || typeof user !== 'object') return false;
+    if (!user.discordId || !user.username) return false;
+    if (!user.token) return false;
+    
+    // Check if session is too old (30 days)
+    if (user.loginTime && Date.now() - user.loginTime > 30 * 24 * 60 * 60 * 1000) {
+        return false;
+    }
+    
+    return true;
+}
+
 /* ──────────── USER STATE ──────────── */
 const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
 
-if (!user || !user.email) {
+if (!validateUserSession(user)) {
   document.getElementById("signinBtn").style.display = "";
   document.getElementById("profileIcon").style.display = "none";
+  // Clear invalid session
+  localStorage.removeItem("loggedUser");
 } else {
   document.getElementById("signinBtn").style.display = "none";
-  // Fill panel info
-  document.getElementById("panelEmail").textContent = user.email;
-  if (user.name) document.getElementById("panelName").textContent = user.name;
-  const initials = (user.name || user.email).slice(0,2).toUpperCase();
-  document.getElementById("panelAvatar").textContent = initials;
+  // Fill panel info with sanitized data
+  document.getElementById("panelEmail").textContent = sanitizeInput(user.username || "Discord User");
+  if (user.username) document.getElementById("panelName").textContent = sanitizeInput(user.username);
+  if (user.avatar) {
+    document.getElementById("panelAvatar").innerHTML = `<img src="${sanitizeInput(user.avatar)}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+  } else {
+    const initials = (sanitizeInput(user.username || "CA")).slice(0,2).toUpperCase();
+    document.getElementById("panelAvatar").textContent = initials;
+  }
 }
 
 /* ──────────── LOGIN POPUP ──────────── */
@@ -550,7 +579,7 @@ function closeProfilePanel() {
 }
 
 document.getElementById("profileIcon") && document.getElementById("profileIcon").addEventListener("click", () => {
-  if (!user) { window.location.href = "account.html"; return; }
+  if (!user || !user.discordId) { window.location.href = "account.html"; return; }
   openProfilePanel();
 });
 profilePanelOverlay.addEventListener("click", closeProfilePanel);
