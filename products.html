@@ -152,15 +152,19 @@
 })();
 
 const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
-if (!user || !user.email) {
+if (!user || !user.discordId) {
   document.getElementById("signinBtn").style.display = "";
   document.getElementById("profileIcon").style.display = "none";
 } else {
   document.getElementById("signinBtn").style.display = "none";
-  document.getElementById("panelEmail").textContent = user.email;
-  if (user.name) document.getElementById("panelName").textContent = user.name;
-  const initials = (user.name || user.email).slice(0,2).toUpperCase();
-  document.getElementById("panelAvatar").textContent = initials;
+  document.getElementById("panelEmail").textContent = user.username || "Discord User";
+  if (user.username) document.getElementById("panelName").textContent = user.username;
+  if (user.avatar) {
+    document.getElementById("panelAvatar").innerHTML = `<img src="${user.avatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+  } else {
+    const initials = (user.username || "CA").slice(0,2).toUpperCase();
+    document.getElementById("panelAvatar").textContent = initials;
+  }
 }
 
 const _profilePanel = document.getElementById("profilePanel");

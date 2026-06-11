@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const signinBtn = document.getElementById("signinBtn");
   const profileIcon = document.getElementById("profileIcon");
 
-  if (user && user.email) {
+  if (user && user.discordId) {
     signinBtn.style.display = "none";
     profileIcon.style.display = "flex";
   } else {

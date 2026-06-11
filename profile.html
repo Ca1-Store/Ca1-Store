@@ -184,27 +184,35 @@ if (!user) {
   window.location.href = "account.html"; 
 } else {
   // Show/hide signin button and profile icon
-  if (!user || !user.email) {
+  if (!user || !user.discordId) {
     document.getElementById("signinBtn").style.display = "";
     document.getElementById("profileIcon").style.display = "none";
   } else {
     document.getElementById("signinBtn").style.display = "none";
   }
-  
+
   // Update profile panel
-  const displayName = user.name || user.email || 'CA';
-  document.getElementById("panelAvatar").textContent = displayName.slice(0, 2).toUpperCase();
-  document.getElementById("panelName").textContent = user.name || 'مستخدم CA';
-  document.getElementById("panelEmail").textContent = user.email || 'غير مسجّل';
+  const displayName = user.username || 'CA';
+  if (user.avatar) {
+    document.getElementById("panelAvatar").innerHTML = `<img src="${user.avatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+  } else {
+    document.getElementById("panelAvatar").textContent = displayName.slice(0, 2).toUpperCase();
+  }
+  document.getElementById("panelName").textContent = user.username || 'مستخدم CA';
+  document.getElementById("panelEmail").textContent = user.username || 'غير مسجّل';
 
   // Update profile header
-  document.getElementById("profileAvatarLarge").textContent = displayName.slice(0, 2).toUpperCase();
-  document.getElementById("profileNameDisplay").textContent = user.name || 'مستخدم CA';
-  document.getElementById("profileEmailDisplay").textContent = user.email || 'غير معروف';
+  if (user.avatar) {
+    document.getElementById("profileAvatarLarge").innerHTML = `<img src="${user.avatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+  } else {
+    document.getElementById("profileAvatarLarge").textContent = displayName.slice(0, 2).toUpperCase();
+  }
+  document.getElementById("profileNameDisplay").textContent = user.username || 'مستخدم CA';
+  document.getElementById("profileEmailDisplay").textContent = user.username || 'غير معروف';
 
   // Update profile info
-  document.getElementById("pName").textContent    = user.name    || "—";
-  document.getElementById("pEmail").textContent   = user.email   || "—";
+  document.getElementById("pName").textContent    = user.username || "—";
+  document.getElementById("pEmail").textContent   = user.username || "—";
   document.getElementById("pPhone").textContent   = user.phone   || "—";
   document.getElementById("pCountry").textContent = user.country || "—";
 

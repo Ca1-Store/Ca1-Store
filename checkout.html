@@ -659,7 +659,7 @@ const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
 
 
 
-if (!user || !user.email) {
+if (!user || !user.discordId) {
 
 
 
@@ -679,7 +679,7 @@ if (!user || !user.email) {
 
   const panelEmail = document.getElementById("panelEmail");
   if (panelEmail) {
-    panelEmail.textContent = user.email;
+    panelEmail.textContent = user.username || "Discord User";
   }
 
   if (user.name) {
@@ -691,7 +691,11 @@ if (!user || !user.email) {
 
   const panelAvatar = document.getElementById("panelAvatar");
   if (panelAvatar) {
-    panelAvatar.textContent = (user.name || user.email).slice(0,2).toUpperCase();
+    if (user.avatar) {
+      panelAvatar.innerHTML = `<img src="${user.avatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+    } else {
+      panelAvatar.textContent = (user.username || "CA").slice(0,2).toUpperCase();
+    }
   }
 
 }
@@ -1014,7 +1018,7 @@ function confirmOrder() {
 
 
 
-  if (!user || !user.email) {
+  if (!user || !user.discordId) {
 
 
 

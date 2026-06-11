@@ -260,6 +260,14 @@
 
 </div>
 
+<script src="script.min.js"></script>
+<script>
+const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
+if (user && user.discordId) {
+  document.getElementById("signinBtn").style.display = "none";
+}
+</script>
+
 </body>
 
 </html>

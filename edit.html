@@ -40,8 +40,8 @@
 const user = JSON.parse(localStorage.getItem("loggedUser") || "null");
 if (!user) window.location.href = "account.html";
 
-document.getElementById("editName").value = user.name || "";
-document.getElementById("editEmail").value = user.email || "";
+document.getElementById("editName").value = user.username || "";
+document.getElementById("editEmail").value = user.username || "";
 document.getElementById("editPhone").value = user.phone || "";
 document.getElementById("editCountry").value = user.country || "";
 
