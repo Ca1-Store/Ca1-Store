@@ -233,20 +233,49 @@ header.search-open .search-box {
 
 /* Sign-in button */
 .signin-btn {
-  padding: 9px 18px;
-  border-radius: 11px;
-  background: linear-gradient(135deg, var(--brand), var(--brand-2));
+  padding: 10px 20px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #5865F2, #4752C4);
   color: #fff;
-  font-size: 13.5px; font-weight: 700;
-  border: none; cursor: pointer;
-  box-shadow: 0 6px 18px var(--brand-glow);
-  transition: all .22s var(--ease);
+  font-size: 14px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(88, 101, 242, .3);
+  transition: all .3s ease;
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
 }
+
+.signin-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.2), transparent);
+  transition: left .5s ease;
+}
+
+.signin-btn:hover::before {
+  left: 100%;
+}
+
 .signin-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 10px 28px var(--brand-glow);
-  filter: brightness(1.06);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(88, 101, 242, .4);
+  filter: brightness(1.08);
+}
+
+.signin-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: white;
 }
 
 /* Hamburger — mobile only */

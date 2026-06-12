@@ -24,269 +24,290 @@
 
   <style>
 
-    .auth-loading {
+:root {
+    --bg: #050816;
+    --card: #0f1729;
+    --line: rgba(255,255,255,.08);
+    --text: #ffffff;
+    --muted: #9aa8c7;
+    --blue: #3b82f6;
+    --blue2: #2563eb;
+    --discord: #5865F2;
+    --discord-hover: #4752C4;
+}
 
-      opacity: 0.6;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Almarai', sans-serif;
+}
 
-      pointer-events: none;
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top right, #17376d 0%, transparent 25%),
+        radial-gradient(circle at bottom left, #0d4f4b 0%, transparent 25%),
+        linear-gradient(135deg, #030712, #081120, #050816);
+    overflow-x: hidden;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
 
+/* خلفية متحركة */
+.bg-glow {
+    position: absolute;
+    width: 700px;
+    height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(88, 101, 242, .15), transparent 70%);
+    filter: blur(40px);
+    animation: float 12s linear infinite;
+}
+
+.bg-glow.two {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(34, 197, 94, .08), transparent 70%);
+    animation-duration: 18s;
+    animation-direction: reverse;
+}
+
+@keyframes float {
+    0% {
+        transform: translate(-80px, -50px);
+    }
+    50% {
+        transform: translate(80px, 50px);
+    }
+    100% {
+        transform: translate(-80px, -50px);
+    }
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    z-index: 5;
+}
+
+.auth-card {
+    position: relative;
+    background: rgba(15, 23, 41, .88);
+    border: 1px solid var(--line);
+    backdrop-filter: blur(20px);
+    border-radius: 34px;
+    overflow: hidden;
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, .55),
+        inset 0 1px 0 rgba(255, 255, 255, .05);
+}
+
+/* الخط العلوي */
+.top-line {
+    height: 5px;
+    width: 100%;
+    background: linear-gradient(90deg, #5865F2, #3b82f6, #60a5fa);
+}
+
+/* المحتوى */
+.content {
+    padding: 45px 40px;
+    text-align: center;
+}
+
+/* أيقونة Discord */
+.discord-icon-wrapper {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: auto;
+}
+
+.discord-icon-wrapper svg {
+    width: 100%;
+    height: 100%;
+    fill: #5865F2;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+}
+
+/* العنوان */
+h1 {
+    margin-top: 24px;
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: .5px;
+}
+
+.desc {
+    margin-top: 16px;
+    color: var(--muted);
+    line-height: 2;
+    font-size: 15px;
+}
+
+/* زر Discord */
+.discord-btn {
+    width: 100%;
+    padding: 18px 24px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #5865F2, #4752C4);
+    color: white;
+    border: none;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 32px;
+    transition: all 0.3s ease;
+    box-shadow: 0 15px 35px rgba(88, 101, 242, .3);
+    position: relative;
+    overflow: hidden;
+}
+
+.discord-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.discord-btn:hover::before {
+    left: 100%;
+}
+
+.discord-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 45px rgba(88, 101, 242, .4);
+}
+
+.discord-btn svg {
+    width: 24px;
+    height: 24px;
+    fill: white;
+}
+
+/* Loading state */
+.auth-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.auth-loading::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.3);
+    border-radius: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-loading::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 24px;
+    height: 24px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    z-index: 1;
+}
+
+@keyframes spin {
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Error & Success */
+.auth-error {
+    color: #ef4444;
+    font-size: 14px;
+    margin-top: 16px;
+    text-align: center;
+    display: none;
+    padding: 12px;
+    background: rgba(239, 68, 68, .1);
+    border: 1px solid rgba(239, 68, 68, .2);
+    border-radius: 12px;
+}
+
+.auth-error.show {
+    display: block;
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+.auth-success {
+    color: #22c55e;
+    font-size: 14px;
+    margin-top: 16px;
+    text-align: center;
+    display: none;
+    padding: 12px;
+    background: rgba(34, 197, 94, .1);
+    border: 1px solid rgba(34, 197, 94, .2);
+    border-radius: 12px;
+}
+
+.auth-success.show {
+    display: block;
+}
+
+/* Footer note */
+.footer-note {
+    margin-top: 28px;
+    color: #7383a7;
+    font-size: 13px;
+    line-height: 1.9;
+}
+
+/* Responsive */
+@media(max-width: 700px) {
+    .content {
+        padding: 38px 22px;
     }
 
-    .auth-loading::after {
-
-      content: '';
-
-      position: absolute;
-
-      inset: 0;
-
-      background: rgba(0,0,0,0.3);
-
-      border-radius: inherit;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
+    h1 {
+        font-size: 26px;
     }
-
-    .auth-loading::before {
-
-      content: '';
-
-      position: absolute;
-
-      top: 50%;
-
-      left: 50%;
-
-      transform: translate(-50%, -50%);
-
-      width: 24px;
-
-      height: 24px;
-
-      border: 2px solid rgba(255,255,255,0.3);
-
-      border-top-color: #fff;
-
-      border-radius: 50%;
-
-      animation: spin 0.8s linear infinite;
-
-      z-index: 1;
-
-    }
-
-    @keyframes spin {
-
-      to { transform: translate(-50%, -50%) rotate(360deg); }
-
-    }
-
-    .auth-error {
-
-      color: var(--bad);
-
-      font-size: 13px;
-
-      margin-top: 8px;
-
-      text-align: center;
-
-      display: none;
-
-    }
-
-    .auth-error.show {
-
-      display: block;
-
-    }
-
-    .auth-success {
-
-      color: var(--ok);
-
-      font-size: 13px;
-
-      margin-top: 8px;
-
-      text-align: center;
-
-      display: none;
-
-    }
-
-    .auth-success.show {
-
-      display: block;
-
-    }
-
-    .resend-btn {
-
-      width: 100%;
-
-      padding: 11px;
-
-      border-radius: 12px;
-
-      background: rgba(255,255,255,0.05);
-
-      border: 1px solid var(--line-2);
-
-      color: var(--ink-soft);
-
-      font-weight: 700;
-
-      font-size: 13px;
-
-      cursor: pointer;
-
-      margin-top: 10px;
-
-      transition: all 0.22s var(--ease);
-
-    }
-
-    .resend-btn:hover:not(:disabled) {
-
-      background: rgba(255,255,255,0.1);
-
-      border-color: var(--line-2);
-
-      color: #fff;
-
-    }
-
-    .resend-btn:disabled {
-
-      opacity: 0.5;
-
-      cursor: not-allowed;
-
-    }
-
-    .back-to-email {
-
-      text-align: center;
-
-      margin-top: 16px;
-
-    }
-
-    .back-to-email button {
-
-      background: none;
-
-      border: none;
-
-      color: var(--brand-light);
-
-      font-size: 13px;
-
-      font-weight: 700;
-
-      cursor: pointer;
-
-      transition: color 0.22s var(--ease);
-
-    }
-
-    .back-to-email button:hover {
-
-      color: #fff;
-
-    }
-
-    .input-group {
-
-      position: relative;
-
-      margin-bottom: 14px;
-
-    }
-
-    .input-icon {
-
-      position: absolute;
-
-      left: 14px;
-
-      top: 50%;
-
-      transform: translateY(-50%);
-
-      color: var(--muted);
-
-      font-size: 14px;
-
-      pointer-events: none;
-
-    }
-
-    .auth-input {
-
-      padding-left: 42px;
-
-    }
-
-    .code-inputs {
-
-      display: flex;
-
-      gap: 8px;
-
-      justify-content: center;
-
-      margin-bottom: 14px;
-
-    }
-
-    .code-input {
-
-      width: 45px;
-
-      height: 50px;
-
-      text-align: center;
-
-      font-size: 20px;
-
-      font-weight: 800;
-
-      background: rgba(255,255,255,0.05);
-
-      border: 1px solid var(--line-2);
-
-      border-radius: 12px;
-
-      color: #fff;
-
-      outline: none;
-
-      transition: all 0.22s var(--ease);
-
-    }
-
-    .code-input:focus {
-
-      border-color: var(--brand);
-
-      background: rgba(124,58,237,0.07);
-
-    }
-
-    .code-input::placeholder {
-
-      color: var(--muted-2);
-
-      font-size: 14px;
-
-    }
+}
+
+/* إخفاء الـ dark-login القديم */
+.dark-login {
+    display: none;
+}
 
   </style>
 
@@ -294,233 +315,136 @@
 
 <body>
 
+<!-- خلفية متحركة -->
+<div class="bg-glow"></div>
+<div class="bg-glow two"></div>
 
-
+<!-- Header -->
 <header>
-
   <a class="brand" href="index.html">
-
     <div class="brand-logo">CA</div>
-
     <span class="brand-name">CA STORE</span>
-
   </a>
-
   <nav class="main-nav">
-
     <a href="index.html" class="nav-link">الرئيسية</a>
-
     <a href="products.html?cat=fivem" class="nav-link">فايف إم</a>
-
     <a href="products.html?cat=discord" class="nav-link">ديسكورد</a>
-
     <a href="subscriptions.html" class="nav-link">الاشتراكات</a>
-
   </nav>
-
   <div class="header-actions">
-
     <div class="search-icon" id="searchToggle">
-
       <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79L20 20.5 21.5 19 15.5 14Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"/></svg>
-
     </div>
-
     <div class="search-box" id="searchBox">
-
       <input type="text" id="searchInput" placeholder="ابحث عن منتج...">
-
     </div>
-
     <div class="cart-icon" id="cartBtn">
-
       <span class="cart-count" id="cartCount">0</span>
-
       <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2Zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2ZM7.16 14h9.93c.75 0 1.4-.41 1.73-1.03L21.8 7.48A.75.75 0 0 0 21.12 6H6.21L5.27 3.5A1 1 0 0 0 4.33 3H3v2h.67l3 7.59-.76 1.41C5.37 14.37 5 15.03 5 15.75 5 16.99 5.96 18 7.16 18H19v-2H7.42a.25.25 0 0 1-.26-.25c0-.04.01-.08.03-.11L7.16 14Z"/></svg>
-
     </div>
-
     <div class="profile-icon" id="profileIcon" onclick="toggleSideMenu()" style="cursor: pointer;">
-
       <svg viewBox="0 0 24 24"><path fill="white" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4Zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4Z"/></svg>
-
     </div>
-
   </div>
-
 </header>
 
-
-
 <!-- Side Menu Overlay -->
-
 <div class="side-menu-overlay" id="sideMenuOverlay" onclick="toggleSideMenu()"></div>
 
-
-
 <!-- Side Menu -->
-
 <div id="sideMenu" class="side-menu">
-
   <button class="side-menu-close" id="sideMenuClose" onclick="toggleSideMenu()">
-
     <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-
   </button>
-
-  
-
   <div class="side-menu-header">
-
     <div class="side-menu-user">
-
       <div class="side-menu-avatar" id="sideMenuAvatar">CA</div>
-
       <div class="side-menu-user-info">
-
         <h3 id="sideMenuUserName">مستخدم CA</h3>
-
         <p id="sideMenuUserEmail">غير معروف</p>
-
       </div>
-
     </div>
-
   </div>
-
-
-
   <div class="side-menu-links">
-
     <a href="index.html">
-
       <i class="fa-solid fa-home"></i>
-
       <span>الصفحة الرئيسية</span>
-
     </a>
-
     <a href="profile.html">
-
       <i class="fa-solid fa-user"></i>
-
       <span>حسابي</span>
-
     </a>
-
     <a href="orders.html">
-
       <i class="fa-solid fa-bag-shopping"></i>
-
       <span>طلباتي</span>
-
     </a>
-
     <a href="settings.html">
-
       <i class="fa-solid fa-gear"></i>
-
       <span>الإعدادات</span>
-
     </a>
-
     <a href="products.html?cat=fivem">
-
       <i class="fa-solid fa-gamepad"></i>
-
       <span>منتجات فايف إم</span>
-
     </a>
-
     <a href="products.html?cat=discord">
-
       <i class="fa-brands fa-discord"></i>
-
       <span>منتجات الديسكورد</span>
-
     </a>
-
     <a href="subscriptions.html">
-
       <i class="fa-solid fa-crown"></i>
-
       <span>اشتراكاتي</span>
-
     </a>
-
     <a href="terms.html">
-
       <i class="fa-solid fa-file-contract"></i>
-
       <span>الشروط والأحكام</span>
-
     </a>
-
   </div>
-
-
-
   <div class="side-menu-logout">
-
     <button onclick="sideMenuLogout()">
-
       <i class="fa-solid fa-right-from-bracket"></i>
-
       <span>تسجيل الخروج</span>
-
     </button>
-
   </div>
-
 </div>
 
+<!-- حاوية تسجيل الدخول -->
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="top-line"></div>
+        <div class="content">
+            <!-- أيقونة Discord -->
+            <div class="discord-icon-wrapper">
+                <svg viewBox="0 0 127.14 96.36">
+                    <path d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.11 0A72.37 72.37 0 0 0 45.64 0a105.89 105.89 0 0 0-26.25 8.09C2.79 32.65-1.71 56.6.54 80.21a105.73 105.73 0 0 0 32.17 16.15 77.7 77.7 0 0 0 6.89-11.11 68.42 68.42 0 0 1-10.85-5.18c.91-.66 1.8-1.34 2.66-2a75.57 75.57 0 0 0 64.32 0c.87.71 1.76 1.39 2.66 2a68.68 68.68 0 0 1-10.87 5.19 77 77 0 0 0 6.89 11.1 105.25 105.25 0 0 0 32.19-16.14c2.64-27.38-4.51-51.11-18.9-72.15zM42.45 65.69C36.18 65.69 31 60 31 53s5-12.74 11.43-12.74S54 46 53.89 53s-5.05 12.69-11.44 12.69zm42.24 0C78.41 65.69 73.25 60 73.25 53s5-12.74 11.44-12.74S96.23 46 96.12 53s-5.04 12.69-11.43 12.69z"/>
+                </svg>
+            </div>
 
+            <!-- العنوان -->
+            <h1>تسجيل الدخول عبر Discord</h1>
+            <p class="desc">
+                سجل دخولك للوصول إلى منتجات CA Store<br>
+                واحصل على أفضل جرافيكس لـ GTA V
+            </p>
 
-<div class="dark-login">
+            <!-- زر Discord -->
+            <button id="discordLoginBtn" class="discord-btn">
+                <svg viewBox="0 0 127.14 96.36">
+                    <path d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.11 0A72.37 72.37 0 0 0 45.64 0a105.89 105.89 0 0 0-26.25 8.09C2.79 32.65-1.71 56.6.54 80.21a105.73 105.73 0 0 0 32.17 16.15 77.7 77.7 0 0 0 6.89-11.11 68.42 68.42 0 0 1-10.85-5.18c.91-.66 1.8-1.34 2.66-2a75.57 75.57 0 0 0 64.32 0c.87.71 1.76 1.39 2.66 2a68.68 68.68 0 0 1-10.87 5.19 77 77 0 0 0 6.89 11.1 105.25 105.25 0 0 0 32.19-16.14c2.64-27.38-4.51-51.11-18.9-72.15zM42.45 65.69C36.18 65.69 31 60 31 53s5-12.74 11.43-12.74S54 46 53.89 53s-5.05 12.69-11.44 12.69zm42.24 0C78.41 65.69 73.25 60 73.25 53s5-12.74 11.44-12.74S96.23 46 96.12 53s-5.04 12.69-11.43 12.69z"/>
+                </svg>
+                تسجيل الدخول بـ Discord
+            </button>
 
-    <div class="auth-box">
+            <!-- Error & Success -->
+            <div id="authError" class="auth-error"></div>
+            <div id="authSuccess" class="auth-success"></div>
 
-    <div class="auth-icon">
-
-      <svg viewBox="0 0 127.14 96.36" width="36" height="36">
-
-        <path fill="white" d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.11 0A72.37 72.37 0 0 0 45.64 0a105.89 105.89 0 0 0-26.25 8.09C2.79 32.65-1.71 56.6.54 80.21a105.73 105.73 0 0 0 32.17 16.15 77.7 77.7 0 0 0 6.89-11.11 68.42 68.42 0 0 1-10.85-5.18c.91-.66 1.8-1.34 2.66-2a75.57 75.57 0 0 0 64.32 0c.87.71 1.76 1.39 2.66 2a68.68 68.68 0 0 1-10.87 5.19 77 77 0 0 0 6.89 11.1 105.25 105.25 0 0 0 32.19-16.14c2.64-27.38-4.51-51.11-18.9-72.15zM42.45 65.69C36.18 65.69 31 60 31 53s5-12.74 11.43-12.74S54 46 53.89 53s-5.05 12.69-11.44 12.69zm42.24 0C78.41 65.69 73.25 60 73.25 53s5-12.74 11.44-12.74S96.23 46 96.12 53s-5.04 12.69-11.43 12.69z"/>
-
-      </svg>
-
+            <!-- Footer note -->
+            <div class="footer-note">
+                بتسجيل الدخول، أنت توافق على شروط الخدمة وسياسة الخصوصية
+            </div>
+        </div>
     </div>
-
-    <div class="auth-title">تسجيل الدخول عبر Discord</div>
-
-    <p style="text-align:center;color:var(--muted);font-size:14px;margin-bottom:20px;">
-
-      سجل دخولك للوصول إلى منتجات CA Store
-
-    </p>
-
-    <button id="discordLoginBtn" class="auth-btn" style="background:#5865F2;border:none;">
-
-      <svg viewBox="0 0 127.14 96.36" width="20" height="20" style="margin-left:8px;vertical-align:middle;">
-
-        <path fill="white" d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.11 0A72.37 72.37 0 0 0 45.64 0a105.89 105.89 0 0 0-26.25 8.09C2.79 32.65-1.71 56.6.54 80.21a105.73 105.73 0 0 0 32.17 16.15 77.7 77.7 0 0 0 6.89-11.11 68.42 68.42 0 0 1-10.85-5.18c.91-.66 1.8-1.34 2.66-2a75.57 75.57 0 0 0 64.32 0c.87.71 1.76 1.39 2.66 2a68.68 68.68 0 0 1-10.87 5.19 77 77 0 0 0 6.89 11.1 105.25 105.25 0 0 0 32.19-16.14c2.64-27.38-4.51-51.11-18.9-72.15zM42.45 65.69C36.18 65.69 31 60 31 53s5-12.74 11.43-12.74S54 46 53.89 53s-5.05 12.69-11.44 12.69zm42.24 0C78.41 65.69 73.25 60 73.25 53s5-12.74 11.44-12.74S96.23 46 96.12 53s-5.04 12.69-11.43 12.69z"/>
-
-      </svg>
-
-      تسجيل الدخول بـ Discord
-
-    </button>
-
-    <div id="authError" class="auth-error"></div>
-
-    <div id="authSuccess" class="auth-success"></div>
-
-  </div>
-
 </div>
-
-
-
-<div id="verifyToast" class="verify-toast"></div>
 
 
 

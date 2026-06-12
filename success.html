@@ -446,17 +446,16 @@ h1{
             <!-- BADGE -->
 
             <div class="success-badge">
-                تم تسجيل عملية الدفع بنجاح
+                تم منح الرتبة بنجاح ✨
             </div>
 
             <!-- TITLE -->
 
-            <h1>شكراً لطلبك 🎉</h1>
+            <h1>تم الدفع بنجاح! 🎉</h1>
 
             <p class="desc">
-                تم تسجيل عملية الدفع داخل نظام CA Store بنجاح.<br>
-                لإكمال استلام الطلب يرجى فتح تذكرة عبر الديسكورد
-                وإرفاق صورة الفاتورة أو إثبات الدفع.
+                تم تسجيل عملية الدفع بنجاح ومنح الرتبة لحسابك في Discord تلقائياً.<br>
+                تم إرسال رسالة خاصة من بوت المتجر تشرح كيفية تنزيل الجرافيكس.
             </p>
 
             <!-- ORDER INFO -->
@@ -464,13 +463,13 @@ h1{
             <div class="info-grid">
 
                 <div class="info-box">
-                    <div class="info-title">رقم الطلب</div>
-                    <div class="info-value" id="inv-id">#CA-54821</div>
+                    <div class="info-title">الرتبة الممنوحة</div>
+                    <div class="info-value" id="plan-name">CA-1</div>
                 </div>
 
                 <div class="info-box">
                     <div class="info-title">حالة الطلب</div>
-                    <div class="info-value">بانتظار المراجعة</div>
+                    <div class="info-value" style="color: #86efac;">مكتمل</div>
                 </div>
 
                 <div class="info-box">
@@ -479,8 +478,8 @@ h1{
                 </div>
 
                 <div class="info-box">
-                    <div class="info-title">وقت تسجيل الطلب</div>
-                    <div class="info-value" id="inv-date">منذ لحظات</div>
+                    <div class="info-title">وقت الدفع</div>
+                    <div class="info-value" id="payment-time">منذ لحظات</div>
                 </div>
 
             </div>
@@ -493,81 +492,24 @@ h1{
 
                 <div class="delivery-icon">
                     <svg viewBox="0 0 24 24">
-                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14l4-4h12c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2Z"/>
+                        <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2Zm0 14H6l-2 2V4h16v12z"/>
                     </svg>
                 </div>
 
                 <div>
 
-                    <h3>الخطوة الأخيرة لاستلام المنتج</h3>
+                    <h3>رسالة من بوت المتجر 📨</h3>
 
                     <p>
-                        يرجى التوجه إلى ديسكورد CA Store وفتح تذكرة دعم جديدة،
-                        ثم إرسال رقم الطلب وإرفاق صورة الفاتورة أو إثبات الدفع
-                        ليتم تأكيد العملية وتسليم المنتج بشكل كامل.
+                        تم إرسال رسالة خاصة إلى حسابك في Discord من بوت المتجر.<br>
+                        الرسالة تحتوي على شرح مفصل لكيفية تنزيل وتثبيت الجرافيكس.<br>
+                        يرجى التحقق من رسائلك الخاصة في Discord.
                     </p>
 
                 </div>
 
             </div>
 
-            <!-- STEPS -->
-
-            <div class="steps-box">
-
-                <div class="step-item">
-
-                    <div class="step-number">1</div>
-
-                    <div class="step-content">
-                        <h4>فتح تذكرة</h4>
-                        <p>
-                            ادخل سيرفر الديسكورد وافتح تذكرة استلام طلب جديدة.
-                        </p>
-                    </div>
-
-                </div>
-
-                <div class="step-item">
-
-                    <div class="step-number">2</div>
-
-                    <div class="step-content">
-                        <h4>إرسال إثبات الدفع</h4>
-                        <p>
-                            قم بإرسال صورة الفاتورة أو لقطة شاشة واضحة لعملية الدفع.
-                        </p>
-                    </div>
-
-                </div>
-
-                <div class="step-item">
-
-                    <div class="step-number">3</div>
-
-                    <div class="step-content">
-                        <h4>مراجعة الطلب</h4>
-                        <p>
-                            سيتم التأكد من الدفع وربط الطلب بحسابك بشكل مباشر.
-                        </p>
-                    </div>
-
-                </div>
-
-                <div class="step-item">
-
-                    <div class="step-number">4</div>
-
-                    <div class="step-content">
-                        <h4>استلام المنتج</h4>
-                        <p>
-                            بعد اعتماد الطلب سيتم تسليم المنتج أو التفعيل النهائي.
-                        </p>
-                    </div>
-
-                </div>
-
-            </div>
 
             <!-- BUTTONS -->
 
@@ -598,11 +540,16 @@ h1{
 
 <script>
 (function () {
-    var inv = JSON.parse(localStorage.getItem("invoice") || "null");
-    if (!inv) return;
-    if (inv.id)   document.getElementById("inv-id").textContent   = "#" + inv.id.slice(-8).toUpperCase();
-    if (inv.date) document.getElementById("inv-date").textContent = inv.date;
-    localStorage.removeItem("invoice");
+    // Get plan from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const plan = urlParams.get('plan') || 'CA-1';
+    
+    // Update plan name
+    document.getElementById('plan-name').textContent = plan;
+    
+    // Update payment time
+    const now = new Date();
+    document.getElementById('payment-time').textContent = now.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
 })();
 </script>
 
