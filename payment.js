@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    if (!user || !user.email) {
+    if (!user || !user.discordId) {
         alert("يجب تسجيل الدخول أولاً لإتمام عملية الشراء");
         window.location.href = "account.html";
         return;
@@ -41,6 +41,17 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
+    // Get product info for custom_id
+    const item = cart[0];
+    const productsData = [
+        { id: 1, plan: "CA-1" },
+        { id: 2, plan: "CA-2" },
+        { id: 3, plan: "CA-3" },
+        { id: 4, plan: "CA-4" }
+    ];
+    const product = productsData.find(p => p.id === item.id);
+    const plan = product ? product.plan : "CA-1";
+
     paypal.Buttons({
 
         style: {
@@ -61,7 +72,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     amount: {
                         value: usdTotal.toFixed(2),
                         currency_code: "USD"
-                    }
+                    },
+                    custom_id: `discord_id=${user.discordId}&plan=${plan}`
                 }]
             });
         },
@@ -69,7 +81,6 @@ document.addEventListener("DOMContentLoaded", () => {
         onApprove: function(data, actions) {
             return actions.order.capture().then(async function(details) {
 
-                const item      = cart[0];
                 const totalSAR  = item.price * item.qty;
                 const generatedKey = generateRandomKey();
 
@@ -94,7 +105,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     code:        generatedKey,
                     qty:         item.qty,
                     email:       details.payer.email_address,
-                    transactionId: details.id
+                    transactionId: details.id,
+                    plan:        plan
                 };
 
                 localStorage.setItem("invoice", JSON.stringify(orderEntry));
@@ -103,13 +115,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 user.orders.push(orderEntry);
                 localStorage.setItem("loggedUser", JSON.stringify(user));
 
-                const ordersKey = "orders_" + user.email;
+                const ordersKey = "orders_" + user.discordId;
                 const existing  = JSON.parse(localStorage.getItem(ordersKey) || "[]");
                 existing.push(orderEntry);
                 localStorage.setItem(ordersKey, JSON.stringify(existing));
 
                 localStorage.removeItem("cart");
-                window.location.href = "success.html";
+                window.location.href = "success.html?plan=" + encodeURIComponent(plan);
             });
         },
 
