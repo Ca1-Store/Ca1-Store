@@ -22,6 +22,7 @@
           <div class="pd-price">
             <div class="price ${p.price ? "" : "free"}">${p.price ? `<b>$${fmtPrice(p.price)}</b>${p.oldPrice > p.price ? `<s>$${fmtPrice(p.oldPrice)}</s><span class="chip silver">وفّر ${Math.round((1 - p.price / p.oldPrice) * 100)}%</span>` : ""}` : "<b>المبلغ حسب رغبتك</b>"}</div>
             <button class="btn btn-primary btn-lg btn-block ${out ? "disabled" : ""}" id="buy" ${out ? "disabled" : ""}>${out ? "غير متوفر حالياً" : `${icon("lock", "sm")} ${buyLabel}`}</button>
+            ${!out && !p.isSupport && p.paymentUrl ? `<button class="btn btn-block" id="altPay">${icon("card", "sm")} لا تملك حساب PayPal؟ ادفع ببطاقة</button>` : ""}
             <div class="pd-trust"><div>${icon("shield")}دفع آمن</div><div>${icon("bolt")}تسليم سريع</div><div>${icon("chat")}دعم عبر تذكرة</div></div>
           </div>
           <div class="desc">${paras.map(t => `<p>${esc(t)}</p>`).join("")}${bullets.length ? `<ul>${bullets.map(b => `<li>${icon("check")}<span>${esc(b.replace(/^[🔹🚀•\-]\s*/u, ""))}</span></li>`).join("")}</ul>` : ""}</div>
@@ -50,6 +51,8 @@
         if (!p.paymentUrl) return toast("الدفع غير متاح لهذا المنتج حالياً", "err");
         modal(`<h3>أنت على وشك الدفع</h3><p>سيتم فتح صفحة PayPal الآمنة في تبويب جديد. ${p.isSupport ? "" : esc(C.TICKET_NOTE)}</p><div class="modal-actions"><a class="btn btn-primary" href="${esc(p.paymentUrl)}" target="_blank" rel="noopener noreferrer" data-a="ok">${icon("lock", "sm")} متابعة للدفع</a><button class="btn" data-a="c">إلغاء</button></div>`, (ov, close) => ov.addEventListener("click", e => { if (e.target.closest("[data-a]")) close(); }));
     }
+    const alt = $("#altPay");
+    if (alt) alt.onclick = () => modal(`<h3>الدفع ببطاقة بدون حساب PayPal</h3><p>سيفتح لك رابط دفع آمن من PayPal تقدر تدفع منه ببطاقتك كضيف.<br><br><b>مهم:</b> هذا الرابط لا يعرف حسابك في ديسكورد، لذلك بعد الدفع <b>افتح تذكرة في سيرفرنا</b> وأرسل إثبات الدفع ليتم تفعيل منتجك وفتح التقييم لك يدوياً خلال وقت قصير.</p><div class="modal-actions"><a class="btn btn-primary" href="${esc(p.paymentUrl)}" target="_blank" rel="noopener noreferrer" data-a="ok">${icon("lock", "sm")} متابعة للدفع</a><a class="btn" href="${esc(C.DISCORD_INVITE)}" target="_blank" rel="noopener" data-a="t">${icon("ticket", "sm")} فتح تذكرة</a></div>`, (ov, close) => ov.addEventListener("click", e => { if (e.target.closest("[data-a=ok]")) close(); }));
     ["buy", "buy2"].forEach(i => { const b = $("#" + i); if (b) b.onclick = buy; });
     if (p.isSupport) return;
     document.body.classList.add("has-sticky");
