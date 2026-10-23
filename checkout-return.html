@@ -1,0 +1,14 @@
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><meta name="theme-color" content="#07080a"><link rel="icon" href="assets/favicon.png"><link rel="stylesheet" href="css/site.css"><title>تأكيد الدفع — CA Store</title></head><body>
+<header id="hdr"></header>
+<main class="wrap" style="min-height:60vh;display:grid;place-items:center;padding:50px 0"><div class="cta-band" style="max-width:640px;width:100%" id="box"><span class="spinner" style="width:34px;height:34px;border-width:3px"></span><h2 style="margin-top:18px;font-size:24px">جارٍ تأكيد الدفع...</h2><p>لا تغلق الصفحة</p></div></main>
+<footer id="ftr"></footer><script src="js/config.js"></script><script src="js/core.js"></script>
+<script>
+(async()=>{const {$,api,auth,boot,icon,esc,C}=CA;await boot("");const box=$("#box"),q=new URLSearchParams(location.search),order=q.get("token");
+const show=(ic,t,m,btns)=>{box.innerHTML=`<div class="icon-tile ${ic==="check"?"ok":""}" style="margin:0 auto 18px;width:64px;height:64px">${icon(ic,"xl")}</div><h2 style="font-size:26px;font-weight:900;margin-bottom:10px">${t}</h2><p style="margin-bottom:24px">${m}</p><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">${btns}</div>`};
+if(!order)return show("info","لا يوجد طلب","الرابط غير صحيح.",'<a class="btn" href="store.html">العودة للمتجر</a>');
+if(!auth.user)return show("lock","سجّل الدخول لإكمال التأكيد","سجّل الدخول بنفس حساب ديسكورد الذي بدأت به الشراء.",'<button class="btn btn-primary" id="lg">تسجيل الدخول</button>'),$("#lg").onclick=()=>auth.login("checkout-return.html"+location.search);
+try{const r=await api("/api/store/checkout/capture",{method:"POST",body:{orderId:order}});
+ const delivered=r.plan?(r.roleGranted===false?"تم الدفع بنجاح، لكن تعذّر منح الرتبة تلقائياً. افتح تذكرة وسنفعّلها فوراً.":"تم تفعيل رتبتك في ديسكورد تلقائياً."):C.TICKET_NOTE;
+ show("check","تمت عملية الشراء بنجاح!",`شكراً لك على شرائك <b>${esc(r.productTitle)}</b>.<br>${esc(delivered)}`,`${r.productId?`<a class="btn btn-primary" href="product.html?id=${r.productId}#reviewsSec">${icon("star","sm")} قيّم المنتج</a>`:""}<a class="btn" href="${C.DISCORD_INVITE}" target="_blank" rel="noopener">${icon("ticket","sm")} فتح تذكرة</a><a class="btn" href="store.html">العودة للمتجر</a>`);
+}catch(e){show("info","لم يكتمل التأكيد",esc(e.message),'<a class="btn" href="store.html">العودة للمتجر</a>');}})();
+</script></body></html>

@@ -1,0 +1,26 @@
+.adm-head { padding: 34px 0 6px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: flex-end; }
+.adm-tabs { display: flex; gap: 8px; margin: 20px 0 24px; overflow-x: auto; padding-bottom: 4px; }
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px; }
+.stat { padding: 22px; border-radius: var(--r-lg); border: 1px solid var(--line-2); background: linear-gradient(180deg, rgba(20,23,28,.92), rgba(11,13,16,.92)); }
+.stat b { display: block; font-size: 34px; font-weight: 900; direction: ltr; text-align: start; line-height: 1.1; margin-top: 12px; }
+.stat span { color: var(--text-3); font-size: 13px; font-weight: 700; }
+.tbl-wrap { border: 1px solid var(--line-2); border-radius: var(--r-lg); overflow: auto; background: rgba(14,16,20,.8); }
+table.tbl { width: 100%; border-collapse: collapse; min-width: 760px; }
+.tbl th { text-align: start; padding: 14px 16px; font-size: 12px; font-weight: 800; color: var(--text-3); background: rgba(255,255,255,.03); border-bottom: 1px solid var(--line-2); white-space: nowrap; }
+.tbl td { padding: 12px 16px; border-bottom: 1px solid var(--line); font-size: 13.5px; vertical-align: middle; }
+.tbl tr:last-child td { border-bottom: 0; } .tbl tbody tr:hover { background: rgba(255,255,255,.025); }
+.tbl .thumb { width: 54px; height: 40px; border-radius: 8px; object-fit: cover; background: var(--surface-3); }
+.tbl .t-title { font-weight: 800; max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tbl .act { display: flex; gap: 6px; justify-content: flex-end; }
+.price-in { width: 84px; height: 36px; padding: 0 10px; border-radius: 9px; background: rgba(255,255,255,.05); border: 1px solid var(--line-2); direction: ltr; font-weight: 800; }
+.price-in:focus { border-color: var(--silver-2); }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.form-grid .full { grid-column: 1/-1; }
+.fld label { display: block; font-size: 12.5px; font-weight: 800; color: var(--text-2); margin-bottom: 6px; }
+.fld small { display: block; color: var(--text-3); font-size: 11.5px; margin-top: 5px; }
+.fld .req { color: var(--err); }
+.modal.wide { width: min(720px, 100%); }
+.checks { display: flex; gap: 22px; flex-wrap: wrap; align-items: center; }
+.link-cell { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; direction: ltr; text-align: start; color: var(--text-3); font-size: 12px; }
+.guard { max-width: 520px; margin: 90px auto; text-align: center; }
+@media (max-width: 640px) { .form-grid { grid-template-columns: 1fr; } }
