@@ -1,6 +1,7 @@
 /* ===== CA Store — core ===== */
 (function () {
     const C = window.CA_CONFIG;
+    const I = window.CA_I18N, t = I.t, lang = I.lang, isAr = lang === "ar";
     const TK = "ca_token";
     const IC = {
         home: '<path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
@@ -35,9 +36,16 @@
         discord: '<path d="M7 7.5c3-1.3 7-1.3 10 0 1.6 2.3 2.6 5 2.8 8.3-1.4 1.2-3 1.8-4.5 2.1l-.9-1.6c.5-.2 1-.4 1.4-.7-2.5 1-5.3 1-7.8 0 .4.3.9.5 1.4.7l-.9 1.6c-1.5-.3-3.1-.9-4.5-2.1.2-3.3 1.2-6 2.8-8.3z"/><circle cx="9.5" cy="12.5" r="1"/><circle cx="14.5" cy="12.5" r="1"/>',
         refresh: '<path d="M20 11a8 8 0 0 0-14-4L4 9M4 4v5h5M4 13a8 8 0 0 0 14 4l2-2M20 20v-5h-5"/>',
         money: '<circle cx="12" cy="12" r="9"/><path d="M14.5 9.5c-.5-1-1.5-1.5-2.5-1.5-1.5 0-2.500 1-2.500 2s1 1.500 2.500 2 2.500 1 2.500 2-1 2-2.500 2c-1 0-2-.5-2.500-1.500M12 6.500V8M12 16v1.500"/>',
+        tag: '<path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z"/><circle cx="8" cy="8" r="1.5"/>',
+        clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+        fire: '<path d="M12 3c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 1-9z"/>',
+        play: '<path d="M7 4l13 8-13 8z"/>',
+        globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>',
+        box: '<path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/>',
+        file: '<path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5"/>',
         users: '<circle cx="9" cy="8" r="3.5"/><path d="M2 20a7 7 0 0 1 14 0"/><path d="M16 4.500a3.500 3.500 0 0 1 0 7M18 14a7 7 0 0 1 4 6"/>'
     };
-    const icon = (n, c = "") => `<svg class="i ${c}" viewBox="0 0 24 24" aria-hidden="true">${IC[n] || ""}</svg>`;
+    const icon = (n, c = "") => `<svg class="i ${n === "arrow" ? "arr " : ""}${c}" viewBox="0 0 24 24" aria-hidden="true">${IC[n] || ""}</svg>`;
     const esc = s => String(s ?? "").replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
     const $ = (s, r = document) => r.querySelector(s);
     const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -52,14 +60,14 @@
     /* ---------- api ---------- */
     async function api(path, opt = {}) {
         const headers = { "Content-Type": "application/json" };
-        const t = store.get(TK); if (t) headers.Authorization = "Bearer " + t;
+        const tk = store.get(TK); if (tk) headers.Authorization = "Bearer " + tk;
         let res;
         try {
             res = await fetch(C.API + path, { method: opt.method || "GET", headers, body: opt.body ? JSON.stringify(opt.body) : undefined });
-        } catch { throw new Error("تعذّر الاتصال بالخادم، تحقق من اتصالك بالإنترنت"); }
+        } catch { throw new Error(t("err_net")); }
         let data = {}; try { data = await res.json(); } catch {}
-        if (res.status === 401 && t) { store.del(TK); auth.user = null; }
-        if (!res.ok || data.success === false) { const e = new Error(data.message || "حدث خطأ غير متوقع"); e.status = res.status; e.code = data.code; throw e; }
+        if (res.status === 401 && tk) { store.del(TK); auth.user = null; }
+        if (!res.ok || data.success === false) { const e = new Error(data.message || t("err_generic")); e.status = res.status; e.code = data.code; throw e; }
         return data;
     }
 
@@ -78,7 +86,7 @@
                 const redirect = location.origin + location.pathname.replace(/[^/]*$/, "") + "auth-callback.html";
                 const d = await fetch(C.API + "/auth/web/url?redirect_uri=" + encodeURIComponent(redirect)).then(r => r.json());
                 location.href = d.url;
-            } catch { toast("تعذّر بدء تسجيل الدخول", "err"); }
+            } catch { toast(t("err_login_start"), "err"); }
         },
         logout() { store.del(TK); this.user = null; location.href = "index.html"; }
     };
@@ -100,9 +108,9 @@
         document.addEventListener("keydown", esc_);
         document.body.appendChild(ov); onMount && onMount(ov, close); return { el: ov, close };
     }
-    function confirmBox(title, text, okLabel = "تأكيد", danger = true) {
+    function confirmBox(title, text, okLabel, danger = true) {
         return new Promise(res => {
-            modal(`<h3>${esc(title)}</h3><p>${esc(text)}</p><div class="modal-actions"><button class="btn ${danger ? "btn-danger" : "btn-primary"}" data-act="yes">${esc(okLabel)}</button><button class="btn" data-act="no">إلغاء</button></div>`, (ov, close) => {
+            modal(`<h3>${esc(title)}</h3><p>${esc(text)}</p><div class="modal-actions"><button class="btn ${danger ? "btn-danger" : "btn-primary"}" data-act="yes">${esc(okLabel || t("confirm"))}</button><button class="btn" data-act="no">${esc(t("cancel"))}</button></div>`, (ov, close) => {
                 ov.addEventListener("click", e => { const b = e.target.closest("[data-act]"); if (!b) return; close(); res(b.dataset.act === "yes"); });
                 ov.addEventListener("mousedown", e => { if (e.target === ov) res(false); });
             });
@@ -110,68 +118,138 @@
     }
     const stars = (v, n = 5) => `<span class="stars" aria-label="${v} / 5">${[...Array(n)].map((_, i) => icon("star", i < Math.round(v) ? "on" : "")).join("")}</span>`;
     const fmtPrice = p => { const n = Number(p) || 0; return Number.isInteger(n) ? String(n) : n.toFixed(2); };
-    const fmtDate = d => { try { return new Date(d).toLocaleDateString("ar", { year: "numeric", month: "long", day: "numeric" }); } catch { return ""; } };
+    const SAR_RATE = 3.75;
+    const toSar = u => Math.ceil((Number(u) || 0) * SAR_RATE / 5) * 5;           // 25$ → 95 ر.س
+    // السعر المعروض: عربي = ريال (مقرّب) ، إنجليزي = دولار
+    const money = u => isAr ? `${toSar(u)} <span class="cur">${t("currency")}</span>` : `$${fmtPrice(u)}`;
+    const usd = u => `$${fmtPrice(u)}`;
+    const fmtDate = d => { try { return new Date(d).toLocaleDateString(isAr ? "ar" : "en", { year: "numeric", month: "long", day: "numeric" }); } catch { return ""; } };
     const imgSrc = f => !f ? "" : /^(https?:)?\/\//.test(f) || f.startsWith("data:") ? f : "assets/products/" + encodeURIComponent(f);
     const avatarHtml = (u, name) => u ? `<span class="avatar"><img src="${esc(u)}" alt="" loading="lazy" onerror="this.parentNode.textContent='${esc((name || "?")[0])}'"></span>` : `<span class="avatar">${esc((name || "?")[0].toUpperCase())}</span>`;
-    const catMeta = { fivem: ["جرافيكس FiveM", "gamepad"], discord: ["ديسكورد", "discord"], subscriptions: ["اشتراكات", "card"], support: ["دعم المتجر", "heart"] };
-    const catName = c => (catMeta[c] || [c])[0];
+    const catMeta = { fivem: ["cat_fivem", "gamepad"], discord: ["cat_discord", "discord"], subscriptions: ["cat_subscriptions", "card"], support: ["cat_support", "heart"] };
+    const catName = c => catMeta[c] ? t(catMeta[c][0]) : c;
+    const ptitle = p => (!isAr && p.titleEn) ? p.titleEn : p.title;
+    const pdesc = p => (!isAr && p.descriptionEn) ? p.descriptionEn : p.description;
+
+    /* ---------- عدّاد العروض ---------- */
+    function cdParts(ms) { const s = Math.max(0, Math.floor(ms / 1000)); return { d: Math.floor(s / 86400), h: Math.floor(s % 86400 / 3600), m: Math.floor(s % 3600 / 60), s: s % 60 }; }
+    const p2 = n => String(n).padStart(2, "0");
+    function cdBox(end, big) {
+        return `<div class="cd ${big ? "cd-big" : "cd-mini"}" data-cd="${esc(end)}">
+          <span class="cd-ic">${icon("clock", big ? "" : "sm")}</span>
+          ${big ? `<span class="cd-lbl">${t("offer_ends")}</span>` : ""}
+          <span class="cd-cells">${["d", "h", "m", "s"].map(k => `<span class="cd-cell"><b data-k="${k}">00</b><small>${t("cd_" + k)}</small></span>`).join("")}</span></div>`;
+    }
+    let _cdTimer = null, _cdFired = false;
+    function startCountdowns(root = document) {
+        const tick = () => {
+            document.querySelectorAll("[data-cd]").forEach(el => {
+                const left = new Date(el.dataset.cd).getTime() - Date.now(); const q = cdParts(left);
+                for (const k of ["d", "h", "m", "s"]) { const b = el.querySelector(`[data-k=${k}]`); if (b) b.textContent = p2(q[k]); }
+                const dc = el.querySelector('[data-k=d]'); if (dc) dc.parentNode.style.display = q.d ? "" : "none";
+                if (left <= 0) { el.classList.add("cd-over"); el.querySelector(".cd-cells").innerHTML = `<span class="cd-end">${t("offer_over")}</span>`; el.removeAttribute("data-cd"); if (!_cdFired) { _cdFired = true; setTimeout(() => document.dispatchEvent(new Event("ca:expired")), 800); } }
+            });
+        };
+        tick(); if (!_cdTimer) _cdTimer = setInterval(tick, 1000);
+    }
+
+    /* ---------- وسائط المنتج: معرض + قبل/بعد ---------- */
+    const ytThumb = id => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+    function mediaMain(it) {
+        if (it.type === "youtube") return `<iframe src="https://www.youtube-nocookie.com/embed/${esc(it.url)}" title="video" loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+        if (it.type === "video") return `<video src="${esc(imgSrc(it.url))}" controls playsinline preload="metadata"></video>`;
+        return `<img src="${esc(imgSrc(it.url))}" alt="" data-zoom>`;
+    }
+    function galleryHtml(items) {
+        if (!items || !items.length) return "";
+        const th = it => it.type === "youtube" ? `<img src="${ytThumb(it.url)}" alt="">${icon("play")}` : it.type === "video" ? `<span class="vph">${icon("play")}</span>` : `<img src="${esc(imgSrc(it.url))}" alt="" loading="lazy">`;
+        return `<div class="gal" data-gal>
+          <div class="gal-main">${mediaMain(items[0])}</div>
+          ${items.length > 1 ? `<div class="gal-thumbs">${items.map((it, i) => `<button type="button" class="gal-t ${i ? "" : "on"}" data-i="${i}" aria-label="${i + 1}">${th(it)}</button>`).join("")}</div>` : ""}</div>`;
+    }
+    function initGallery(root, items) {
+        const g = root.querySelector("[data-gal]"); if (!g) return;
+        const main = g.querySelector(".gal-main");
+        g.addEventListener("click", e => {
+            const tb = e.target.closest(".gal-t");
+            if (tb) { g.querySelectorAll(".gal-t").forEach(x => x.classList.toggle("on", x === tb)); main.innerHTML = mediaMain(items[+tb.dataset.i]); return; }
+            const z = e.target.closest("[data-zoom]");
+            if (z) modal(`<img src="${esc(z.src)}" style="width:100%;border-radius:12px" alt=""><div class="modal-actions"><button class="btn" data-x>${t("cancel")}</button></div>`, (ov, close) => { ov.firstElementChild.style.width = "min(980px,100%)"; ov.addEventListener("click", ev => { if (ev.target.closest("[data-x]")) close(); }); });
+        });
+    }
+    function compareHtml(items) {
+        if (!items || !items.length) return "";
+        return `<div class="cmp-list">${items.map((c, i) => `<figure class="cmp" data-cmp style="--pos:50%">
+          <img class="cmp-a" src="${esc(imgSrc(c.after))}" alt="${t("after")}" loading="lazy" draggable="false">
+          <img class="cmp-b" src="${esc(imgSrc(c.before))}" alt="${t("before")}" loading="lazy" draggable="false">
+          <span class="cmp-tag cmp-tag-b">${t("before")}</span><span class="cmp-tag cmp-tag-a">${t("after")}</span>
+          <span class="cmp-line"><i>${icon("chev", "sm")}</i></span>
+          <input type="range" min="0" max="100" value="50" class="cmp-range" aria-label="${t("cmp_hint")}">
+          ${c.label ? `<figcaption>${esc(c.label)}</figcaption>` : ""}</figure>`).join("")}</div>`;
+    }
+    function initCompare(root = document) {
+        root.querySelectorAll("[data-cmp]").forEach(f => { const r = f.querySelector(".cmp-range"); r.addEventListener("input", () => f.style.setProperty("--pos", r.value + "%")); });
+    }
 
     /* ---------- product card ---------- */
     function productCard(p) {
         const out = p.status === "out";
         const img = imgSrc(p.image);
-        const rating = p.rating && p.rating.count ? `<div class="rate-row">${stars(p.rating.avg)}<span class="ltr">${p.rating.avg}</span><span>(${p.rating.count})</span></div>` : `<div class="rate-row"><span>لا توجد تقييمات بعد</span></div>`;
+        const rating = p.rating && p.rating.count ? `<div class="rate-row">${stars(p.rating.avg)}<span class="ltr">${p.rating.avg}</span><span>(${p.rating.count})</span></div>` : `<div class="rate-row"><span>${t("no_ratings")}</span></div>`;
+        const sold = !p.isSupport && p.sold > 0 ? `<span class="sold">${icon("fire", "sm")} ${t("sold_short", { n: p.sold })}</span>` : "";
         return `<article class="pcard ${out ? "out" : ""}">
-          <a class="pimg" href="product.html?id=${p.id}" aria-label="${esc(p.title)}">
+          <a class="pimg" href="product.html?id=${p.id}" aria-label="${esc(ptitle(p))}">
             <div class="ph"><img src="assets/emblem.png" alt=""></div>
-            ${img ? `<img src="${img}" alt="${esc(p.title)}" loading="lazy" onerror="this.remove()">` : ""}
-            <div class="pbadges"><span class="chip">${esc(catName(p.category))}</span>${out ? '<span class="chip err">غير متوفر</span>' : p.oldPrice > p.price ? `<span class="chip silver">خصم ${Math.round((1 - p.price / p.oldPrice) * 100)}%</span>` : p.featured ? '<span class="chip silver">مميّز</span>' : ""}</div>
+            ${img ? `<img src="${img}" alt="${esc(ptitle(p))}" loading="lazy" onerror="this.remove()">` : ""}
+            <div class="pbadges"><span class="chip">${esc(catName(p.category))}</span>${out ? `<span class="chip err">${t("out_of_stock")}</span>` : p.offerEndsAt ? `<span class="chip silver">${icon("tag")} ${t("off", { n: Math.round((1 - p.price / p.oldPrice) * 100) || 0 })}</span>` : p.oldPrice > p.price ? `<span class="chip silver">${t("off", { n: Math.round((1 - p.price / p.oldPrice) * 100) })}</span>` : p.featured ? `<span class="chip silver">${t("featured")}</span>` : ""}</div>
           </a>
           <div class="pbody">
-            <a class="ptitle" href="product.html?id=${p.id}">${esc(p.title)}</a>
-            <p class="pdesc">${esc((p.description || "").split("\n").filter(Boolean)[0] || "")}</p>
-            ${p.isSupport ? "" : rating}
+            <a class="ptitle" href="product.html?id=${p.id}">${esc(ptitle(p))}</a>
+            <p class="pdesc">${esc((pdesc(p) || "").split("\n").filter(Boolean)[0] || "")}</p>
+            ${p.offerEndsAt && !out ? cdBox(p.offerEndsAt, false) : ""}
+            ${p.isSupport ? "" : `<div class="meta-row">${rating}${sold}</div>`}
             <div class="pfoot">
-              <div class="price ${p.price ? "" : "free"}">${p.price ? `<b>$${fmtPrice(p.price)}</b>${p.oldPrice > p.price ? `<s>$${fmtPrice(p.oldPrice)}</s>` : ""}` : `<b>المبلغ حسب رغبتك</b>`}</div>
-              <a class="btn btn-sm ${out ? "" : "btn-primary"}" href="product.html?id=${p.id}">${out ? "التفاصيل" : p.isSupport ? "ادعمنا" : "اشترِ الآن"}${icon("arrow", "sm")}</a>
+              <div class="price ${p.price ? "" : "free"}">${p.price ? `<b>${money(p.price)}</b>${p.oldPrice > p.price ? `<s>${money(p.oldPrice)}</s>` : ""}` : `<b>${t("free_amount")}</b>`}</div>
+              <a class="btn btn-sm ${out ? "" : "btn-primary"}" href="product.html?id=${p.id}">${out ? t("details") : p.isSupport ? t("support_us") : t("buy_now")}${icon("arrow", "sm")}</a>
             </div>
           </div></article>`;
     }
     const skeletons = n => [...Array(n)].map(() => '<div class="skeleton" style="height:380px"></div>').join("");
 
     /* ---------- layout ---------- */
-    const NAV = [["index.html", "الرئيسية"], ["store.html", "المتجر"], ["reviews.html", "التقييمات"], ["index.html#faq", "الأسئلة الشائعة"]];
+    const NAV = [["index.html", "nav_home"], ["store.html", "nav_store"], ["reviews.html", "nav_reviews"], ["my-orders.html", "nav_orders"], ["index.html#faq", "nav_faq"]];
     function renderHeader(active) {
         const h = $("#hdr"); if (!h) return;
-        const navHtml = NAV.map(([href, t]) => `<a href="${href}" class="${href === active ? "on" : ""}">${t}</a>`).join("");
+        const navHtml = NAV.map(([href, k]) => `<a href="${href}" class="${href === active ? "on" : ""}">${t(k)}</a>`).join("");
         h.className = "hdr";
         h.innerHTML = `<div class="wrap hdr-in">
           <a class="brand" href="index.html"><img src="assets/logo.png" alt="CA"><span><b>CA STORE</b><small>OFFICIAL</small></span></a>
           <nav class="nav">${navHtml}</nav>
-          <div class="hdr-end" id="hdrEnd" style="position:relative"></div>
-          <button class="burger" id="burger" aria-label="القائمة">${icon("menu")}</button></div>
-          <div class="drawer" id="drawer"><div class="drawer-in">${navHtml}<div style="flex:1"></div><a href="${C.DISCORD_INVITE}" target="_blank" rel="noopener">سيرفر الديسكورد</a></div></div>`;
+          <div class="hdr-end"><button class="lang-btn" id="langBtn" title="Language" aria-label="Language">${icon("globe", "sm")}<span>${t("lang_btn")}</span></button><div id="hdrEnd" style="position:relative"></div></div>
+          <button class="burger" id="burger" aria-label="menu">${icon("menu")}</button></div>
+          <div class="drawer" id="drawer"><div class="drawer-in">${navHtml}<div style="flex:1"></div><a href="${C.DISCORD_INVITE}" target="_blank" rel="noopener">${t("ftr_server")}</a></div></div>`;
         const dr = $("#drawer");
         $("#burger").onclick = () => dr.classList.add("open");
         dr.addEventListener("click", e => { if (e.target === dr || e.target.closest("a")) dr.classList.remove("open"); });
+        $("#langBtn").onclick = () => I.set(isAr ? "en" : "ar");
         const onScroll = () => h.classList.toggle("scrolled", scrollY > 8); onScroll(); addEventListener("scroll", onScroll, { passive: true });
     }
     function renderUser() {
         const end = $("#hdrEnd"); if (!end) return; const u = auth.user;
-        if (!u) { end.innerHTML = `<button class="btn btn-sm" style="height:44px" id="loginBtn">${icon("discord", "sm")} تسجيل الدخول</button>`; $("#loginBtn").onclick = () => auth.login(); return; }
+        if (!u) { end.innerHTML = `<button class="btn btn-sm" style="height:44px" id="loginBtn">${icon("discord", "sm")} ${t("login")}</button>`; $("#loginBtn").onclick = () => auth.login(); return; }
         end.innerHTML = `<div class="user-chip" id="uchip" tabindex="0">${avatarHtml(u.avatar, u.username)}<span>${esc(u.username)}</span>${icon("chev", "sm")}</div>
-          <div class="menu" id="umenu">${u.isAdmin ? `<a href="admin.html">${icon("shield", "sm")} لوحة التحكم</a>` : ""}<a href="reviews.html">${icon("star", "sm")} التقييمات</a><div class="sep"></div><button class="danger" id="outBtn">${icon("logout", "sm")} تسجيل الخروج</button></div>`;
+          <div class="menu" id="umenu">${u.isAdmin ? `<a href="admin.html">${icon("shield", "sm")} ${t("nav_dashboard")}</a>` : ""}<a href="my-orders.html">${icon("box", "sm")} ${t("nav_orders")}</a><a href="reviews.html">${icon("star", "sm")} ${t("nav_reviews")}</a><div class="sep"></div><button class="danger" id="outBtn">${icon("logout", "sm")} ${t("logout")}</button></div>`;
         const m = $("#umenu"); $("#uchip").onclick = e => { e.stopPropagation(); m.classList.toggle("open"); };
         document.addEventListener("click", () => m.classList.remove("open")); $("#outBtn").onclick = () => auth.logout();
     }
     function renderFooter() {
         const f = $("#ftr"); if (!f) return; f.className = "ftr";
         f.innerHTML = `<div class="wrap"><div class="ftr-grid">
-          <div><a class="brand" href="index.html"><img src="assets/logo.png" alt="CA"><span><b>CA STORE</b><small>OFFICIAL</small></span></a><p>متجر عربي متخصص بحزم الجرافيكس وخدمات ديسكورد. جودة عالية، تسليم سريع، ودعم حقيقي عبر سيرفرنا.</p></div>
-          <div><h4>المتجر</h4><ul><li><a href="store.html">كل المنتجات</a></li><li><a href="store.html?cat=fivem">جرافيكس FiveM</a></li><li><a href="store.html?cat=discord">خدمات ديسكورد</a></li></ul></div>
-          <div><h4>المساعدة</h4><ul><li><a href="index.html#how">كيف أشتري؟</a></li><li><a href="index.html#faq">الأسئلة الشائعة</a></li><li><a href="reviews.html">آراء العملاء</a></li></ul></div>
-          <div><h4>تواصل معنا</h4><ul><li><a href="${C.DISCORD_INVITE}" target="_blank" rel="noopener">سيرفر الديسكورد</a></li><li><a href="${C.DISCORD_INVITE}" target="_blank" rel="noopener">فتح تذكرة</a></li></ul></div>
-        </div><div class="ftr-bot"><span>© ${new Date().getFullYear()} CA Store — جميع الحقوق محفوظة</span><span>الدفع عبر PayPal · التسليم عبر Discord</span></div></div>`;
+          <div><a class="brand" href="index.html"><img src="assets/logo.png" alt="CA"><span><b>CA STORE</b><small>OFFICIAL</small></span></a><p>${t("ftr_about")}</p></div>
+          <div><h4>${t("ftr_store")}</h4><ul><li><a href="store.html">${t("ftr_all")}</a></li><li><a href="store.html?cat=fivem">${t("ftr_fivem")}</a></li><li><a href="store.html?cat=discord">${t("ftr_discord")}</a></li></ul></div>
+          <div><h4>${t("ftr_help")}</h4><ul><li><a href="index.html#how">${t("ftr_how")}</a></li><li><a href="index.html#faq">${t("nav_faq")}</a></li><li><a href="reviews.html">${t("ftr_reviews")}</a></li><li><a href="terms.html">${t("ftr_terms")}</a></li></ul></div>
+          <div><h4>${t("ftr_contact")}</h4><ul><li><a href="${C.DISCORD_INVITE}" target="_blank" rel="noopener">${t("ftr_server")}</a></li><li><a href="${C.DISCORD_INVITE}" target="_blank" rel="noopener">${t("ftr_ticket")}</a></li></ul></div>
+        </div><div class="ftr-bot"><span>© ${new Date().getFullYear()} CA Store — ${t("ftr_rights")}</span><span>${t("ftr_pay")}</span></div></div>`;
     }
     function reveal() {
         const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("show"); io.unobserve(e.target); } }), { threshold: .12 });
@@ -182,5 +260,5 @@
         renderHeader(active); renderFooter(); renderUser();
         await auth.load(); renderUser(); reveal();
     }
-    window.CA = { C, api, auth, icon, esc, $, $$, toast, modal, confirmBox, stars, fmtPrice, fmtDate, imgSrc, avatarHtml, catName, catMeta, productCard, skeletons, boot, reveal, store };
+    window.CA = { C, t, lang, isAr, api, auth, icon, esc, $, $$, toast, modal, confirmBox, stars, fmtPrice, money, usd, toSar, fmtDate, imgSrc, avatarHtml, catName, catMeta, ptitle, pdesc, productCard, skeletons, boot, reveal, store, cdBox, startCountdowns, galleryHtml, initGallery, compareHtml, initCompare };
 })();

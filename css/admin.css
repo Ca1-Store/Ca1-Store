@@ -24,3 +24,6 @@ table.tbl { width: 100%; border-collapse: collapse; min-width: 760px; }
 .link-cell { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; direction: ltr; text-align: start; color: var(--text-3); font-size: 12px; }
 .guard { max-width: 520px; margin: 90px auto; text-align: center; }
 @media (max-width: 640px) { .form-grid { grid-template-columns: 1fr; } }
+.tbl td .switch { margin: 0; }
+.tbl .chip { vertical-align: middle; }
+@media (max-width: 760px) { #mp { grid-template-columns: 1fr !important; } }
