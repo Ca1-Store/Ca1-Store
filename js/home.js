@@ -1,5 +1,5 @@
 (async function () {
-    const { $, t, icon, api, boot, productCard, skeletons, esc, stars, fmtDate, avatarHtml, catMeta, catName, compareHtml, initCompare, startCountdowns, ptitle } = CA;
+    const { $, t, icon, api, boot, productCard, skeletons, esc, stars, fmtDate, avatarHtml, catMeta, catName, showcase, startCountdowns, ptitle } = CA;
     const nf = n => Number(n).toLocaleString("en");
     $("#arr1").innerHTML = icon("arrow", "sm");
     $("#fi1").innerHTML = icon("lock", "lg"); $("#fi2").innerHTML = icon("bolt", "lg"); $("#fi3").innerHTML = icon("chat", "lg");
@@ -20,9 +20,7 @@
             const offers = avail.filter(p => p.offerEndsAt);
             $("#offersSec").classList.toggle("hidden", !offers.length);
             $("#offers").innerHTML = offers.map(productCard).join("");
-            const withCmp = ps.find(p => p.status !== "hidden" && p.media && p.media.compare && p.media.compare.length);
-            $("#diffSec").classList.toggle("hidden", !withCmp);
-            if (withCmp) { $("#diff").innerHTML = compareHtml(withCmp.media.compare.slice(0, 1)); initCompare($("#diff")); $("#diffLink").href = "product.html?id=" + withCmp.id; }
+            $("#diffSec").classList.toggle("hidden", !showcase($("#diff"), ps));
             const counts = {}; ps.forEach(p => { counts[p.category] = (counts[p.category] || 0) + 1; });
             $("#cats").innerHTML = Object.keys(counts).map(c => { const m = catMeta[c] || [c, "bag"]; return `<a class="cat" href="store.html?cat=${encodeURIComponent(c)}"><div class="icon-tile">${icon(m[1], "lg")}</div><div><b>${esc(catName(c))}</b><small>${t("n_products", { n: counts[c] })}</small></div></a>`; }).join("");
             startCountdowns(); CA.reveal();

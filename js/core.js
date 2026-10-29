@@ -177,18 +177,62 @@
             if (z) modal(`<img src="${esc(z.src)}" style="width:100%;border-radius:12px" alt=""><div class="modal-actions"><button class="btn" data-x>${t("cancel")}</button></div>`, (ov, close) => { ov.firstElementChild.style.width = "min(980px,100%)"; ov.addEventListener("click", ev => { if (ev.target.closest("[data-x]")) close(); }); });
         });
     }
+    function imgFb(el) {                       // الصورة غير موجودة في assets/products؟ جرّب assets/ مباشرة
+        if (!el.dataset.fb && /assets\/products\//.test(el.src)) { el.dataset.fb = 1; el.src = el.src.replace("assets/products/", "assets/"); }
+        else el.style.visibility = "hidden";
+    }
     function compareHtml(items) {
         if (!items || !items.length) return "";
-        return `<div class="cmp-list">${items.map((c, i) => `<figure class="cmp" data-cmp style="--pos:50%">
-          <img class="cmp-a" src="${esc(imgSrc(c.after))}" alt="${t("after")}" loading="lazy" draggable="false">
-          <img class="cmp-b" src="${esc(imgSrc(c.before))}" alt="${t("before")}" loading="lazy" draggable="false">
-          <span class="cmp-tag cmp-tag-b">${t("before")}</span><span class="cmp-tag cmp-tag-a">${t("after")}</span>
-          <span class="cmp-line"><i>${icon("chev", "sm")}</i></span>
-          <input type="range" min="0" max="100" value="50" class="cmp-range" aria-label="${t("cmp_hint")}">
-          ${c.label ? `<figcaption>${esc(c.label)}</figcaption>` : ""}</figure>`).join("")}</div>`;
+        return `<div class="cmp-list">${items.map(c => `<div class="cmp-card">
+          <figure class="cmp" data-cmp style="--pos:50%">
+            <img class="cmp-a" src="${esc(imgSrc(c.after))}" alt="${t("after")}" loading="lazy" draggable="false" onerror="CA.imgFb(this)">
+            <img class="cmp-b" src="${esc(imgSrc(c.before))}" alt="${t("before")}" loading="lazy" draggable="false" onerror="CA.imgFb(this)">
+            <span class="cmp-tag cmp-tag-b">${t("before")}</span><span class="cmp-tag cmp-tag-a">${t("after")}</span>
+            <span class="cmp-line"><i>${icon("chev", "sm")}</i></span>
+            <input type="range" min="0" max="100" value="50" class="cmp-range" aria-label="${t("cmp_hint")}">
+          </figure>
+          <div class="cmp-bar"><span class="cmp-label">${icon("sparkle", "sm")} ${esc(c.label || "")}</span>
+            <div class="seg" role="group"><button type="button" data-mode="slide" class="on">${t("cmp_slide")}</button><button type="button" data-mode="side">${t("cmp_side")}</button></div></div>
+        </div>`).join("")}</div>`;
     }
     function initCompare(root = document) {
-        root.querySelectorAll("[data-cmp]").forEach(f => { const r = f.querySelector(".cmp-range"); r.addEventListener("input", () => f.style.setProperty("--pos", r.value + "%")); });
+        root.querySelectorAll("[data-cmp]").forEach(f => {
+            if (f.dataset.ready) return; f.dataset.ready = 1;
+            const r = f.querySelector(".cmp-range"), set = v => { f.style.setProperty("--pos", v + "%"); r.value = v; };
+            r.addEventListener("input", () => { f._stop = 1; set(r.value); });
+            const card = f.closest(".cmp-card");
+            card && card.querySelectorAll("[data-mode]").forEach(b => b.addEventListener("click", () => {
+                card.querySelectorAll("[data-mode]").forEach(x => x.classList.toggle("on", x === b));
+                f.classList.toggle("side", b.dataset.mode === "side");
+            }));
+            // حركة تعريفية مرة واحدة عند ظهوره: تُلمّح للمستخدم أن الشريط قابل للسحب
+            if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+                const io = new IntersectionObserver(es => { if (!es[0].isIntersecting) return; io.disconnect();
+                    const t0 = performance.now(), D = 1800, ks = [50, 22, 78, 50];
+                    const tick = now => { if (f._stop) return; const k = Math.min(1, (now - t0) / D), seg = Math.min(2, Math.floor(k * 3)), l = k * 3 - seg, e = l * l * (3 - 2 * l);
+                        set(Math.round(ks[seg] + (ks[seg + 1] - ks[seg]) * e)); if (k < 1) requestAnimationFrame(tick); };
+                    requestAnimationFrame(tick); }, { threshold: .6 });
+                io.observe(f);
+            }
+        });
+    }
+    /* معرض «قبل/بعد» للصفحة الرئيسية: تبويب لكل نسخة، CA-4 أولاً */
+    function showcase(el, products) {
+        const rank = p => p.plan === "CA-4" ? 0 : 1;
+        const list = products.filter(p => p.media && p.media.compare && p.media.compare.length && p.status !== "hidden")
+            .sort((a, b) => rank(a) - rank(b) || String(a.plan || a.title).localeCompare(String(b.plan || b.title)));
+        if (!list.length) return false;
+        const draw = i => {
+            const p = list[i], out = p.status === "out";
+            el.querySelectorAll(".sc-tab").forEach((b, k) => b.classList.toggle("on", k === i));
+            el.querySelector(".sc-body").innerHTML = compareHtml(p.media.compare.slice(0, 1).map(c => ({ ...c, label: c.label || p.plan || "" }))) +
+              `<div class="sc-foot"><div><b>${esc(ptitle(p))}</b>${p.price ? `<span class="sc-price">${money(p.price)}${p.oldPrice > p.price ? ` <s>${money(p.oldPrice)}</s>` : ""}</span>` : ""}</div>
+                <a class="btn btn-primary" href="product.html?id=${p.id}">${out ? t("details") : t("buy_now")}${icon("arrow", "sm")}</a></div>`;
+            initCompare(el);
+        };
+        el.innerHTML = `<div class="sc-tabs" role="tablist">${list.map((p, i) => `<button type="button" class="sc-tab" data-i="${i}">${esc(p.plan || ptitle(p))}</button>`).join("")}</div><div class="sc-body"></div>`;
+        el.querySelector(".sc-tabs").addEventListener("click", e => { const b = e.target.closest("[data-i]"); if (b) draw(+b.dataset.i); });
+        draw(0); return true;
     }
 
     /* ---------- product card ---------- */
@@ -260,5 +304,5 @@
         renderHeader(active); renderFooter(); renderUser();
         await auth.load(); renderUser(); reveal();
     }
-    window.CA = { C, t, lang, isAr, api, auth, icon, esc, $, $$, toast, modal, confirmBox, stars, fmtPrice, money, usd, toSar, fmtDate, imgSrc, avatarHtml, catName, catMeta, ptitle, pdesc, productCard, skeletons, boot, reveal, store, cdBox, startCountdowns, galleryHtml, initGallery, compareHtml, initCompare };
+    window.CA = { C, t, lang, isAr, api, auth, icon, esc, $, $$, toast, modal, confirmBox, stars, fmtPrice, money, usd, toSar, fmtDate, imgSrc, avatarHtml, catName, catMeta, ptitle, pdesc, productCard, skeletons, boot, reveal, store, cdBox, startCountdowns, galleryHtml, initGallery, compareHtml, initCompare, showcase, imgFb };
 })();

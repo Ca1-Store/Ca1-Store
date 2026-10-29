@@ -421,3 +421,28 @@ ul { list-style: none; }
   .burger { flex-shrink: 0; }
   .lang-btn { flex-shrink: 0; }
 }
+
+/* ---- قبل/بعد v2.1 ---- */
+.cmp-card { border-radius: var(--r-lg); background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.015)); border: 1px solid var(--line-2); padding: 10px; box-shadow: var(--shadow-lg); }
+.cmp-card .cmp { border-radius: calc(var(--r-lg) - 6px); box-shadow: none; }
+.cmp-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 6px 4px; flex-wrap: wrap; }
+.cmp-label { display: inline-flex; align-items: center; gap: 8px; font-weight: 800; letter-spacing: .5px; }
+.seg { display: inline-flex; padding: 3px; border-radius: 99px; background: rgba(0,0,0,.4); border: 1px solid var(--line-2); }
+.seg button { border: 0; background: transparent; color: var(--text-2); font: inherit; font-size: 12.5px; font-weight: 700; padding: 6px 14px; border-radius: 99px; cursor: pointer; }
+.seg button.on { background: var(--silver-g); color: #0a0b0d; }
+.cmp.side { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; aspect-ratio: 32/9; background: #000; }
+.cmp.side img { position: static; clip-path: none; aspect-ratio: 16/9; }
+.cmp.side .cmp-b { order: -1; }
+.cmp.side .cmp-line, .cmp.side .cmp-range { display: none; }
+.cmp-tag-b, .cmp-tag-a { z-index: 2; }
+.cmp.side .cmp-tag-a { right: 14px; } .cmp.side .cmp-tag-b { left: 14px; }
+@media (max-width: 640px) { .cmp.side { grid-template-columns: 1fr; aspect-ratio: 16/18; } .cmp.side .cmp-tag-a { top: calc(50% + 14px); } }
+.sc-tabs { display: flex; gap: 8px; margin-bottom: 14px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+.sc-tabs::-webkit-scrollbar { display: none; }
+.sc-tab { flex: none; border: 1px solid var(--line-2); background: rgba(255,255,255,.04); color: var(--text-2); font: inherit; font-weight: 800; padding: 9px 20px; border-radius: 99px; cursor: pointer; transition: .2s; }
+.sc-tab:hover { color: var(--text); border-color: var(--silver); }
+.sc-tab.on { background: var(--silver-g); color: #0a0b0d; border-color: transparent; }
+.sc-foot { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-top: 14px; padding: 0 4px; }
+.sc-foot b { display: block; margin-bottom: 2px; }
+.sc-price { color: var(--text-2); font-weight: 700; } .sc-price s { opacity: .55; margin-inline-start: 6px; }
+html, body { overflow-x: clip; }
